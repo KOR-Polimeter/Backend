@@ -8,7 +8,6 @@ class KorPolimeterApplicationTests {
 
 	@Test
 	void contextLoads() {
-
 	}
 
 }
