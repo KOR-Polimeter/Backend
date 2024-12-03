@@ -4,10 +4,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class KorPolimeterApplication {
-
-	public static void main(String[] args) {
-		SpringApplication.run(KorPolimeterApplication.class, args);
-	}
-
+public class KOR_PolimeterApplication {
+    public static void main(String[] args) { SpringApplication.run(KOR_PolimeterApplication.class, args); }
 }

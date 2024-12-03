@@ -1,11 +1,13 @@
-<!doctype html>
-<html lang="ko">
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Document</title>
+    <title>소셜로그인 예제</title>
 </head>
 <body>
-    <h2>일반 index.html 파일입니다.</h2>
+<div>
+    <p><a th:href="@{|${kakaoUrl}|}"카카오 로그인</a></p>
+</div>
+
+<a href = "https://kauth.kakao.com/oauth/logout?client_id=$772c65da382eb8de1916b5771770e5e7&logout_redirect_uri=http://localhost:8080/logout">로그아웃</a>
 </body>
 </html>
