@@ -13,7 +13,8 @@ public class HomeController {
 
     @GetMapping("/")
     public String login(Model model) {
-        model.addAttribute("kakaoUrl", kakaoService.getKakaoLogin());
+        String kakaoUrl = "https://kauth.kakao.com/oauth/authorize?client_id=772c65da382eb8de1916b5771770e5e7&redirect_uri=http://localhost:8080/login/oauth2/code/kakao&response_type=code";
+        model.addAttribute("kakaoUrl", kakaoUrl);
 
         return "index";
     }

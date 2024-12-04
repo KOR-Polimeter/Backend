@@ -5,10 +5,10 @@ spring:
         registration:
           kakao:
             client-id: 772c65da382eb8de1916b5771770e5e7
-            client-secret: YOUR_CLIENT_SECRET
+            client-secret: BEOsi3RTFa8gXahOgwLuVAJH6Dwx3SQ0
             authorization-grant-type: authorization_code
-            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
-            scope: account_email
+            redirect-uri: "localhost:8080/login/oauth2/code/772c65da382eb8de1916b5771770e5e7"
+            scope: account_email, profile_nickname
         provider:
           kakao:
             authorization-uri: https://kauth.kakao.com/oauth/authorize
