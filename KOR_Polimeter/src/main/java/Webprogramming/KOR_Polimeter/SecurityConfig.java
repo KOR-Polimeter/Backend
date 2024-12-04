@@ -12,7 +12,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/", "/index", "/css/**", "/js/**").permitAll() // 인증 없이 접근 가능
+                        .requestMatchers("/", "/index", "/css/**", "/js/**", "/auth/kakao/callback").permitAll() // 인증 없이 접근 가능
                         .requestMatchers("/login/oauth2/**", "/oauth2/**").permitAll() // OAuth2 경로 허용
                         .anyRequest().authenticated() // 나머지 요청은 인증 필요
                 )
