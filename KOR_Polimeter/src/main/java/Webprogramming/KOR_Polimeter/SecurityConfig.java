@@ -14,6 +14,15 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/", "/index", "/css/**", "/js/**", "/auth/kakao/callback").permitAll() // 인증 없이 접근 가능
                         .requestMatchers("/login/oauth2/**", "/oauth2/**").permitAll() // OAuth2 경로 허용
+                        .requestMatchers("/favicon.ico").permitAll()
+                        .requestMatchers("/resources/**").permitAll()
+                        .requestMatchers("/static/**").permitAll()
+                        .requestMatchers("/css/**").permitAll()
+                        .requestMatchers("/js/**").permitAll()
+                        .requestMatchers("/images/**").permitAll()
+                        .requestMatchers("/error").permitAll()
+
+
                         .anyRequest().authenticated() // 나머지 요청은 인증 필요
                 )
                 .oauth2Login(oauth2 -> oauth2

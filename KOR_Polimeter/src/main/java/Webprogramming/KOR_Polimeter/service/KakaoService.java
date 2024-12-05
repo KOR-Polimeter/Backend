@@ -107,10 +107,16 @@ public class KakaoService {
             String email = String.valueOf(account.get("email"));
             String nickname = String.valueOf(account.get("nickname"));
 
+            System.out.println("email:" + email);
+            System.out.println("nickname:" + nickname);
+
             Member member = new Member();
             member.setEmail(email);
             member.setUsername(nickname);
-            memberRepository.save(member);
+
+
+
+
 
             HttpServletRequest request1 = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
             HttpSession session = request1.getSession();
