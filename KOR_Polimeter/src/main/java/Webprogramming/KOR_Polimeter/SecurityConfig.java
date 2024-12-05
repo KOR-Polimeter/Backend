@@ -21,6 +21,7 @@ public class SecurityConfig {
                         .requestMatchers("/js/**").permitAll()
                         .requestMatchers("/images/**").permitAll()
                         .requestMatchers("/error").permitAll()
+                        .requestMatchers("/logout").permitAll()
 
 
                         .anyRequest().authenticated() // 나머지 요청은 인증 필요

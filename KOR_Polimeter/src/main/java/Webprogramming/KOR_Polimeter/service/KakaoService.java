@@ -40,12 +40,37 @@ public class KakaoService {
 
     private final static String KAKAO_API_URI = "https://kapi.kakao.com";
 
+    private final static String KAKAO_LOGOUT_URL = "https://kapi.kakao.com/v1/user/logout";
+
     public String getKakaoLogin() {
         return KAKAO_AUTH_URI + "/oauth/authorize"
                 + "?client_id=" + KAKAO_CLIENT_ID
                 + "&redirect_uri=" + KAKAO_REDIRECT_URL
                 + "&response_type=code";
     } // https://kauth.kakao.com/pauth/authorize?client_id=KAKAO_CLIENT_ID&redirect_uri=KAKAO_REDIRECT_URL&response_type=code
+
+    public static void logoutUser(String accessToken) {
+        RestTemplate restTemplate = new RestTemplate();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer " + accessToken);
+
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        ResponseEntity<String> response = restTemplate.exchange(
+                KAKAO_LOGOUT_URL,
+                HttpMethod.POST,
+                entity,
+                String.class
+        );
+
+        // 로그아웃 성공 여부 확인
+        if (response.getStatusCode().is2xxSuccessful()) {
+            System.out.println("로그아웃 성공");
+        } else {
+            System.out.println("로그아웃 실패: " + response.getStatusCode());
+        }
+    }
 
     public KakaoDTO getKakaoInfo(String code) throws Exception {
         if (code == null) throw new Exception("Fail get authorization code");
@@ -100,31 +125,33 @@ public class KakaoService {
 
             JSONParser jsonParser = new JSONParser();
             JSONObject jsonObj = (JSONObject) jsonParser.parse(response.getBody());
-            JSONObject account = (JSONObject) jsonObj.get("account");
-            JSONObject profile = (JSONObject) jsonObj.get("profile");
-            // 사용자 정보 파싱
-            long id = (long) jsonObj.get("id"); // 사용자 고유 ID
-            String email = String.valueOf(account.get("email"));
-            String nickname = String.valueOf(account.get("nickname"));
 
-            System.out.println("email:" + email);
-            System.out.println("nickname:" + nickname);
+            long id = (long) jsonObj.get("id");
+
+            JSONObject kakaoAccount = (JSONObject) jsonObj.get("kakao_account");
+            String email = null;
+            String nickname = null;
+
+            if (kakaoAccount != null) {
+                email = (String) kakaoAccount.get("email");
+
+                JSONObject profile = (JSONObject) kakaoAccount.get("profile");
+                if (profile != null) {
+                    nickname = (String) profile.get("nickname");
+                }
+            }
+
+            System.out.println("email: " + email);
+            System.out.println("nickname: " + nickname);
 
             Member member = new Member();
             member.setEmail(email);
             member.setUsername(nickname);
 
-
-
-
-
             HttpServletRequest request1 = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
             HttpSession session = request1.getSession();
             session.setAttribute("member", member);
 
-
-
-            // KakaoDTO 빌더 패턴으로 객체 생성
             return KakaoDTO.builder()
                     .id(id)
                     .email(email)
@@ -135,4 +162,7 @@ public class KakaoService {
             throw new Exception("Failed to retrieve user info from Kakao API", e);
         }
     }
+
+
+
 }
