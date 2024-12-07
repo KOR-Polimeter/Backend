@@ -1,9 +1,8 @@
 package Webprogramming.KOR_Polimeter.dto;
 
+import Webprogramming.KOR_Polimeter.domain.Member;
 import lombok.Builder;
 import lombok.Data;
-
-import Webprogramming.KOR_Polimeter.domain.Member;
 
 @Builder
 @Data

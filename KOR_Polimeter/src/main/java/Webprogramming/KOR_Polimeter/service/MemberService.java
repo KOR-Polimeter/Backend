@@ -13,7 +13,7 @@ public class MemberService {
 
     @Transactional
     public Member saveMember(Member member) {
-        System.out.println(member);
+        System.out.println(member + "가 DB에 저장되었습니다.");
         return memberRepository.save(member);
     }
 }

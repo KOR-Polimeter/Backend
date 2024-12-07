@@ -3,6 +3,9 @@ package Webprogramming.KOR_Polimeter.service;
 import Webprogramming.KOR_Polimeter.domain.Member;
 import Webprogramming.KOR_Polimeter.dto.KakaoDTO;
 import Webprogramming.KOR_Polimeter.repository.MemberRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +29,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 public class KakaoService {
     @Autowired
     private final MemberRepository memberRepository;
+    private final MemberService memberService;
 
     @Value("${kakao.client.id}")
     private String KAKAO_CLIENT_ID;
@@ -53,6 +57,7 @@ public class KakaoService {
         RestTemplate restTemplate = new RestTemplate();
 
         HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
         headers.add("Authorization", "Bearer " + accessToken);
 
         HttpEntity<String> entity = new HttpEntity<>(headers);
@@ -141,12 +146,13 @@ public class KakaoService {
                 }
             }
 
-            System.out.println("email: " + email);
-            System.out.println("nickname: " + nickname);
+            System.out.println("email 이메일: " + email);
+            System.out.println("nickname 닉네임: " + nickname);
 
             Member member = new Member();
             member.setEmail(email);
             member.setUsername(nickname);
+
 
             HttpServletRequest request1 = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
             HttpSession session = request1.getSession();
@@ -163,6 +169,29 @@ public class KakaoService {
         }
     }
 
+    public void kakaoDisconnect(String accessToken) throws JsonProcessingException {
+        // HTTP Header 생성
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer " + accessToken);
+        headers.add("Content-type", "application/x-www-form-urlencoded");
 
+        // HTTP 요청 보내기
+        HttpEntity<MultiValueMap<String, String>> kakaoLogoutRequest = new HttpEntity<>(headers);
+        RestTemplate rt = new RestTemplate();
+        ResponseEntity<String> response = rt.exchange(
+                "https://kapi.kakao.com/v1/user/logout",
+                HttpMethod.POST,
+                kakaoLogoutRequest,
+                String.class
+        );
+
+        // responseBody에 있는 정보를 꺼냄
+        String responseBody = response.getBody();
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode jsonNode = objectMapper.readTree(responseBody);
+
+        Long id = jsonNode.get("id").asLong();
+        System.out.println("반환된 id: "+id);
+    }
 
 }
