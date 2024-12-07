@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>KOR_Polimeter</title>
+	<link rel="stylesheet" href="/css/vote_style.css">
+	<link rel="stylesheet" href="/css/default_style.css">
+</head>
+<body>
+<header>
+	<h1>
+		<a href="main.html">KOR_Polimeter</a>
+	</h1>
+	<nav>
+		<ul>
+			<li><a href="login.html">로그인</a></li>
+			<li><a href="main.html">로그아웃</a></li>
+			<li><a href="searching.html">인물검색</a></li>
+			<li><a href="vote.html">투표하기</a></li>
+		</ul>
+	</nav>
+</header>
+<div class="TNB">
+	<br>
+	<hr>
+	<h2>투표</h2>
+	<hr>
+</div>
+<div class="vote-section" id="vote-section">
+	<!-- JavaScript가 버튼을 동적으로 생성 -->
+</div>
+<!-- 선택된 후보들을 표시할 영역 -->
+<div class="selected-candidates-container"
+	 id="selected-candidates-container">
+	<h3>선택된 후보들</h3>
+	<div id="selected-candidates-list">
+		<!-- 선택된 후보들의 이미지와 이름이 여기에 표시됨 -->
+	</div>
+	<div class="submit-container">
+		<button type="submit" onclick="submitVote()">제출하기</button>
+	</div>
+</div>
+<div class="empty_space">
+</div>
+<footer>
+	<p>Contact us at: sdg0896@gmail.com</p>
+	<p>Website created in 2024.</p>
+</footer>
+
+<script>
+	//     // 데이터 정의
+	//     const voteData = [
+	//       {
+	//         party: "더불어민주당",
+	//         candidates: [
+	//           { id: 1, name: "이재명", image: "이재명.jpg" },
+	//           { id: 2, name: "이재명", image: "이재명.jpg" },
+	//           { id: 3, name: "이재명", image: "이재명.jpg" },
+	//           // ... 추가 후보 데이터
+	//         ]
+	//       },
+	//       {
+	//         party: "국민의힘",
+	//         candidates: [
+	//           { id: 101, name: "추경호", image: "추경호.png" },
+	//           { id: 102, name: "추경호", image: "추경호.png" },
+	//           { id: 103, name: "추경호", image: "추경호.png" },
+	//           // ... 추가 후보 데이터
+	//         ]
+	//       }
+	//     ];
+
+
+	const voteData = [
+		{
+			party: "더불어민주당",
+			members: 171,
+			candidates: Array(171).fill(null).map((_, index) => ({
+				id: `${1000 + (index + 1)}`,  // 백틱으로 수정
+				name: "이재명",
+				image: "/images/이재명.jpg"
+			}))
+		},
+		{
+			party: "국민의힘",
+			members: 108,
+			candidates: Array(108).fill(null).map((_, index) => ({
+				id: `${2000 + (index + 1)}`,  // 백틱으로 수정
+				name: "추경호",
+				image: "/images/추경호.png"
+			}))
+		},
+		{
+			party: "조국혁신당",
+			members: 12,
+			candidates: Array(12).fill(null).map((_, index) => ({
+				id: `${3000 + (index + 1)}`,  // 백틱으로 수정
+				name: "조국",
+				image: "/images/조국.png"
+			}))
+		},
+		{
+			party: "개혁신당",
+			members: 3,
+			candidates: Array(3).fill(null).map((_, index) => ({
+				id: `${4000 + (index + 1)}`,  // 백틱으로 수정
+				name: "이준석",
+				image: "/images/이준석.jpg"
+			}))
+		},
+		{
+			party: "진보당",
+			members: 3,
+			candidates: Array(3).fill(null).map((_, index) => ({
+				id: `${5000 + (index + 1)}`,  // 백틱으로 수정
+				name: "윤종오",
+				image: "/images/윤종오.png"
+			}))
+		},
+		{
+			party: "사회민주당",
+			members: 1,
+			candidates: Array(1).fill(null).map((_, index) => ({
+				id: `${6000 + (index + 1)}`,  // 백틱으로 수정
+				name: "한창민",
+				image: "/images/한창민.png"
+			}))
+		},
+		{
+			party: "기본소득당",
+			members: 1,
+			candidates: Array(1).fill(null).map((_, index) => ({
+				id: `${7000 + (index + 1)}`,  // 백틱으로 수정
+				name: "용혜인",
+				image: "/images/용혜인.png"
+			}))
+		},
+		{
+			party: "무소속",
+			members: 1,
+			candidates: Array(1).fill(null).map((_, index) => ({
+				id: `${8000 + (index + 1)}`,  // 백틱으로 수정
+				name: "김종민",
+				image: "/images/김종민.png"
+			}))
+		}
+	];
+
+
+	let selectedCandidates = []; // 선택된 후보들의 ID를 추적
+
+	//동적으로 버튼 생성
+	const voteSection = document.getElementById("vote-section");
+	const selectedCandidatesContainer = document.getElementById("selected-candidates-list");
+
+	voteData.forEach(group => {
+// 정당 그룹 생성
+		const groupDiv = document.createElement("div");
+		groupDiv.classList.add("vote-group");
+
+// 정당 이름 추가
+		const groupTitle = document.createElement("h3");
+		groupTitle.textContent = group.party;
+		groupDiv.appendChild(groupTitle);
+
+// 버튼 컨테이너
+		const buttonContainer = document.createElement("div");
+		buttonContainer.classList.add("vote-buttons");
+
+// 후보 생성
+		group.candidates.forEach(candidate => {
+			const button = document.createElement("button");
+			const label = document.createElement("label");
+
+			const checkbox = document.createElement("input");
+			checkbox.type = "checkbox";
+			checkbox.name = "vote[]";
+			checkbox.value = candidate.id;
+
+			const img = document.createElement("img");
+			img.src = candidate.image;
+			img.alt = candidate.name;
+
+			const nameText = document.createElement("p");
+			nameText.textContent = candidate.name;
+			nameText.style.textAlign = "center";
+
+			label.appendChild(checkbox);
+			label.appendChild(img);
+			button.appendChild(label);
+			button.appendChild(nameText);
+			buttonContainer.appendChild(button);
+
+			// 체크박스 클릭 이벤트 처리
+			checkbox.addEventListener("change", () => {
+				if (checkbox.checked) {
+					if (selectedCandidates.length >= 10) {
+						// 선택이 10개를 초과할 경우 경고 팝업
+						alert("투표는 최대 10개 후보까지 선택할 수 있습니다.");
+						checkbox.checked = false; // 선택 취소
+						return;
+					}
+					selectedCandidates.push(candidate); // 후보 객체 추가
+					updateSelectedCandidates(); // 선택된 후보 업데이트
+				} else {
+					selectedCandidates = selectedCandidates.filter(c => c.id !== candidate.id); // 후보 객체 삭제
+					updateSelectedCandidates(); // 선택된 후보 업데이트
+				}
+			});
+		});
+
+// 버튼 컨테이너를 그룹에 추가
+		groupDiv.appendChild(buttonContainer);
+		voteSection.appendChild(groupDiv);
+	});
+
+	//선택된 후보들 화면에 업데이트
+	function updateSelectedCandidates() {
+		selectedCandidatesContainer.innerHTML = ""; // 기존 내용을 지우기
+
+		selectedCandidates.forEach(candidate => {
+			const candidateDiv = document.createElement("div");
+			candidateDiv.classList.add("selected-candidate");
+
+			const img = document.createElement("img");
+			img.src = candidate.image;
+			img.alt = candidate.name;
+
+			const name = document.createElement("span");
+			name.textContent = candidate.name;
+
+			candidateDiv.appendChild(img);
+			candidateDiv.appendChild(name);
+			selectedCandidatesContainer.appendChild(candidateDiv);
+		});
+	}
+
+	//     // 제출 버튼 클릭 시 처리
+	//     function submitVote() {
+	//       if (selectedCandidates.length === 0) {
+	//         alert("후보를 선택해주세요.");
+	//         return;
+	//       }
+	//       alert("투표가 제출되었습니다.");
+	//     }
+	//     const selectedCandidates = [
+	//         { id: 1, name: "후보자1", img: "candidate1.jpg" },
+	//         { id: 2, name: "후보자2", img: "candidate2.jpg" }
+	//       ];
+
+	// 제출 버튼 클릭 시 처리
+	function submitVote() {
+		// 후보자가 선택되지 않았다면 알림
+		if (selectedCandidates.length === 0) {
+			alert("후보를 선택해주세요.");
+			return;
+		}
+
+		// 후보가 선택되었을 경우 제출 처리
+		alert("투표가 제출되었습니다.");
+
+		// 새로운 폼을 동적으로 생성
+		const form = document.createElement('form');
+		form.method = 'POST';
+		form.action = 'vote_result.html';  // 데이터를 보낼 URL
+
+		// selectedCandidates 배열을 JSON 형태로 변환하여 폼에 추가
+		const input = document.createElement('input');
+		input.type = 'hidden';
+		input.name = 'selectedCandidates';  // 서버에서 받을 이름
+		input.value = JSON.stringify(selectedCandidates);  // 배열을 JSON 문자열로 변환
+
+		// 폼에 input 필드 추가
+		form.appendChild(input);
+
+		// 폼을 문서에 추가하고 제출
+		document.body.appendChild(form);
+		form.submit();
+	}
+</script>
+</body>
+</html>

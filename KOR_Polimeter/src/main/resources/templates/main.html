@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>KOR_Polimeter</title>
+	<link th:href="@{/css/main_style.css}" rel="stylesheet">
+	<link th:href="@{/css/default_style.css}" rel="stylesheet">
+</head>
+<body>
+<header>
+	<h1><a th:href="@{/}">KOR_Polimeter</a></h1>
+	<nav>
+		<ul>
+			<!-- 카카오 로그인 URL은 컨트롤러에서 model에 추가한 kakaoUrl 값을 사용 -->
+			<li><a th:href="${kakaoUrl}">카카오 로그인</a></li>
+			<li>
+				<a th:href="@{'https://kauth.kakao.com/oauth/logout?client_id=772c65da382eb8de1916b5771770e5e7&logout_redirect_uri=http://localhost:8080/logout'}">
+					로그아웃
+				</a>
+			</li>
+			<li><form th:action="@{/searching}" method="post">
+				<input type="text" name="query" placeholder="검색어를 입력하세요" required>
+				<button type="submit">검색</button>
+			</form></li>
+			<li><a th:href="@{/vote}">투표하기</a></li>
+		</ul>
+	</nav>
+</header>
+<div class="main_page">
+	<p>국회의원 인기투표 사이트</p>
+	<h2>당신의 선택은</h2>
+	<div class="circle-image-container">
+		<!-- 이미지 경로를 Thymeleaf의 static 경로로 처리 -->
+		<img th:src="@{/images/이재명.jpg}" alt="Image 1">
+		<img th:src="@{/images/추경호.png}" alt="Image 2">
+		<img th:src="@{/images/조국.png}" alt="Image 3">
+		<img th:src="@{/images/이준석.jpg}" alt="Image 4">
+	</div>
+	<div class="circle-buttons-container">
+		<!-- form 액션 경로를 Thymeleaf 방식으로 처리 -->
+		<form th:action="@{/searching}" method="get">
+			<button class="circle-button">인물 검색하기</button>
+		</form>
+		<form th:action="@{/vote}" method="get">
+			<button class="circle-button">투표하러 가기</button>
+		</form>
+	</div>
+</div>
+<footer>
+	<p>Contact us at: sdg0896@gmail.com</p>
+	<p>Website created in 2024.</p>
+</footer>
+</body>
+</html>

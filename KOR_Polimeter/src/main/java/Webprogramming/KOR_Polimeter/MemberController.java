@@ -38,4 +38,6 @@ public class MemberController {
             return ResponseEntity.status(500).body("로그아웃 실패: " + e.getMessage());
         }
     }
+
+
 }

@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -20,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -78,14 +80,18 @@ public class KakaoService {
     }
 
     public KakaoDTO getKakaoInfo(String code) throws Exception {
-        if (code == null) throw new Exception("Fail get authorization code");
+        if (code == null) {
+            throw new Exception("Fail to get authorization code");
+        }
 
-        String accessToken = "";
+        String accessToken;
 
         try {
+            // HTTP 요청 헤더 설정
             HttpHeaders headers = new HttpHeaders();
             headers.add("Content-Type", "application/x-www-form-urlencoded");
 
+            // 요청 파라미터 설정
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
             params.add("grant_type", "authorization_code");
             params.add("client_id", KAKAO_CLIENT_ID);
@@ -93,6 +99,7 @@ public class KakaoService {
             params.add("code", code);
             params.add("redirect_uri", KAKAO_REDIRECT_URL);
 
+            // RestTemplate을 사용한 POST 요청
             RestTemplate restTemplate = new RestTemplate();
             HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(params, headers);
 
@@ -103,14 +110,37 @@ public class KakaoService {
                     String.class
             );
 
+            // 응답 상태 코드 확인
+            if (!response.getStatusCode().is2xxSuccessful()) {
+                throw new Exception("Failed to get access token: " + response.getStatusCode());
+            }
+
+            // JSON 파싱
             JSONParser jsonParser = new JSONParser();
             JSONObject jsonObj = (JSONObject) jsonParser.parse(response.getBody());
+
+            // access_token 추출 및 검증
             accessToken = (String) jsonObj.get("access_token");
+            if (accessToken == null || accessToken.isEmpty()) {
+                throw new Exception("Access token is missing in the response");
+            }
+
+        } catch (HttpClientErrorException e) {
+            // 카카오 API 호출 실패 시 응답 본문 로깅
+            System.err.println("Error response from Kakao API: " + e.getResponseBodyAsString());
+            throw new Exception("API call failed: " + e.getMessage(), e);
+        } catch (ParseException e) {
+            // JSON 파싱 실패 처리
+            throw new Exception("Failed to parse JSON response: " + e.getMessage(), e);
         } catch (Exception e) {
-            throw new Exception("API call failed");
+            // 기타 예외 처리
+            throw new Exception("Unexpected error occurred: " + e.getMessage(), e);
         }
+
+        // access_token을 사용해 사용자 정보 가져오기
         return getUserInfoWithToken(accessToken);
     }
+
 
     private KakaoDTO getUserInfoWithToken(String accessToken) throws Exception {
         try {

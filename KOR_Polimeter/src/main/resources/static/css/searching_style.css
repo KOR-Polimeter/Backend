@@ -1,0 +1,182 @@
+/* 배너 스타일 */
+.TNB {
+	position: relative;
+	background: #222;
+	color: #fff;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	height: 200px;
+	width: 100%;
+	padding: 35px;
+	text-align: center;
+	box-sizing: border-box;
+	overflow: hidden;
+}
+
+.TNB::before {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: url("../images/국회.jpg") no-repeat center center;
+	background-size: cover;
+	filter: blur(8px);
+	z-index: 1;
+	opacity: 0.5;
+}
+
+.TNB hr {
+	border: none;
+	height: 2px;
+	width: 300px;
+	background-color: #fff;
+	z-index: 1;
+	box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.5);
+}
+
+.TNB h2 {
+	z-index: 1;
+	text-shadow: 4px 4px 4px rgba(0, 0, 0, 1);
+}
+
+/* 컨테이너 레이아웃 */
+.container {
+	display: flex;
+	justify-content: center;
+	align-items: flex-start;
+	width: 100%;
+	max-width: 1200px;
+	margin: 20px auto;
+	gap: 20px;
+}
+
+/* 필터 스타일 */
+.filters {
+	width: 20%;
+	padding: 10px;
+	text-align: left;
+}
+
+.filters h3 {
+	text-align: center;
+}
+
+.filters label {
+	display: block;
+	margin-bottom: 10px;
+}
+
+.content {
+	width: 60%;
+	padding: 10px;
+	
+}
+
+/* 검색창 스타일 */
+.search-bar {
+	display: flex;
+	padding: 10px;
+	width: 100%;
+    gap: 10px;
+}
+
+.search-bar input {
+	width: 35%;
+	padding: 10px;
+	font-size: 16px;
+	border: 1px solid #ccc;
+	border-radius: 10px;
+}
+
+.search-bar button {
+	padding: 10px 20px;
+	background-color: #222;
+	color: white;
+	border: none;
+	border-radius: 10px;
+	font-size: 16px;
+	cursor: pointer;
+}
+
+.search-bar button:hover {
+	background-color: #505050;
+}
+
+#search-type {
+    padding: 5px;
+    font-size: 14px;
+    border-radius: 10px;
+}
+
+#search {
+    padding: 5px;
+}
+
+#search-btn {
+    padding: 5px 10px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+#popularity-label {
+    margin-left: auto;
+    margin-top: 4px;
+    font-size: 16px;
+    font-weight: bold;
+    color: black;
+}
+
+/* 인물 리스트 스타일 */
+.ranking-list {
+	list-style: none;
+	padding: 0;
+	width: 100%;
+	align-items: left;
+}
+
+.ranking-item {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 20px;
+	padding: 20px;
+	border: 1px solid #ddd;
+	border-radius: 5px;
+	width: 100%;
+	background-color: #f9f9f9;
+	box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+	cursor: pointer;
+}
+
+.ranking-item img {
+	width: 40px;
+	height: 40px;
+	margin-right: 20px;
+	border-radius: 50%;
+}
+
+.ranking-item .ranking-number {
+	font-size: 18px;
+	font-weight: bold;
+	margin-right: 15px;
+}
+
+.ranking-item .ranking-details {
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+}
+
+.ranking-item .ranking-details .name {
+	font-weight: bold;
+}
+
+.ranking-item .ranking-details .popularity {
+	font-size: 15px;
+	font-weight: bold;
+	color: black;
+	text-align: right;
+}

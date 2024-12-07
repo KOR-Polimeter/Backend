@@ -2,6 +2,7 @@ package Webprogramming.KOR_Polimeter;
 
 import Webprogramming.KOR_Polimeter.dto.KakaoDTO;
 import Webprogramming.KOR_Polimeter.service.KakaoService;
+import Webprogramming.KOR_Polimeter.service.SearchService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -10,10 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.web.client.RestTemplate;
 
@@ -23,23 +21,33 @@ public class HomeController {
     private final KakaoService kakaoService;
 
     @GetMapping("/")
+    public String main(Model model) {
+        String kakaoUrl = "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=772c65da382eb8de1916b5771770e5e7&redirect_uri=http://localhost:8080/auth/kakao/callback";
+        model.addAttribute("kakaoUrl", kakaoUrl);
+
+        return "main";
+    }
+
+    @GetMapping("/login")
     public String login(Model model) {
         String kakaoUrl = "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=772c65da382eb8de1916b5771770e5e7&redirect_uri=http://localhost:8080/auth/kakao/callback";
         model.addAttribute("kakaoUrl", kakaoUrl);
 
-        return "index";
+        return "login";
     }
+
+
 
     @GetMapping("/auth/kakao/callback")
     public String kakaoCallback(@RequestParam String code, Model model) throws Exception {
         try {
             KakaoDTO kakaoDTO = kakaoService.getKakaoInfo(code);
             model.addAttribute("kakaoInfo", kakaoDTO.toString());
-            return "index"; // index.html로 이동
+            return "main"; // index.html로 이동
         } catch (Exception e) {
             e.printStackTrace();
             model.addAttribute("error", "An error occurred");
-            return "index";
+            return "main";
         }
     }
 

@@ -1,0 +1,138 @@
+/* 배너 스타일 */
+.TNB {
+	position: relative;
+	background: #222;
+	color: #fff;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	height: 200px;
+	width: 100%;
+	padding: 35px;
+	text-align: center;
+	box-sizing: border-box;
+	overflow: hidden;
+}
+
+.TNB::before {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: url("../images/국회.jpg") no-repeat center center;
+	background-size: cover;
+	filter: blur(8px);
+	z-index: 1;
+	opacity: 0.5;
+}
+
+.TNB hr {
+	border: none;
+	height: 2px;
+	width: 300px;
+	background-color: #fff;
+	z-index: 1;
+	box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.5);
+}
+
+.TNB h2 {
+	z-index: 1;
+	text-shadow: 4px 4px 4px rgba(0, 0, 0, 1);
+}
+
+/* 프로필 정보 스타일 */
+.profile-container {
+	display: flex;
+	flex-direction: column;
+	align-items: left;
+	padding: 20px;
+	margin: 0 auto;
+	width: 50%;
+}
+
+hr {
+	width: 80%;
+	color: #ccc;
+}
+
+.profile-info {
+	display: flex;
+	gap: 20px;
+	margin-bottom: 40px;
+}
+
+.profile-image {
+	width: 200px;
+	height: 200px;
+	border-radius: 50%;
+	border: 5px solid #ccc;
+}
+
+.profile-details {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+}
+
+.profile-details h2 {
+	font-size: 24px;
+	color: #222;
+	padding-left: 20px;
+}
+
+.profile-details p {
+	font-size: 18px;
+	color: #555;
+	padding-left: 30px;
+}
+
+/* 돌아가기 부분 스타일 */
+.back-container {
+	display: flex;
+	justify-content: right;
+    align-items: flex-end;
+}
+
+.back-link {
+    margin-top: 20px;
+    font-size: 16px;
+    color: #007bff;
+    text-decoration: none;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}
+
+/* 그래프, 워드클라우드 부분 스타일 */
+.img-container {
+	display: flex;
+	justify-content: center; /* 중앙으로 정렬 */
+    align-items: flex-start; /* 위쪽 정렬 */
+    margin: 30px;
+    gap: 20px;
+}
+
+.graph-container, .cloud-container {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin: 20px;
+    background-color: #f9f9f9;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    width: 40%;
+}
+
+.graph-container img, .cloud-container img {
+    display: block;
+    margin: 10px auto;
+    max-width: 100%;
+}
+
+.img-title {
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 10px;
+}

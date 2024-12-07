@@ -1,0 +1,66 @@
+* {
+	box-sizing: border-box; /* 모든 요소의 크기 계산에 padding과 border를 포함시킴 */
+}
+
+html, body {
+	overflow-x: hidden; /* 수평 스크롤을 숨김 */
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	font-family: Arial, sans-serif;
+	line-height: 1.6;
+	background-color: #f4f4f9;
+}
+
+header {
+	display: flex; /* 플렉스 박스를 사용하여 배너와 메뉴를 나란히 배치 */
+	justify-content: space-between; /* 배너와 메뉴 사이의 간격을 설정 */
+	align-items: center; /* 세로 정렬을 가운데로 */
+	background: #222;
+	color: #fff;
+	padding: 10px;
+	text-align: center;
+	width: 100%;
+	height: 60px;
+}
+
+header h1 {
+	cursor: pointer;
+}
+
+header a {
+    color: white; /* 텍스트 색상을 흰색으로 설정 */
+    text-decoration: none; /* 밑줄 제거 */
+}
+
+header a:visited {
+    color: white; /* 방문한 링크 색상도 흰색으로 유지 */
+}
+
+nav ul {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+nav ul li {
+	display: inline;
+	margin: 0 10px;
+}
+
+nav ul li a {
+	color: #fff;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+footer {
+	background: #111;
+	color: #bbb;
+	padding: 10px; /* 안쪽 여백 */
+	text-align: left;
+	border-top: 5px solid #333; /* 상단에 구분선 추가 */
+	margin-top: 0px;
+}
