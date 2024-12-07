@@ -182,6 +182,8 @@ public class KakaoService {
             Member member = new Member();
             member.setEmail(email);
             member.setUsername(nickname);
+            MemberService k = new MemberService(memberRepository);
+            k.saveMember(member);
 
 
             HttpServletRequest request1 = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
