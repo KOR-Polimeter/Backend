@@ -7,7 +7,7 @@ spring:
             client-id: 772c65da382eb8de1916b5771770e5e7
             client-secret: BEOsi3RTFa8gXahOgwLuVAJH6Dwx3SQ0
             authorization-grant-type: authorization_code
-            redirect-uri: http://localhost:8080/auth/kakao/callback
+            redirect-uri: http://kor-polimeter.info/auth/kakao/callback
             scope: account_email, profile_nickname
         provider:
           kakao:
