@@ -22,7 +22,7 @@ public class HomeController {
 
     @GetMapping("/")
     public String main(Model model) {
-        String kakaoUrl = "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=772c65da382eb8de1916b5771770e5e7&redirect_uri=http://kor-polimeter.info/auth/kakao/callback";
+        String kakaoUrl = "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=772c65da382eb8de1916b5771770e5e7&redirect_uri=http://kor-polimeter.info";
         model.addAttribute("kakaoUrl", kakaoUrl);
 
         return "main";
@@ -30,7 +30,7 @@ public class HomeController {
 
     @GetMapping("/login")
     public String login(Model model) {
-        String kakaoUrl = "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=772c65da382eb8de1916b5771770e5e7&redirect_uri=http://kor-polimeter.info/auth/kakao/callback";
+        String kakaoUrl = "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=772c65da382eb8de1916b5771770e5e7&redirect_uri=http://kor-polimeter.info";
         model.addAttribute("kakaoUrl", kakaoUrl);
 
         return "login";
@@ -43,7 +43,7 @@ public class HomeController {
         try {
             KakaoDTO kakaoDTO = kakaoService.getKakaoInfo(code);
             model.addAttribute("kakaoInfo", kakaoDTO.toString());
-            return "main"; // index.html로 이동
+            return "main"; // main.html로 이동
         } catch (Exception e) {
             e.printStackTrace();
             model.addAttribute("error", "An error occurred");
