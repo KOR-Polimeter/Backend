@@ -28,7 +28,7 @@ public class SecurityConfig {
                         .requestMatchers("/error").permitAll()
                         .requestMatchers("/logout").permitAll()
                         .requestMatchers("/login").permitAll()
-                        .requestMatchers("/api/votes", "/result").permitAll()
+                        .requestMatchers("/api/votes/**").permitAll()
                         .requestMatchers("/default", "/main", "/searching", "/vote", "/vote_result", "/details").permitAll()
                         .anyRequest().authenticated() // 나머지 요청은 인증 필요
                 )
