@@ -1,4 +1,4 @@
-package Webprogramming.KOR_Polimeter;
+package Webprogramming.KOR_Polimeter.controller;
 
 import Webprogramming.KOR_Polimeter.service.KakaoService;
 import Webprogramming.KOR_Polimeter.service.MemberService;
