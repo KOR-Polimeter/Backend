@@ -1,4 +1,4 @@
-package Webprogramming.KOR_Polimeter;
+package Webprogramming.KOR_Polimeter.domain;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
