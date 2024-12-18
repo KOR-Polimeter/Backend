@@ -45,14 +45,14 @@
 }
 
 .circle-image-container {
-	width: 150px;
-	height: 200px;
-	border-radius: 50%;
-	overflow: hidden;
-	position: relative;
-	border: 2px solid #fff;
-	margin-top: 50px;
-	z-index: 1;
+    width: 150px;
+    height: 200px;
+    border-radius: 15px;  /* 둥근 모서리 네모로 설정 */
+    overflow: hidden;
+    position: relative;
+    border: 2px solid #fff;
+    margin-top: 50px;
+    z-index: 1;
 }
 
 .circle-image-container img {
