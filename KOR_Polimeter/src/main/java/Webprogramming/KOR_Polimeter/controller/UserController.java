@@ -1,8 +1,8 @@
-/*package Webprogramming.KOR_Polimeter.controller;
+package Webprogramming.KOR_Polimeter.controller;
 
 import Webprogramming.KOR_Polimeter.dto.KakaoDTO;
 import Webprogramming.KOR_Polimeter.service.KakaoService;
-import Webprogramming.KOR_Polimeter.service.MemberService;
+import Webprogramming.KOR_Polimeter.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,16 +13,15 @@ import org.springframework.web.bind.annotation.RestController;
 import static Webprogramming.KOR_Polimeter.dto.KakaoDTO.convertToUser;
 
 @RestController
-public class MemberController {
+public class UserController {
 
     @Autowired
-    private MemberService memberService;
+    private UserService userService;
 
-    @PostMapping("/saveMember")
-    public String saveMember(@RequestBody KakaoDTO kakaoDTO) {
-        //memberService.saveMember(convertToMember(kakaoDTO));
-        //memberService.saveMember(convert)
-        return "Member saved successfully!";
+    @PostMapping("/saveUser")
+    public String saveUser(@RequestBody KakaoDTO kakaoDTO) {
+        userService.saveUser(convertToUser(kakaoDTO));
+        return "User saved Successfully";
     }
 
     @PostMapping("/logout")
@@ -42,4 +41,3 @@ public class MemberController {
 
 
 }
-*/

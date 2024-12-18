@@ -1,4 +1,4 @@
-package Webprogramming.KOR_Polimeter.service;
+/*package Webprogramming.KOR_Polimeter.service;
 
 import Webprogramming.KOR_Polimeter.domain.Member;
 import Webprogramming.KOR_Polimeter.repository.MemberRepository;
@@ -16,4 +16,4 @@ public class MemberService {
         System.out.println(member + "가 DB에 저장되었습니다.");
         return memberRepository.save(member);
     }
-}
+}*/

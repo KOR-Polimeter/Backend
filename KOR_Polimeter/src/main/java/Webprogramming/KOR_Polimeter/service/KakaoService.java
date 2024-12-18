@@ -1,8 +1,10 @@
 package Webprogramming.KOR_Polimeter.service;
 
-import Webprogramming.KOR_Polimeter.domain.Member;
+//import Webprogramming.KOR_Polimeter.domain.Member;
+import Webprogramming.KOR_Polimeter.domain.User;
 import Webprogramming.KOR_Polimeter.dto.KakaoDTO;
-import Webprogramming.KOR_Polimeter.repository.MemberRepository;
+//import Webprogramming.KOR_Polimeter.repository.MemberRepository;
+import Webprogramming.KOR_Polimeter.repository.UserRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -26,12 +28,14 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import java.time.LocalDateTime;
+
 @Service
 @RequiredArgsConstructor
 public class KakaoService {
-    @Autowired
-    private final MemberRepository memberRepository;
-    private final MemberService memberService;
+    //@Autowired
+    //private final MemberRepository memberRepository;
+    //private final MemberService memberService;
 
     @Value("${kakao.client.id}")
     private String KAKAO_CLIENT_ID;
@@ -47,6 +51,8 @@ public class KakaoService {
     private final static String KAKAO_API_URI = "https://kapi.kakao.com";
 
     private final static String KAKAO_LOGOUT_URL = "https://kapi.kakao.com/v1/user/logout";
+    @Autowired
+    private UserRepository userRepository;
 
     public String getKakaoLogin() {
         return KAKAO_AUTH_URI + "/oauth/authorize"
@@ -164,36 +170,81 @@ public class KakaoService {
             long id = (long) jsonObj.get("id");
 
             JSONObject kakaoAccount = (JSONObject) jsonObj.get("kakao_account");
+
             String email = null;
-            String nickname = null;
+            //String nickname = null;
+            String name = null;
+            int gender_int = 0; String gender_str = null;
+            String phone_number = null;
+            String bday = null;
+            String byear = null; // 이후 age로 변환됨. User 컬럼에 byear는 없음
+            String created_at = (String) jsonObj.get("connected_at");
+            int age = 0;
 
             if (kakaoAccount != null) {
                 email = (String) kakaoAccount.get("email");
-
-                JSONObject profile = (JSONObject) kakaoAccount.get("profile");
-                if (profile != null) {
-                    nickname = (String) profile.get("nickname");
-                }
+                name = (String) kakaoAccount.get("name");
+                gender_str = (String) kakaoAccount.get("gender");
+                phone_number = (String) kakaoAccount.get("phone_number");
+                bday = (String) kakaoAccount.get("birthday");
+                byear = (String) kakaoAccount.get("birthyear");
             }
 
-            System.out.println("email 이메일: " + email);
-            System.out.println("nickname 닉네임: " + nickname);
+            if (gender_str != null) { // gender String을 int로 바꿔줌
+                if (gender_str.equals("female")) gender_int = 2;
+                else if (gender_str.equals("male")) gender_int = 1;
+                else gender_int = 3;
+            }
 
-            Member member = new Member();
+            if (byear != null) {
+                age = 1 + 2024 - Integer.parseInt(byear);
+            }
+
+            System.out.println("name 이름: " + name);
+            System.out.println("birthday 생일: " + bday);
+            System.out.println("phone_number 전화번호: " + phone_number);
+            System.out.println("created_at 생성 날짜: " + created_at);
+            System.out.println("gender 성별 (남자:1, 여자:2): " + gender_int);
+            System.out.println("email 이메일: " + email);
+            System.out.println("나이 age: " + age);
+            System.out.println("byear: " + byear);
+
+            // System.out.println("nickname 닉네임: " + nickname);
+
+            /*Member member = new Member();
             member.setEmail(email);
             member.setUsername(nickname);
             MemberService k = new MemberService(memberRepository);
             k.saveMember(member);
+            */
+
+            User user = new User();
+            user.setName(name);
+            user.setBday(bday);
+            user.setPhone(phone_number);
+            user.setCreatedAt(created_at);
+            user.setGender(gender_int);
+            user.setEmail(email);
+            user.setAge(age);
+            UserService k1 = new UserService(userRepository);
+            if(k1.saveUser(user) == null) {
+                return null;
+            }
 
 
             HttpServletRequest request1 = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
             HttpSession session = request1.getSession();
-            session.setAttribute("member", member);
+            session.setAttribute("user", user);
 
             return KakaoDTO.builder()
                     .id(id)
+                    .name(name)
+                    .phone(phone_number)
+                    .createdAt(created_at)
+                    .gender(gender_int)
                     .email(email)
-                    .nickname(nickname)
+                    .age(age)
+                    .bday(bday)
                     .build();
 
         } catch (Exception e) {

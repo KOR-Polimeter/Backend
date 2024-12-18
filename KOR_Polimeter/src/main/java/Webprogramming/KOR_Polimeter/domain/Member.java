@@ -1,4 +1,4 @@
-package Webprogramming.KOR_Polimeter.domain;
+/*package Webprogramming.KOR_Polimeter.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -21,3 +21,4 @@ public class Member {
     private LocalDateTime createdAt; // 생성일시 (datetime 컬럼)
     private Integer gender; // 성별 (int 컬럼)
 }
+ */
