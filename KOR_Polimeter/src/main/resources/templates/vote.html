@@ -420,6 +420,7 @@ voteData.forEach(group => {
     const img = document.createElement("img");
     img.src = candidate.image;
     img.alt = candidate.name;
+	img.loading = "lazy";
 
     const nameText = document.createElement("p");
     nameText.textContent = candidate.name;
@@ -452,9 +453,29 @@ voteData.forEach(group => {
   voteSection.appendChild(groupDiv);
 });
 
-// 선택된 후보 업데이트
+// // 선택된 후보 업데이트
+// function updateSelectedCandidates() {
+//   selectedCandidatesContainer.innerHTML = "";
+//   selectedCandidates.forEach(candidate => {
+//     const candidateDiv = document.createElement("div");
+//     candidateDiv.classList.add("selected-candidate");
+
+//     const img = document.createElement("img");
+//     img.src = candidate.image;
+//     img.alt = candidate.name;
+
+//     const name = document.createElement("span");
+//     name.textContent = candidate.name;
+
+//     candidateDiv.appendChild(img);
+//     candidateDiv.appendChild(name);
+//     selectedCandidatesContainer.appendChild(candidateDiv);
+//   });
+// }
+
+// 선택된 후보 업데이터 (최적화 - DOM 조작횟수 줄이기)
 function updateSelectedCandidates() {
-  selectedCandidatesContainer.innerHTML = "";
+  const fragment = document.createDocumentFragment();
   selectedCandidates.forEach(candidate => {
     const candidateDiv = document.createElement("div");
     candidateDiv.classList.add("selected-candidate");
@@ -468,9 +489,12 @@ function updateSelectedCandidates() {
 
     candidateDiv.appendChild(img);
     candidateDiv.appendChild(name);
-    selectedCandidatesContainer.appendChild(candidateDiv);
+    fragment.appendChild(candidateDiv);
   });
+  selectedCandidatesContainer.innerHTML = "";
+  selectedCandidatesContainer.appendChild(fragment);
 }
+
 
 // 제출 버튼 클릭 시 처리
 function submitVote() {
