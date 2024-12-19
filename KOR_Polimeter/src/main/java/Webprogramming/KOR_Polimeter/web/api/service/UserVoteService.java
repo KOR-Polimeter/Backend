@@ -1,12 +1,12 @@
 package Webprogramming.KOR_Polimeter.web.api.service;
 
 import Webprogramming.KOR_Polimeter.web.api.dto.VoteRequest;
-import Webprogramming.KOR_Polimeter.web.api.model.User;
 import Webprogramming.KOR_Polimeter.web.api.model.Politician;
+import Webprogramming.KOR_Polimeter.web.api.model.User;
 import Webprogramming.KOR_Polimeter.web.api.model.UserVote;
+import Webprogramming.KOR_Polimeter.web.api.repository.UserRepository;
 import Webprogramming.KOR_Polimeter.web.api.repository.UserVoteRepository;
 import Webprogramming.KOR_Polimeter.web.api.repository.PoliticianRepository;
-import Webprogramming.KOR_Polimeter.web.api.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,7 +56,7 @@ public class UserVoteService {
     public void voteForPoliticians(int userId, List<VoteRequest.Vote> votes) {
         // User 객체를 userId로 조회
         System.out.println("user아이디"+userId);
-        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        User user = userRepository.findById((long) userId).orElseThrow(() -> new RuntimeException("User not found"));
 
         for (VoteRequest.Vote vote : votes) {
             // 정치인 ID로 정치인 조회

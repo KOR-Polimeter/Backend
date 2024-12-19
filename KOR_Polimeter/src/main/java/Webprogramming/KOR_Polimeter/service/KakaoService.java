@@ -1,10 +1,10 @@
 package Webprogramming.KOR_Polimeter.service;
 
 //import Webprogramming.KOR_Polimeter.domain.Member;
-import Webprogramming.KOR_Polimeter.domain.User;
+import Webprogramming.KOR_Polimeter.web.api.model.User;
 import Webprogramming.KOR_Polimeter.dto.KakaoDTO;
 //import Webprogramming.KOR_Polimeter.repository.MemberRepository;
-import Webprogramming.KOR_Polimeter.repository.UserRepository;
+import Webprogramming.KOR_Polimeter.web.api.repository.UserRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -27,8 +27,6 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-
-import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor

@@ -1,10 +1,8 @@
 package Webprogramming.KOR_Polimeter.dto;
 
-import Webprogramming.KOR_Polimeter.domain.User;
+import Webprogramming.KOR_Polimeter.web.api.model.User;
 import lombok.Builder;
 import lombok.Data;
-
-import java.time.LocalDateTime;
 
 @Builder
 @Data

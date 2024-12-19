@@ -1,9 +1,8 @@
 package Webprogramming.KOR_Polimeter.service;
 
-import Webprogramming.KOR_Polimeter.domain.User;
-import Webprogramming.KOR_Polimeter.repository.UserRepository;
+import Webprogramming.KOR_Polimeter.web.api.model.User;
+import Webprogramming.KOR_Polimeter.web.api.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
