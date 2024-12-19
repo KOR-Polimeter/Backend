@@ -395,8 +395,9 @@ let selectedCandidates = []; // 선택된 후보들을 저장
 const voteSection = document.getElementById("vote-section");
 const selectedCandidatesContainer = document.getElementById("selected-candidates-list");
 
-// 후보 리스트 생성
-voteData.forEach(group => {
+// 후보 리스트 생성 (for 루프 사용)
+for (let i = 0; i < voteData.length; i++) {
+  const group = voteData[i];
   const groupDiv = document.createElement("div");
   groupDiv.classList.add("vote-group");
 
@@ -407,8 +408,8 @@ voteData.forEach(group => {
   const buttonContainer = document.createElement("div");
   buttonContainer.classList.add("vote-buttons");
 
-  // 후보 버튼 생성
-  group.candidates.forEach(candidate => {
+  for (let j = 0; j < group.candidates.length; j++) {
+    const candidate = group.candidates[j];
     const button = document.createElement("button");
     const label = document.createElement("label");
 
@@ -420,7 +421,7 @@ voteData.forEach(group => {
     const img = document.createElement("img");
     img.src = candidate.image;
     img.alt = candidate.name;
-	img.loading = "lazy";
+    img.loading = "lazy";
 
     const nameText = document.createElement("p");
     nameText.textContent = candidate.name;
@@ -440,18 +441,18 @@ voteData.forEach(group => {
           checkbox.checked = false;
           return;
         }
-        selectedCandidates.push(candidate); 
+        selectedCandidates.push(candidate);
         updateSelectedCandidates();
       } else {
         selectedCandidates = selectedCandidates.filter(c => c.id !== candidate.id);
         updateSelectedCandidates();
       }
     });
-  });
+  }
 
   groupDiv.appendChild(buttonContainer);
   voteSection.appendChild(groupDiv);
-});
+};
 
 // // 선택된 후보 업데이트
 // function updateSelectedCandidates() {
