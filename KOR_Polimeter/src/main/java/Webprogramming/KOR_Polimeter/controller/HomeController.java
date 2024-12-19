@@ -34,7 +34,6 @@ public class HomeController {
     }
 
 
-
     @GetMapping("/auth/kakao/callback")
     public String kakaoCallback(@RequestParam String code, Model model) throws Exception {
         try {

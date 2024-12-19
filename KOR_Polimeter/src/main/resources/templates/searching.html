@@ -114,7 +114,7 @@
 			rankingItems.forEach(item => {
 				item.addEventListener('click', () => {
 					const itemId = item.getAttribute('data-id');
-					window.location.href = `details.html?id=${itemId}`;
+					window.location.href = `/details?id=${itemId}`;
 				});
 			});
 		});
