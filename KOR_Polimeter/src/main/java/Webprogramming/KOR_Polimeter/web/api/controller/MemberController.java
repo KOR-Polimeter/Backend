@@ -1,8 +1,8 @@
-package Webprogramming.KOR_Polimeter.controller;
+/*package Webprogramming.KOR_Polimeter.controller;
 
-import Webprogramming.KOR_Polimeter.dto.KakaoDTO;
-import Webprogramming.KOR_Polimeter.service.KakaoService;
-import Webprogramming.KOR_Polimeter.service.UserService;
+import Webprogramming.KOR_Polimeter.web.api.dto.KakaoDTO;
+import Webprogramming.KOR_Polimeter.web.api.service.KakaoService;
+import Webprogramming.KOR_Polimeter.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,18 +10,19 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
-import static Webprogramming.KOR_Polimeter.dto.KakaoDTO.convertToUser;
+import static Webprogramming.KOR_Polimeter.web.api.dto.KakaoDTO.convertToUser;
 
 @RestController
-public class UserController {
+public class MemberController {
 
     @Autowired
-    private UserService userService;
+    private MemberService memberService;
 
-    @PostMapping("/saveUser")
-    public String saveUser(@RequestBody KakaoDTO kakaoDTO) {
-        userService.saveUser(convertToUser(kakaoDTO));
-        return "User saved Successfully";
+    @PostMapping("/saveMember")
+    public String saveMember(@RequestBody KakaoDTO kakaoDTO) {
+        //memberService.saveMember(convertToMember(kakaoDTO));
+        //memberService.saveMember(convert)
+        return "Member saved successfully!";
     }
 
     @PostMapping("/logout")
@@ -41,3 +42,4 @@ public class UserController {
 
 
 }
+*/

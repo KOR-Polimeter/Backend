@@ -1,4 +1,4 @@
-package Webprogramming.KOR_Polimeter.controller;
+package Webprogramming.KOR_Polimeter.web.api.controller;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutHandler;

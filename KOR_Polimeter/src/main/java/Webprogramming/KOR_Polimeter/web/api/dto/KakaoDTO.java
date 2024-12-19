@@ -1,4 +1,4 @@
-package Webprogramming.KOR_Polimeter.dto;
+package Webprogramming.KOR_Polimeter.web.api.dto;
 
 import Webprogramming.KOR_Polimeter.web.api.model.User;
 import lombok.Builder;

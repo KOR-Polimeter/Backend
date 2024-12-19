@@ -1,6 +1,6 @@
 package Webprogramming.KOR_Polimeter;
 
-import Webprogramming.KOR_Polimeter.service.SearchService;
+import Webprogramming.KOR_Polimeter.web.api.service.SearchService;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

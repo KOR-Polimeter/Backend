@@ -1,8 +1,8 @@
-package Webprogramming.KOR_Polimeter.service;
+package Webprogramming.KOR_Polimeter.web.api.service;
 
 //import Webprogramming.KOR_Polimeter.domain.Member;
 import Webprogramming.KOR_Polimeter.web.api.model.User;
-import Webprogramming.KOR_Polimeter.dto.KakaoDTO;
+import Webprogramming.KOR_Polimeter.web.api.dto.KakaoDTO;
 //import Webprogramming.KOR_Polimeter.repository.MemberRepository;
 import Webprogramming.KOR_Polimeter.web.api.repository.UserRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;

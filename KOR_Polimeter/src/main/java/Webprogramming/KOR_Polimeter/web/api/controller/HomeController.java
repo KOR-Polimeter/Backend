@@ -1,7 +1,7 @@
-package Webprogramming.KOR_Polimeter.controller;
+package Webprogramming.KOR_Polimeter.web.api.controller;
 
-import Webprogramming.KOR_Polimeter.dto.KakaoDTO;
-import Webprogramming.KOR_Polimeter.service.KakaoService;
+import Webprogramming.KOR_Polimeter.web.api.dto.KakaoDTO;
+import Webprogramming.KOR_Polimeter.web.api.service.KakaoService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;

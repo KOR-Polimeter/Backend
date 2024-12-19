@@ -1,4 +1,4 @@
-package Webprogramming.KOR_Polimeter.service;
+package Webprogramming.KOR_Polimeter.web.api.service;
 
 import Webprogramming.KOR_Polimeter.web.api.model.User;
 import Webprogramming.KOR_Polimeter.web.api.repository.UserRepository;

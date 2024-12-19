@@ -62,11 +62,14 @@
 			    <!-- Popularity 텍스트 -->
 			    <span id="popularity-label">인기도</span>
 			</div>
-			<hr>
-			<!-- 인물 리스트 영역 -->
-			<ul class="ranking-list" id="ranking-list">
+			<div>
+				<hr>
+				<!-- 인물 리스트 영역 -->
+				<ul class="ranking-list" id="ranking-list">
 				<!-- JavaScript will render ranking items here -->
-			</ul>
+				</ul>
+				<div id="pagination" class="pagination"></div>
+			</div>
 		</div>
 	</div>
 	<footer>
@@ -75,28 +78,119 @@
 	</footer>
 
 	<!-- JavaScript for dynamic content -->
+	<
 	<script>
-		// 랭킹 데이터 예제
-		const rankings = [
-			{ id: 1, name: 'Google Maps', popularity: '88%', image: 'https://via.placeholder.com/40' },
-			{ id: 2, name: 'WhatsApp', popularity: '84%', image: 'https://via.placeholder.com/40' },
-			{ id: 3, name: 'Amazon', popularity: '81%', image: 'https://via.placeholder.com/40' },
-			{ id: 4, name: 'Wikipedia', popularity: '80%', image: 'https://via.placeholder.com/40' },
-			{ id: 5, name: 'Google Maps', popularity: '88%', image: 'https://via.placeholder.com/40' },
-			{ id: 6, name: 'WhatsApp', popularity: '84%', image: 'https://via.placeholder.com/40' },
-			{ id: 7, name: 'Amazon', popularity: '81%', image: 'https://via.placeholder.com/40' },
-			{ id: 8, name: 'Wikipedia', popularity: '80%', image: 'https://via.placeholder.com/40' },
-			{ id: 9, name: 'Google Maps', popularity: '88%', image: 'https://via.placeholder.com/40' },
-			{ id: 10, name: 'WhatsApp', popularity: '84%', image: 'https://via.placeholder.com/40' },
-			{ id: 11, name: 'Amazon', popularity: '81%', image: 'https://via.placeholder.com/40' },
-			{ id: 12, name: 'Wikipedia', popularity: '80%', image: 'https://via.placeholder.com/40' },
-		];
+		// 300개의 pol_id를 미리 생성
+		const polIds = Array.from({ length: 300 }, (_, index) => index + 1); // [1, 2, 3, ..., 300]
+
+		// rankings 배열 초기화
+		const rankings = [];
+
+		// 비동기로 데이터를 가져오고 rankings 배열에 저장
+		async function fetchPoliticianData() {
+			for (const polId of polIds) {
+				try {
+					// API 요청
+					const response = await fetch('http://localhost:8080/api/politician', {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
+						},
+						body: JSON.stringify({ pol_id: polId }),
+					});
+
+					// 응답 데이터 처리
+					if (response.ok) {
+						const item = await response.json();
+
+						// rankings 배열에 데이터 추가
+						rankings.push({
+							id: item.id,
+							name: item.name,
+							popularity: `${Math.floor(Math.random() * 100)}%`, // 인기도는 랜덤 값으로 설정
+							image: `images/politicians/${item.party}/${item.name}.jpg`, // 템플릿 리터럴 수정
+						});
+					} else {
+						console.error(`Failed to fetch data for pol_id: ${polId}`);
+					}
+				} catch (error) {
+					console.error(`Error fetching data for pol_id: ${polId}`, error);
+				}
+			}
+
+			// 데이터 로드 완료 후 페이지 렌더링
+			renderPage(currentPage);
+		}
+
+		// 한 페이지에 표시할 항목 수
+		const itemsPerPage = 5;
+		let currentPage = 1;
+
+		// 현재 페이지 데이터를 렌더링하는 함수
+		function renderPage(page) {
+			const rankingList = document.getElementById('ranking-list');
+			const startIndex = (page - 1) * itemsPerPage;
+			const endIndex = startIndex + itemsPerPage;
+			const pageItems = rankings.slice(startIndex, endIndex);
+
+			// 현재 페이지의 랭킹 항목 렌더링
+			rankingList.innerHTML = pageItems.map(item => `
+        <li class="ranking-item" data-id="${item.id}">
+            <span class="ranking-number">${item.id}</span>
+            <img src="${item.image}" alt="${item.name}">
+            <div class="ranking-details">
+                <span class="name">${item.name}</span>
+                <span class="popularity">${item.popularity}</span>
+            </div>
+        </li>
+    `).join('');
+
+			// 페이지네이션 렌더링
+			renderPagination();
+
+			// 항목 클릭 시 상세 페이지로 이동
+			const rankingItems = document.querySelectorAll('.ranking-item');
+			rankingItems.forEach(item => {
+				item.addEventListener('click', () => {
+					const itemId = item.getAttribute('data-id');
+					window.location.href = `/details?id=${itemId}`;
+				});
+			});
+		}
+
+		// 페이지네이션 버튼 렌더링 함수
+		function renderPagination() {
+			const pagination = document.getElementById('pagination');
+			const totalPages = Math.ceil(rankings.length / itemsPerPage);
+
+			pagination.innerHTML = ''; // 기존 버튼 초기화
+
+			for (let i = 1; i <= totalPages; i++) {
+				const button = document.createElement('button');
+				button.textContent = i;
+				button.classList.add('page-btn');
+				if (i === currentPage) {
+					button.classList.add('active'); // 현재 페이지 표시
+				}
+				button.addEventListener('click', () => {
+					currentPage = i;
+					renderPage(currentPage);
+				});
+				pagination.appendChild(button);
+			}
+		}
+
+		// 초기 데이터 로드 및 렌더링
+		document.addEventListener('DOMContentLoaded', async () => {
+			await fetchPoliticianData(); // 데이터 로드
+		});
+
 
 		document.addEventListener('DOMContentLoaded', () => {
 			const rankingList = document.getElementById('ranking-list');
 
 			// 상위 20개 항목만 표시
-			const top20 = rankings.slice(0, 20);
+			const top20 = rankings.slice(0, 5);
 
 			rankingList.innerHTML = top20.map(item => `
 				<li class="ranking-item" data-id="${item.id}">
