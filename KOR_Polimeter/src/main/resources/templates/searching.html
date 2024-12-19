@@ -159,7 +159,7 @@
 			rankingItems.forEach((item, index) => {
 				item.addEventListener('click', () => {
 					const clickedItem = pageItems[index]; // 현재 페이지의 데이터에서 클릭된 항목 가져오기
-					window.location.href = `/details?id=${clickedItem.id}&name=${encodeURIComponent(clickedItem.name)}&party=${encodeURIComponent(clickedItem.party)}&region=${encodeURIComponent(clickedItem.region)}&bday=${encodeURIComponent(clickedItem.bday)}&age=${encodeURIComponent(clickedItem.age)}&description=${encodeURIComponent(clickedItem.description)}&gender=${encodeURIComponent(clickedItem.gender)}`;
+					window.location.href = `/details?id=${clickedItem.id}&name=${encodeURIComponent(clickedItem.name)}&party=${encodeURIComponent(clickedItem.party)}&region=${encodeURIComponent(clickedItem.region)}&bday=${encodeURIComponent(clickedItem.bday)}&age=${encodeURIComponent(clickedItem.age)}&description=${encodeURIComponent(clickedItem.description)}&gender=${encodeURIComponent(clickedItem.gender)}&page=${currentPage}`;
 				});
 			});
 		}
@@ -217,6 +217,17 @@
 					window.location.href = `/details?id=${item.id}&name=${item.name}&party=${item.party}&region=${item.region}&bday=${item.bday}&age=${item.age}&description=${item.description}&gender=${item.gender}`;
 				});
 			});
+		});
+
+		document.addEventListener('DOMContentLoaded', () => {
+			// sessionStorage에서 이전 페이지 번호 가져오기
+			const savedPage = sessionStorage.getItem('previousPage');
+
+			// 이전 페이지 정보가 있다면 해당 페이지 렌더링
+			if (savedPage) {
+				currentPage = parseInt(savedPage, 10); // 숫자로 변환
+				renderPage(currentPage); // 페이지 복원
+			}
 		});
 	</script>
 </body>
