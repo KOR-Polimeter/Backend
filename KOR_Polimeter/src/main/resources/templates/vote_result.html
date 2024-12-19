@@ -9,14 +9,14 @@
 <body>
 	<header>
 		<h1>
-			<a href="main.html">KOR_Polimeter</a>
+			<a th:href="@{/}">KOR_Polimeter</a>
 		</h1>
 		<nav>
 			<ul>
-				<li><a href="login.html">로그인</a></li>
-				<li><a href="main.html">로그아웃</a></li>
-				<li><a href="searching.html">인물검색</a></li>
-				<li><a href="vote.html">투표하기</a></li>
+				<li><a th:href="@{/login}">로그인</a></li>
+				<li><a th:href="@{/logout}">로그아웃</a></li>
+				<li><a th:href="@{/searching}">인물검색</a></li>
+				<li><a th:href="@{/vote}">투표하기</a></li>
 			</ul>
 		</nav>
 	</header>
