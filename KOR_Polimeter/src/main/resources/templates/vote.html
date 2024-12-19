@@ -28,9 +28,7 @@
 <div class="vote-section" id="vote-section">
 	<!-- JavaScript가 버튼을 동적으로 생성 -->
 </div>
-<!-- 선택된 후보들을 표시할 영역 -->
-<div class="selected-candidates-container"
-	 id="selected-candidates-container">
+<div class="selected-candidates-container" id="selected-candidates-container">
 	<h3>선택된 후보들</h3>
 	<div id="selected-candidates-list">
 		<!-- 선택된 후보들의 이미지와 이름이 여기에 표시됨 -->
@@ -39,8 +37,7 @@
 		<button type="submit" onclick="submitVote()">제출하기</button>
 	</div>
 </div>
-<div class="empty_space">
-</div>
+<div class="empty_space"></div>
 <footer>
 	<p>Contact us at: sdg0896@gmail.com</p>
 	<p>Github: https://github.com/KOR-Polimeter</p>
@@ -48,235 +45,478 @@
 </footer>
 
 <script>
-	//     // 데이터 정의
-	//     const voteData = [
-	//       {
-	//         party: "더불어민주당",
-	//         candidates: [
-	//           { id: 1, name: "이재명", image: "이재명.jpg" },
-	//           { id: 2, name: "이재명", image: "이재명.jpg" },
-	//           { id: 3, name: "이재명", image: "이재명.jpg" },
-	//           // ... 추가 후보 데이터
-	//         ]
-	//       },
-	//       {
-	//         party: "국민의힘",
-	//         candidates: [
-	//           { id: 101, name: "추경호", image: "추경호.png" },
-	//           { id: 102, name: "추경호", image: "추경호.png" },
-	//           { id: 103, name: "추경호", image: "추경호.png" },
-	//           // ... 추가 후보 데이터
-	//         ]
-	//       }
-	//     ];
+// 데이터 정의 (주석 처리된 구조 기반)
+const voteData = [
+{
+    party: "더불어민주당",
+    candidates: [
+	{ id: 1, name: "강득구", image: "/images/politicians/더불어민주당/강득구.jpg" },
+      { id: 2, name: "강선우", image: "/images/politicians/더불어민주당/강선우.jpg" },
+      { id: 3, name: "강유정", image: "/images/politicians/더불어민주당/강유정.jpg" },
+      { id: 4, name: "강준현", image: "/images/politicians/더불어민주당/강준현.jpg" },
+      { id: 5, name: "강훈식", image: "/images/politicians/더불어민주당/강훈식.jpg" },
+      { id: 6, name: "고민정", image: "/images/politicians/더불어민주당/고민정.jpg" },
+      { id: 7, name: "곽상언", image: "/images/politicians/더불어민주당/곽상언.jpg" },
+      { id: 8, name: "권칠승", image: "/images/politicians/더불어민주당/권칠승.jpg" },
+      { id: 9, name: "권향엽", image: "/images/politicians/더불어민주당/권향엽.jpg" },
+      { id: 10, name: "김교흥", image: "/images/politicians/더불어민주당/김교흥.jpg" },
+      { id: 11, name: "김기표", image: "/images/politicians/더불어민주당/김기표.jpg" },
+      { id: 12, name: "김남근", image: "/images/politicians/더불어민주당/김남근.jpg" },
+      { id: 13, name: "김남희", image: "/images/politicians/더불어민주당/김남희.jpg" },
+      { id: 14, name: "김동아", image: "/images/politicians/더불어민주당/김동아.jpg" },
+      { id: 15, name: "김문수", image: "/images/politicians/더불어민주당/김문수.jpg" },
+      { id: 16, name: "김민석", image: "/images/politicians/더불어민주당/김민석.jpg" },
+      { id: 17, name: "김병기", image: "/images/politicians/더불어민주당/김병기.jpg" },
+      { id: 18, name: "김병주", image: "/images/politicians/더불어민주당/김병주.jpg" },
+      { id: 19, name: "김성환", image: "/images/politicians/더불어민주당/김성환.jpg" },
+      { id: 20, name: "김성회", image: "/images/politicians/더불어민주당/김성회.jpg" },
+      { id: 21, name: "김승원", image: "/images/politicians/더불어민주당/김승원.jpg" },
+      { id: 22, name: "김영배", image: "/images/politicians/더불어민주당/김영배.jpg" },
+      { id: 23, name: "김영진", image: "/images/politicians/더불어민주당/김영진.jpg" },
+      { id: 24, name: "김영호", image: "/images/politicians/더불어민주당/김영호.jpg" },
+      { id: 25, name: "김영환", image: "/images/politicians/더불어민주당/김영환.jpg" },
+      { id: 26, name: "김용만", image: "/images/politicians/더불어민주당/김용만.jpg" },
+      { id: 27, name: "김용민", image: "/images/politicians/더불어민주당/김용민.jpg" },
+      { id: 28, name: "김우영", image: "/images/politicians/더불어민주당/김우영.jpg" },
+      { id: 29, name: "김원이", image: "/images/politicians/더불어민주당/김원이.jpg" },
+      { id: 30, name: "김윤", image: "/images/politicians/더불어민주당/김윤.jpg" },
+      { id: 31, name: "김윤덕", image: "/images/politicians/더불어민주당/김윤덕.jpg" },
+      { id: 32, name: "김정호", image: "/images/politicians/더불어민주당/김정호.jpg" },
+      { id: 33, name: "김주영", image: "/images/politicians/더불어민주당/김주영.jpg" },
+      { id: 34, name: "김준혁", image: "/images/politicians/더불어민주당/김준혁.jpg" },
+      { id: 35, name: "김태년", image: "/images/politicians/더불어민주당/김태년.jpg" },
+      { id: 36, name: "김태선", image: "/images/politicians/더불어민주당/김태선.jpg" },
+      { id: 37, name: "김한규", image: "/images/politicians/더불어민주당/김한규.jpg" },
+      { id: 38, name: "김현", image: "/images/politicians/더불어민주당/김현.jpg" },
+      { id: 39, name: "김현정", image: "/images/politicians/더불어민주당/김현정.jpg" },
+      { id: 40, name: "남인순", image: "/images/politicians/더불어민주당/남인순.jpg" },
+      { id: 41, name: "노종면", image: "/images/politicians/더불어민주당/노종면.jpg" },
+      { id: 42, name: "맹성규", image: "/images/politicians/더불어민주당/맹성규.jpg" },
+      { id: 43, name: "모경종", image: "/images/politicians/더불어민주당/모경종.jpg" },
+      { id: 44, name: "문금주", image: "/images/politicians/더불어민주당/문금주.jpg" },
+      { id: 45, name: "문대림", image: "/images/politicians/더불어민주당/문대림.jpg" },
+      { id: 46, name: "문정복", image: "/images/politicians/더불어민주당/문정복.jpg" },
+      { id: 47, name: "문진석", image: "/images/politicians/더불어민주당/문진석.jpg" },
+      { id: 48, name: "민병덕", image: "/images/politicians/더불어민주당/민병덕.jpg" },
+      { id: 49, name: "민형배", image: "/images/politicians/더불어민주당/민형배.jpg" },
+      { id: 50, name: "민홍철", image: "/images/politicians/더불어민주당/민홍철.jpg" },
+	  { id: 51, name: "박균택", image: "/images/politicians/더불어민주당/박균택.jpg" },
+      { id: 52, name: "박민규", image: "/images/politicians/더불어민주당/박민규.jpg" },
+      { id: 53, name: "박범계", image: "/images/politicians/더불어민주당/박범계.jpg" },
+      { id: 54, name: "박상혁", image: "/images/politicians/더불어민주당/박상혁.jpg" },
+      { id: 55, name: "박선원", image: "/images/politicians/더불어민주당/박선원.jpg" },
+      { id: 56, name: "박성준", image: "/images/politicians/더불어민주당/박성준.jpg" },
+      { id: 57, name: "박수현", image: "/images/politicians/더불어민주당/박수현.jpg" },
+      { id: 58, name: "박용갑", image: "/images/politicians/더불어민주당/박용갑.jpg" },
+      { id: 59, name: "박정", image: "/images/politicians/더불어민주당/박정.jpg" },
+      { id: 60, name: "박정현", image: "/images/politicians/더불어민주당/박정현.jpg" },
+      { id: 61, name: "박주민", image: "/images/politicians/더불어민주당/박주민.jpg" },
+      { id: 62, name: "박지원", image: "/images/politicians/더불어민주당/박지원.jpg" },
+      { id: 63, name: "박지혜", image: "/images/politicians/더불어민주당/박지혜.jpg" },
+      { id: 64, name: "박찬대", image: "/images/politicians/더불어민주당/박찬대.jpg" },
+      { id: 65, name: "박해철", image: "/images/politicians/더불어민주당/박해철.jpg" },
+      { id: 66, name: "박홍근", image: "/images/politicians/더불어민주당/박홍근.jpg" },
+      { id: 67, name: "박홍배", image: "/images/politicians/더불어민주당/박홍배.jpg" },
+      { id: 68, name: "박희승", image: "/images/politicians/더불어민주당/박희승.jpg" },
+      { id: 69, name: "백승아", image: "/images/politicians/더불어민주당/백승아.jpg" },
+      { id: 70, name: "백혜련", image: "/images/politicians/더불어민주당/백혜련.jpg" },
+      { id: 71, name: "복기왕", image: "/images/politicians/더불어민주당/복기왕.jpg" },
+      { id: 72, name: "부승찬", image: "/images/politicians/더불어민주당/부승찬.jpg" },
+      { id: 73, name: "서미화", image: "/images/politicians/더불어민주당/서미화.jpg" },
+      { id: 74, name: "서삼석", image: "/images/politicians/더불어민주당/서삼석.jpg" },
+      { id: 75, name: "서영교", image: "/images/politicians/더불어민주당/서영교.jpg" },
+      { id: 76, name: "서영석", image: "/images/politicians/더불어민주당/서영석.jpg" },
+      { id: 77, name: "소병훈", image: "/images/politicians/더불어민주당/소병훈.jpg" },
+      { id: 78, name: "손명수", image: "/images/politicians/더불어민주당/손명수.jpg" },
+      { id: 79, name: "송기헌", image: "/images/politicians/더불어민주당/송기헌.jpg" },
+      { id: 80, name: "송옥주", image: "/images/politicians/더불어민주당/송옥주.jpg" },
+      { id: 81, name: "송재봉", image: "/images/politicians/더불어민주당/송재봉.jpg" },
+      { id: 82, name: "신영대", image: "/images/politicians/더불어민주당/신영대.jpg" },
+      { id: 83, name: "신정훈", image: "/images/politicians/더불어민주당/신정훈.jpg" },
+      { id: 84, name: "안규백", image: "/images/politicians/더불어민주당/안규백.jpg" },
+      { id: 85, name: "안도걸", image: "/images/politicians/더불어민주당/안도걸.jpg" },
+      { id: 86, name: "안태준", image: "/images/politicians/더불어민주당/안태준.jpg" },
+      { id: 87, name: "안호영", image: "/images/politicians/더불어민주당/안호영.jpg" },
+      { id: 88, name: "양문석", image: "/images/politicians/더불어민주당/양문석.jpg" },
+      { id: 89, name: "양부남", image: "/images/politicians/더불어민주당/양부남.jpg" },
+      { id: 90, name: "어기구", image: "/images/politicians/더불어민주당/어기구.jpg" },
+      { id: 91, name: "염태영", image: "/images/politicians/더불어민주당/염태영.jpg" },
+      { id: 92, name: "오기형", image: "/images/politicians/더불어민주당/오기형.jpg" },
+      { id: 93, name: "오세희", image: "/images/politicians/더불어민주당/오세희.jpg" },
+      { id: 94, name: "위성곤", image: "/images/politicians/더불어민주당/위성곤.jpg" },
+      { id: 95, name: "위성락", image: "/images/politicians/더불어민주당/위성락.jpg" },
+      { id: 96, name: "유동수", image: "/images/politicians/더불어민주당/유동수.jpg" },
+      { id: 97, name: "윤건영", image: "/images/politicians/더불어민주당/윤건영.jpg" },
+      { id: 98, name: "윤종군", image: "/images/politicians/더불어민주당/윤종군.jpg" },
+      { id: 99, name: "윤준병", image: "/images/politicians/더불어민주당/윤준병.jpg" },
+      { id: 100, name: "윤호중", image: "/images/politicians/더불어민주당/윤호중.jpg" },
+	  { id: 101, name: "윤후덕", image: "/images/politicians/더불어민주당/윤후덕.jpg" },
+      { id: 102, name: "이강일", image: "/images/politicians/더불어민주당/이강일.jpg" },
+      { id: 103, name: "이개호", image: "/images/politicians/더불어민주당/이개호.jpg" },
+      { id: 104, name: "이건태", image: "/images/politicians/더불어민주당/이건태.jpg" },
+      { id: 105, name: "이광희", image: "/images/politicians/더불어민주당/이광희.jpg" },
+      { id: 106, name: "이기헌", image: "/images/politicians/더불어민주당/이기헌.jpg" },
+      { id: 107, name: "이병진", image: "/images/politicians/더불어민주당/이병진.jpg" },
+      { id: 108, name: "이상식", image: "/images/politicians/더불어민주당/이상식.jpg" },
+      { id: 109, name: "이성윤", image: "/images/politicians/더불어민주당/이성윤.jpg" },
+      { id: 110, name: "이소영", image: "/images/politicians/더불어민주당/이소영.jpg" },
+      { id: 111, name: "이수진", image: "/images/politicians/더불어민주당/이수진.jpg" },
+      { id: 112, name: "이언주", image: "/images/politicians/더불어민주당/이언주.jpg" },
+      { id: 113, name: "이연희", image: "/images/politicians/더불어민주당/이연희.jpg" },
+      { id: 114, name: "이용선", image: "/images/politicians/더불어민주당/이용선.jpg" },
+      { id: 115, name: "이용우", image: "/images/politicians/더불어민주당/이용우.jpg" },
+      { id: 116, name: "이원택", image: "/images/politicians/더불어민주당/이원택.jpg" },
+      { id: 117, name: "이인영", image: "/images/politicians/더불어민주당/이인영.jpg" },
+      { id: 118, name: "이재강", image: "/images/politicians/더불어민주당/이재강.jpg" },
+      { id: 119, name: "이재관", image: "/images/politicians/더불어민주당/이재관.jpg" },
+      { id: 120, name: "이재명", image: "/images/politicians/더불어민주당/이재명.jpg" },
+      { id: 121, name: "이재정", image: "/images/politicians/더불어민주당/이재정.jpg" },
+      { id: 122, name: "이정문", image: "/images/politicians/더불어민주당/이정문.jpg" },
+      { id: 123, name: "이정헌", image: "/images/politicians/더불어민주당/이정헌.jpg" },
+      { id: 124, name: "이춘석", image: "/images/politicians/더불어민주당/이춘석.jpg" },
+      { id: 125, name: "이학영", image: "/images/politicians/더불어민주당/이학영.jpg" },
+      { id: 126, name: "이해식", image: "/images/politicians/더불어민주당/이해식.jpg" },
+      { id: 127, name: "이훈기", image: "/images/politicians/더불어민주당/이훈기.jpg" },
+      { id: 128, name: "임광현", image: "/images/politicians/더불어민주당/임광현.jpg" },
+      { id: 129, name: "임미애", image: "/images/politicians/더불어민주당/임미애.jpg" },
+      { id: 130, name: "임오경", image: "/images/politicians/더불어민주당/임오경.jpg" },
+      { id: 131, name: "임호선", image: "/images/politicians/더불어민주당/임호선.jpg" },
+      { id: 132, name: "장경태", image: "/images/politicians/더불어민주당/장경태.jpg" },
+      { id: 133, name: "장종태", image: "/images/politicians/더불어민주당/장종태.jpg" },
+      { id: 134, name: "장철민", image: "/images/politicians/더불어민주당/장철민.jpg" },
+      { id: 135, name: "전용기", image: "/images/politicians/더불어민주당/전용기.jpg" },
+      { id: 136, name: "전재수", image: "/images/politicians/더불어민주당/전재수.jpg" },
+      { id: 137, name: "전진숙", image: "/images/politicians/더불어민주당/전진숙.jpg" },
+      { id: 138, name: "전현희", image: "/images/politicians/더불어민주당/전현희.jpg" },
+      { id: 139, name: "정동영", image: "/images/politicians/더불어민주당/정동영.jpg" },
+      { id: 140, name: "정성호", image: "/images/politicians/더불어민주당/정성호.jpg" },
+      { id: 141, name: "정을호", image: "/images/politicians/더불어민주당/정을호.jpg" },
+      { id: 142, name: "정일영", image: "/images/politicians/더불어민주당/정일영.jpg" },
+      { id: 143, name: "정준호", image: "/images/politicians/더불어민주당/정준호.jpg" },
+      { id: 144, name: "정진욱", image: "/images/politicians/더불어민주당/정진욱.jpg" },
+      { id: 145, name: "정청래", image: "/images/politicians/더불어민주당/정청래.jpg" },
+      { id: 146, name: "정태호", image: "/images/politicians/더불어민주당/정태호.jpg" },
+      { id: 147, name: "조계원", image: "/images/politicians/더불어민주당/조계원.jpg" },
+      { id: 148, name: "조승래", image: "/images/politicians/더불어민주당/조승래.jpg" },
+      { id: 149, name: "조인철", image: "/images/politicians/더불어민주당/조인철.jpg" },
+      { id: 150, name: "조정식", image: "/images/politicians/더불어민주당/조정식.jpg" },
+	  { id: 151, name: "주철현", image: "/images/politicians/더불어민주당/주철현.jpg" },
+      { id: 152, name: "진선미", image: "/images/politicians/더불어민주당/진선미.jpg" },
+      { id: 153, name: "진성준", image: "/images/politicians/더불어민주당/진성준.jpg" },
+      { id: 154, name: "차지호", image: "/images/politicians/더불어민주당/차지호.jpg" },
+      { id: 155, name: "채현일", image: "/images/politicians/더불어민주당/채현일.jpg" },
+      { id: 156, name: "천준호", image: "/images/politicians/더불어민주당/천준호.jpg" },
+      { id: 157, name: "최기상", image: "/images/politicians/더불어민주당/최기상.jpg" },
+      { id: 158, name: "최민희", image: "/images/politicians/더불어민주당/최민희.jpg" },
+      { id: 159, name: "추미애", image: "/images/politicians/더불어민주당/추미애.jpg" },
+      { id: 160, name: "한민수", image: "/images/politicians/더불어민주당/한민수.jpg" },
+      { id: 161, name: "한병도", image: "/images/politicians/더불어민주당/한병도.jpg" },
+      { id: 162, name: "한정애", image: "/images/politicians/더불어민주당/한정애.jpg" },
+      { id: 163, name: "한준호", image: "/images/politicians/더불어민주당/한준호.jpg" },
+      { id: 164, name: "허성무", image: "/images/politicians/더불어민주당/허성무.jpg" },
+      { id: 165, name: "허영", image: "/images/politicians/더불어민주당/허영.jpg" },
+      { id: 166, name: "허종식", image: "/images/politicians/더불어민주당/허종식.jpg" },
+      { id: 167, name: "홍기원", image: "/images/politicians/더불어민주당/홍기원.jpg" },
+      { id: 168, name: "황명선", image: "/images/politicians/더불어민주당/황명선.jpg" },
+      { id: 169, name: "황정아", image: "/images/politicians/더불어민주당/황정아.jpg" },
+      { id: 170, name: "황희", image: "/images/politicians/더불어민주당/황희.jpg" }
+    ]
+  },
+  {
+    party: "국민의힘",
+    candidates: [
+	{ id: 171, name: "강대식", image: "/images/politicians/국민의힘/강대식.jpg" },
+      { id: 172, name: "강명구", image: "/images/politicians/국민의힘/강명구.jpg" },
+      { id: 173, name: "강민국", image: "/images/politicians/국민의힘/강민국.jpg" },
+      { id: 174, name: "강선영", image: "/images/politicians/국민의힘/강선영.jpg" },
+      { id: 175, name: "강승규", image: "/images/politicians/국민의힘/강승규.jpg" },
+      { id: 176, name: "고동진", image: "/images/politicians/국민의힘/고동진.jpg" },
+      { id: 177, name: "곽규택", image: "/images/politicians/국민의힘/곽규택.jpg" },
+      { id: 178, name: "구자근", image: "/images/politicians/국민의힘/구자근.jpg" },
+      { id: 179, name: "권성동", image: "/images/politicians/국민의힘/권성동.jpg" },
+      { id: 180, name: "권영세", image: "/images/politicians/국민의힘/권영세.jpg" },
+      { id: 181, name: "권영진", image: "/images/politicians/국민의힘/권영진.jpg" },
+      { id: 182, name: "김건", image: "/images/politicians/국민의힘/김건.jpg" },
+      { id: 183, name: "김기웅", image: "/images/politicians/국민의힘/김기웅.jpg" },
+      { id: 184, name: "김기현", image: "/images/politicians/국민의힘/김기현.jpg" },
+      { id: 185, name: "김대식", image: "/images/politicians/국민의힘/김대식.jpg" },
+      { id: 186, name: "김도읍", image: "/images/politicians/국민의힘/김도읍.jpg" },
+      { id: 187, name: "김미애", image: "/images/politicians/국민의힘/김미애.jpg" },
+      { id: 188, name: "김민전", image: "/images/politicians/국민의힘/김민전.jpg" },
+      { id: 189, name: "김상욱", image: "/images/politicians/국민의힘/김상욱.jpg" },
+      { id: 190, name: "김상훈", image: "/images/politicians/국민의힘/김상훈.jpg" },
+      { id: 191, name: "김석기", image: "/images/politicians/국민의힘/김석기.jpg" },
+      { id: 192, name: "김선교", image: "/images/politicians/국민의힘/김선교.jpg" },
+      { id: 193, name: "김성원", image: "/images/politicians/국민의힘/김성원.jpg" },
+      { id: 194, name: "김소희", image: "/images/politicians/국민의힘/김소희.jpg" },
+      { id: 195, name: "김승수", image: "/images/politicians/국민의힘/김승수.jpg" },
+      { id: 196, name: "김예지", image: "/images/politicians/국민의힘/김예지.jpg" },
+      { id: 197, name: "김용태", image: "/images/politicians/국민의힘/김용태.jpg" },
+      { id: 198, name: "김위상", image: "/images/politicians/국민의힘/김위상.jpg" },
+      { id: 199, name: "김은혜", image: "/images/politicians/국민의힘/김은혜.jpg" },
+      { id: 200, name: "김장겸", image: "/images/politicians/국민의힘/김장겸.jpg" },
+      { id: 201, name: "김재섭", image: "/images/politicians/국민의힘/김재섭.jpg" },
+      { id: 202, name: "김정재", image: "/images/politicians/국민의힘/김정재.jpg" },
+      { id: 203, name: "김종양", image: "/images/politicians/국민의힘/김종양.jpg" },
+      { id: 204, name: "김태호", image: "/images/politicians/국민의힘/김태호.jpg" },
+      { id: 205, name: "김형동", image: "/images/politicians/국민의힘/김형동.jpg" },
+      { id: 206, name: "김희정", image: "/images/politicians/국민의힘/김희정.jpg" },
+      { id: 207, name: "나경원", image: "/images/politicians/국민의힘/나경원.jpg" },
+      { id: 208, name: "박대출", image: "/images/politicians/국민의힘/박대출.jpg" },
+      { id: 209, name: "박덕흠", image: "/images/politicians/국민의힘/박덕흠.jpg" },
+      { id: 210, name: "박상웅", image: "/images/politicians/국민의힘/박상웅.jpg" },
+      { id: 211, name: "박성민", image: "/images/politicians/국민의힘/박성민.jpg" },
+      { id: 212, name: "박성훈", image: "/images/politicians/국민의힘/박성훈.jpg" },
+      { id: 213, name: "박수민", image: "/images/politicians/국민의힘/박수민.jpg" },
+      { id: 214, name: "박수영", image: "/images/politicians/국민의힘/박수영.jpg" },
+      { id: 215, name: "박정하", image: "/images/politicians/국민의힘/박정하.jpg" },
+      { id: 216, name: "박정훈", image: "/images/politicians/국민의힘/박정훈.jpg" },
+      { id: 217, name: "박준태", image: "/images/politicians/국민의힘/박준태.jpg" },
+      { id: 218, name: "박충권", image: "/images/politicians/국민의힘/박충권.jpg" },
+      { id: 219, name: "박형수", image: "/images/politicians/국민의힘/박형수.jpg" },
+      { id: 220, name: "배준영", image: "/images/politicians/국민의힘/배준영.jpg" },
+      { id: 221, name: "배현진", image: "/images/politicians/국민의힘/배현진.jpg" },
+	  { id: 222, name: "백종헌", image: "/images/politicians/국민의힘/백종헌.jpg" },
+      { id: 223, name: "서명옥", image: "/images/politicians/국민의힘/서명옥.jpg" },
+      { id: 224, name: "서범수", image: "/images/politicians/국민의힘/서범수.jpg" },
+      { id: 225, name: "서일준", image: "/images/politicians/국민의힘/서일준.jpg" },
+      { id: 226, name: "서지영", image: "/images/politicians/국민의힘/서지영.jpg" },
+      { id: 227, name: "서천호", image: "/images/politicians/국민의힘/서천호.jpg" },
+      { id: 228, name: "성일종", image: "/images/politicians/국민의힘/성일종.jpg" },
+      { id: 229, name: "송석준", image: "/images/politicians/국민의힘/송석준.jpg" },
+      { id: 230, name: "송언석", image: "/images/politicians/국민의힘/송언석.jpg" },
+      { id: 231, name: "신동욱", image: "/images/politicians/국민의힘/신동욱.jpg" },
+      { id: 232, name: "신성범", image: "/images/politicians/국민의힘/신성범.jpg" },
+      { id: 233, name: "안상훈", image: "/images/politicians/국민의힘/안상훈.jpg" },
+      { id: 234, name: "안철수", image: "/images/politicians/국민의힘/안철수.jpg" },
+      { id: 235, name: "엄태영", image: "/images/politicians/국민의힘/엄태영.jpg" },
+      { id: 236, name: "우재준", image: "/images/politicians/국민의힘/우재준.jpg" },
+      { id: 237, name: "유상범", image: "/images/politicians/국민의힘/유상범.jpg" },
+      { id: 238, name: "유영하", image: "/images/politicians/국민의힘/유영하.jpg" },
+      { id: 239, name: "유용원", image: "/images/politicians/국민의힘/유용원.jpg" },
+      { id: 240, name: "윤상현", image: "/images/politicians/국민의힘/윤상현.jpg" },
+      { id: 241, name: "윤영석", image: "/images/politicians/국민의힘/윤영석.jpg" },
+      { id: 242, name: "윤재옥", image: "/images/politicians/국민의힘/윤재옥.jpg" },
+      { id: 243, name: "윤한홍", image: "/images/politicians/국민의힘/윤한홍.jpg" },
+      { id: 244, name: "이달희", image: "/images/politicians/국민의힘/이달희.jpg" },
+      { id: 245, name: "이만희", image: "/images/politicians/국민의힘/이만희.jpg" },
+      { id: 246, name: "이상휘", image: "/images/politicians/국민의힘/이상휘.jpg" },
+      { id: 247, name: "이성권", image: "/images/politicians/국민의힘/이성권.jpg" },
+      { id: 248, name: "이양수", image: "/images/politicians/국민의힘/이양수.jpg" },
+      { id: 249, name: "이인선", image: "/images/politicians/국민의힘/이인선.jpg" },
+      { id: 250, name: "이종배", image: "/images/politicians/국민의힘/이종배.jpg" },
+      { id: 251, name: "이종욱", image: "/images/politicians/국민의힘/이종욱.jpg" },
+      { id: 252, name: "이철규", image: "/images/politicians/국민의힘/이철규.jpg" },
+      { id: 253, name: "이헌승", image: "/images/politicians/국민의힘/이헌승.jpg" },
+      { id: 254, name: "인요한", image: "/images/politicians/국민의힘/인요한.jpg" },
+      { id: 255, name: "임이자", image: "/images/politicians/국민의힘/임이자.jpg" },
+      { id: 256, name: "임종득", image: "/images/politicians/국민의힘/임종득.jpg" },
+      { id: 257, name: "장동혁", image: "/images/politicians/국민의힘/장동혁.jpg" },
+      { id: 258, name: "정동만", image: "/images/politicians/국민의힘/정동만.jpg" },
+      { id: 259, name: "정성국", image: "/images/politicians/국민의힘/정성국.jpg" },
+      { id: 260, name: "정연욱", image: "/images/politicians/국민의힘/정연욱.jpg" },
+      { id: 261, name: "정점식", image: "/images/politicians/국민의힘/정점식.jpg" },
+      { id: 262, name: "정희용", image: "/images/politicians/국민의힘/정희용.jpg" },
+      { id: 263, name: "조경태", image: "/images/politicians/국민의힘/조경태.jpg" },
+      { id: 264, name: "조배숙", image: "/images/politicians/국민의힘/조배숙.jpg" },
+      { id: 265, name: "조승환", image: "/images/politicians/국민의힘/조승환.jpg" },
+      { id: 266, name: "조은희", image: "/images/politicians/국민의힘/조은희.jpg" },
+      { id: 267, name: "조정훈", image: "/images/politicians/국민의힘/조정훈.jpg" },
+      { id: 268, name: "조지연", image: "/images/politicians/국민의힘/조지연.jpg" },
+      { id: 269, name: "주진우", image: "/images/politicians/국민의힘/주진우.jpg" },
+      { id: 270, name: "주호영", image: "/images/politicians/국민의힘/주호영.jpg" },
+      { id: 271, name: "진종오", image: "/images/politicians/국민의힘/진종오.jpg" },
+      { id: 272, name: "최보윤", image: "/images/politicians/국민의힘/최보윤.jpg" },
+      { id: 273, name: "최수진", image: "/images/politicians/국민의힘/최수진.jpg" },
+      { id: 274, name: "최은석", image: "/images/politicians/국민의힘/최은석.jpg" },
+      { id: 275, name: "최형두", image: "/images/politicians/국민의힘/최형두.jpg" },
+      { id: 276, name: "추경호", image: "/images/politicians/국민의힘/추경호.jpg" },
+      { id: 277, name: "한기호", image: "/images/politicians/국민의힘/한기호.jpg" },
+      { id: 278, name: "한지아", image: "/images/politicians/국민의힘/한지아.jpg" }
+    ]
+  },
+  {
+    party: "조국혁신당",
+    candidates: [
+      { id: 279, name: "강경숙", image: "/images/politicians/조국혁신당/강경숙.jpg" },
+      { id: 280, name: "김선민", image: "/images/politicians/조국혁신당/김선민.jpg" },
+      { id: 281, name: "김재원", image: "/images/politicians/조국혁신당/김재원.jpg" },
+      { id: 282, name: "김준형", image: "/images/politicians/조국혁신당/김준형.jpg" },
+      { id: 283, name: "박은정", image: "/images/politicians/조국혁신당/박은정.jpg" },
+      { id: 284, name: "백선희", image: "/images/politicians/조국혁신당/백선희.jpg" },
+      { id: 285, name: "서왕진", image: "/images/politicians/조국혁신당/서왕진.jpg" },
+      { id: 286, name: "신장식", image: "/images/politicians/조국혁신당/신장식.jpg" },
+      { id: 287, name: "이해민", image: "/images/politicians/조국혁신당/이해민.jpg" },
+      { id: 288, name: "정춘생", image: "/images/politicians/조국혁신당/정춘생.jpg" },
+      { id: 289, name: "차규근", image: "/images/politicians/조국혁신당/차규근.jpg" },
+      { id: 290, name: "황운하", image: "/images/politicians/조국혁신당/황운하.jpg" }
+    ]
+  },
+  {
+    party: "개혁신당",
+    candidates: [
+      { id: 291, name: "이주영", image: "/images/politicians/개혁신당/이주영.jpg" },
+      { id: 292, name: "이준석", image: "/images/politicians/개혁신당/이준석.jpg" },
+      { id: 293, name: "천하람", image: "/images/politicians/개혁신당/천하람.jpg" }
+    ]
+  },
+  {
+    party: "진보당",
+    candidates: [
+      { id: 294, name: "윤종오", image: "/images/politicians/진보당/윤종오.jpg" },
+      { id: 295, name: "전종덕", image: "/images/politicians/진보당/전종덕.jpg" },
+      { id: 296, name: "정혜경", image: "/images/politicians/진보당/정혜경.jpg" }
+    ]
+  },
+  {
+    party: "사회민주당",
+    candidates: [
+      { id: 297, name: "한창민", image: "/images/politicians/사회민주당/한창민.jpg" }
+    ]
+  },
+  {
+    party: "기본소득당",
+    candidates: [
+      { id: 298, name: "용혜인", image: "/images/politicians/기본소득당/용혜인.jpg" }
+    ]
+  },
+  {
+    party: "무소속",
+    candidates: [
+      { id: 299, name: "김종민", image: "/images/politicians/무소속/김종민.jpg" },
+      { id: 300, name: "우원식", image: "/images/politicians/무소속/우원식.jpg" }
+    ]
+  }
+];
+
+let selectedCandidates = []; // 선택된 후보들을 저장
+
+// 동적으로 버튼 생성
+const voteSection = document.getElementById("vote-section");
+const selectedCandidatesContainer = document.getElementById("selected-candidates-list");
+
+// 후보 리스트 생성
+voteData.forEach(group => {
+  const groupDiv = document.createElement("div");
+  groupDiv.classList.add("vote-group");
+
+  const groupTitle = document.createElement("h3");
+  groupTitle.textContent = group.party;
+  groupDiv.appendChild(groupTitle);
+
+  const buttonContainer = document.createElement("div");
+  buttonContainer.classList.add("vote-buttons");
+
+  // 후보 버튼 생성
+  group.candidates.forEach(candidate => {
+    const button = document.createElement("button");
+    const label = document.createElement("label");
+
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.name = "vote[]";
+    checkbox.value = candidate.id;
+
+    const img = document.createElement("img");
+    img.src = candidate.image;
+    img.alt = candidate.name;
+	img.loading = "lazy";
+
+    const nameText = document.createElement("p");
+    nameText.textContent = candidate.name;
+    nameText.style.textAlign = "center";
+
+    label.appendChild(checkbox);
+    label.appendChild(img);
+    button.appendChild(label);
+    button.appendChild(nameText);
+    buttonContainer.appendChild(button);
+
+    // 체크박스 클릭 이벤트
+    checkbox.addEventListener("change", () => {
+      if (checkbox.checked) {
+        if (selectedCandidates.length >= 10) {
+          alert("투표는 최대 10개 후보까지 선택할 수 있습니다.");
+          checkbox.checked = false;
+          return;
+        }
+        selectedCandidates.push(candidate); 
+        updateSelectedCandidates();
+      } else {
+        selectedCandidates = selectedCandidates.filter(c => c.id !== candidate.id);
+        updateSelectedCandidates();
+      }
+    });
+  });
+
+  groupDiv.appendChild(buttonContainer);
+  voteSection.appendChild(groupDiv);
+});
+
+// // 선택된 후보 업데이트
+// function updateSelectedCandidates() {
+//   selectedCandidatesContainer.innerHTML = "";
+//   selectedCandidates.forEach(candidate => {
+//     const candidateDiv = document.createElement("div");
+//     candidateDiv.classList.add("selected-candidate");
+
+//     const img = document.createElement("img");
+//     img.src = candidate.image;
+//     img.alt = candidate.name;
+
+//     const name = document.createElement("span");
+//     name.textContent = candidate.name;
+
+//     candidateDiv.appendChild(img);
+//     candidateDiv.appendChild(name);
+//     selectedCandidatesContainer.appendChild(candidateDiv);
+//   });
+// }
+
+// 선택된 후보 업데이터 (최적화 - DOM 조작횟수 줄이기)
+function updateSelectedCandidates() {
+  const fragment = document.createDocumentFragment();
+  selectedCandidates.forEach(candidate => {
+    const candidateDiv = document.createElement("div");
+    candidateDiv.classList.add("selected-candidate");
+
+    const img = document.createElement("img");
+    img.src = candidate.image;
+    img.alt = candidate.name;
+
+    const name = document.createElement("span");
+    name.textContent = candidate.name;
+
+    candidateDiv.appendChild(img);
+    candidateDiv.appendChild(name);
+    fragment.appendChild(candidateDiv);
+  });
+  selectedCandidatesContainer.innerHTML = "";
+  selectedCandidatesContainer.appendChild(fragment);
+}
 
 
-	const voteData = [
-		{
-			party: "더불어민주당",
-			members: 171,
-			candidates: Array(171).fill(null).map((_, index) => ({
-				id: `${1000 + (index + 1)}`,  // 백틱으로 수정
-				name: "이재명",
-				image: "/images/이재명.jpg"
-			}))
-		},
-		{
-			party: "국민의힘",
-			members: 108,
-			candidates: Array(108).fill(null).map((_, index) => ({
-				id: `${2000 + (index + 1)}`,  // 백틱으로 수정
-				name: "추경호",
-				image: "/images/추경호.png"
-			}))
-		},
-		{
-			party: "조국혁신당",
-			members: 12,
-			candidates: Array(12).fill(null).map((_, index) => ({
-				id: `${3000 + (index + 1)}`,  // 백틱으로 수정
-				name: "조국",
-				image: "/images/조국.png"
-			}))
-		},
-		{
-			party: "개혁신당",
-			members: 3,
-			candidates: Array(3).fill(null).map((_, index) => ({
-				id: `${4000 + (index + 1)}`,  // 백틱으로 수정
-				name: "이준석",
-				image: "/images/이준석.jpg"
-			}))
-		},
-		{
-			party: "진보당",
-			members: 3,
-			candidates: Array(3).fill(null).map((_, index) => ({
-				id: `${5000 + (index + 1)}`,  // 백틱으로 수정
-				name: "윤종오",
-				image: "/images/윤종오.png"
-			}))
-		},
-		{
-			party: "사회민주당",
-			members: 1,
-			candidates: Array(1).fill(null).map((_, index) => ({
-				id: `${6000 + (index + 1)}`,  // 백틱으로 수정
-				name: "한창민",
-				image: "/images/한창민.png"
-			}))
-		},
-		{
-			party: "기본소득당",
-			members: 1,
-			candidates: Array(1).fill(null).map((_, index) => ({
-				id: `${7000 + (index + 1)}`,  // 백틱으로 수정
-				name: "용혜인",
-				image: "/images/용혜인.png"
-			}))
-		},
-		{
-			party: "무소속",
-			members: 1,
-			candidates: Array(1).fill(null).map((_, index) => ({
-				id: `${8000 + (index + 1)}`,  // 백틱으로 수정
-				name: "김종민",
-				image: "/images/김종민.png"
-			}))
-		}
-	];
+// 제출 버튼 클릭 시 처리
+function submitVote() {
+  if (selectedCandidates.length === 0) {
+    alert("후보를 선택해주세요.");
+    return;
+  }
+  alert("투표가 제출되었습니다.");
 
+  const form = document.createElement("form");
+  form.method = "POST";
+  form.action = "vote_result.html";
 
-	let selectedCandidates = []; // 선택된 후보들의 ID를 추적
+  const input = document.createElement("input");
+  input.type = "hidden";
+  input.name = "selectedCandidates";
+  input.value = JSON.stringify(selectedCandidates);
 
-	//동적으로 버튼 생성
-	const voteSection = document.getElementById("vote-section");
-	const selectedCandidatesContainer = document.getElementById("selected-candidates-list");
-
-	voteData.forEach(group => {
-// 정당 그룹 생성
-		const groupDiv = document.createElement("div");
-		groupDiv.classList.add("vote-group");
-
-// 정당 이름 추가
-		const groupTitle = document.createElement("h3");
-		groupTitle.textContent = group.party;
-		groupDiv.appendChild(groupTitle);
-
-// 버튼 컨테이너
-		const buttonContainer = document.createElement("div");
-		buttonContainer.classList.add("vote-buttons");
-
-// 후보 생성
-		group.candidates.forEach(candidate => {
-			const button = document.createElement("button");
-			const label = document.createElement("label");
-
-			const checkbox = document.createElement("input");
-			checkbox.type = "checkbox";
-			checkbox.name = "vote[]";
-			checkbox.value = candidate.id;
-
-			const img = document.createElement("img");
-			img.src = candidate.image;
-			img.alt = candidate.name;
-
-			const nameText = document.createElement("p");
-			nameText.textContent = candidate.name;
-			nameText.style.textAlign = "center";
-
-			label.appendChild(checkbox);
-			label.appendChild(img);
-			button.appendChild(label);
-			button.appendChild(nameText);
-			buttonContainer.appendChild(button);
-
-			// 체크박스 클릭 이벤트 처리
-			checkbox.addEventListener("change", () => {
-				if (checkbox.checked) {
-					if (selectedCandidates.length >= 10) {
-						// 선택이 10개를 초과할 경우 경고 팝업
-						alert("투표는 최대 10개 후보까지 선택할 수 있습니다.");
-						checkbox.checked = false; // 선택 취소
-						return;
-					}
-					selectedCandidates.push(candidate); // 후보 객체 추가
-					updateSelectedCandidates(); // 선택된 후보 업데이트
-				} else {
-					selectedCandidates = selectedCandidates.filter(c => c.id !== candidate.id); // 후보 객체 삭제
-					updateSelectedCandidates(); // 선택된 후보 업데이트
-				}
-			});
-		});
-
-// 버튼 컨테이너를 그룹에 추가
-		groupDiv.appendChild(buttonContainer);
-		voteSection.appendChild(groupDiv);
-	});
-
-	//선택된 후보들 화면에 업데이트
-	function updateSelectedCandidates() {
-		selectedCandidatesContainer.innerHTML = ""; // 기존 내용을 지우기
-
-		selectedCandidates.forEach(candidate => {
-			const candidateDiv = document.createElement("div");
-			candidateDiv.classList.add("selected-candidate");
-
-			const img = document.createElement("img");
-			img.src = candidate.image;
-			img.alt = candidate.name;
-
-			const name = document.createElement("span");
-			name.textContent = candidate.name;
-
-			candidateDiv.appendChild(img);
-			candidateDiv.appendChild(name);
-			selectedCandidatesContainer.appendChild(candidateDiv);
-		});
-	}
-
-	//     // 제출 버튼 클릭 시 처리
-	//     function submitVote() {
-	//       if (selectedCandidates.length === 0) {
-	//         alert("후보를 선택해주세요.");
-	//         return;
-	//       }
-	//       alert("투표가 제출되었습니다.");
-	//     }
-	//     const selectedCandidates = [
-	//         { id: 1, name: "후보자1", img: "candidate1.jpg" },
-	//         { id: 2, name: "후보자2", img: "candidate2.jpg" }
-	//       ];
-
-	// 제출 버튼 클릭 시 처리
-	function submitVote() {
-		// 후보자가 선택되지 않았다면 알림
-		if (selectedCandidates.length === 0) {
-			alert("후보를 선택해주세요.");
-			return;
-		}
-
-		// 후보가 선택되었을 경우 제출 처리
-		alert("투표가 제출되었습니다.");
-
-		// 새로운 폼을 동적으로 생성
-		const form = document.createElement('form');
-		form.method = 'POST';
-		form.action = 'vote_result.html';  // 데이터를 보낼 URL
-
-		// selectedCandidates 배열을 JSON 형태로 변환하여 폼에 추가
-		const input = document.createElement('input');
-		input.type = 'hidden';
-		input.name = 'selectedCandidates';  // 서버에서 받을 이름
-		input.value = JSON.stringify(selectedCandidates);  // 배열을 JSON 문자열로 변환
-
-		// 폼에 input 필드 추가
-		form.appendChild(input);
-
-		// 폼을 문서에 추가하고 제출
-		document.body.appendChild(form);
-		form.submit();
-	}
+  form.appendChild(input);
+  document.body.appendChild(form);
+  form.submit();
+}
 </script>
 </body>
 </html>
