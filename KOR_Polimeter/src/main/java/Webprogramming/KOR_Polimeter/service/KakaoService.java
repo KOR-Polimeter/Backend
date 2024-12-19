@@ -167,7 +167,7 @@ public class KakaoService {
             JSONParser jsonParser = new JSONParser();
             JSONObject jsonObj = (JSONObject) jsonParser.parse(response.getBody());
 
-            long id = (long) jsonObj.get("id");
+            Long id = (Long) jsonObj.get("id");
 
             JSONObject kakaoAccount = (JSONObject) jsonObj.get("kakao_account");
 
@@ -178,6 +178,7 @@ public class KakaoService {
             String phone_number = null;
             String bday = null;
             String byear = null; // 이후 age로 변환됨. User 컬럼에 byear는 없음
+            Long userid = null;
             String created_at = (String) jsonObj.get("connected_at");
             int age = 0;
 
@@ -219,7 +220,7 @@ public class KakaoService {
             */
 
             User user = new User();
-            user.
+            user.setUserId(id);
             user.setName(name);
             //user.setBday(bday);
             //user.setPhone(phone_number);
@@ -238,13 +239,13 @@ public class KakaoService {
             session.setAttribute("user", user);
 
             return KakaoDTO.builder()
-                    .id(id)
                     .name(name)
                     //.phone(phone_number)
                     //.createdAt(created_at)
                     .gender(gender_int)
                     //.email(email)
                     .age(age)
+                    .userid(id)
                     //.bday(bday)
                     .build();
 
