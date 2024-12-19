@@ -1,6 +1,6 @@
 package Webprogramming.KOR_Polimeter;
 
-import Webprogramming.KOR_Polimeter.controller.CustomLogoutHandler;
+import Webprogramming.KOR_Polimeter.web.api.controller.CustomLogoutHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -29,8 +29,9 @@ public class SecurityConfig {
                         .requestMatchers("/error").permitAll()
                         .requestMatchers("/logout").permitAll()
                         .requestMatchers("/login").permitAll()
-                        .requestMatchers("/api/votes", "/result").permitAll()
+                        .requestMatchers("/api/**").permitAll()
                         .requestMatchers("/default", "/main", "/searching", "/vote", "/vote_result", "/details").permitAll()
+                        .requestMatchers("/details/**").permitAll()
                         .anyRequest().authenticated() // 나머지 요청은 인증 필요
                 )
                 .oauth2Login(oauth2 -> oauth2

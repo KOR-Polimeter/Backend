@@ -8,7 +8,7 @@ spring:
             client-secret: BEOsi3RTFa8gXahOgwLuVAJH6Dwx3SQ0
             authorization-grant-type: authorization_code
             redirect-uri: http://localhost:8080/auth/kakao/callback
-            scope: account_email, profile_nickname
+            scope: name, gender, birthday, phone_number, account_email, birthyear
         provider:
           kakao:
             authorization-uri: https://kauth.kakao.com/oauth/authorize
