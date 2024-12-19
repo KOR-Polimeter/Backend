@@ -5,6 +5,8 @@ import Webprogramming.KOR_Polimeter.web.api.service.PoliticianService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -32,6 +34,25 @@ public class ApiPoliticianController {
             return ResponseEntity.status(404).body("Politician not found"); // 에러 메시지 반환
         }
     }
+
+    // 정치인의 정보를 이름으로 조회 (GET 방식 - /search/name)
+    @GetMapping("/search/name")
+    public ResponseEntity<?> getPoliticianByName(@RequestParam(required = false) String name) {
+        if (name == null || name.isBlank()) {
+            return ResponseEntity.badRequest().body("Invalid request: name is missing or empty");
+        }
+
+        List<Politician> politicians = service.getPoliticiansByName(name);
+
+        if (politicians.isEmpty()) {
+            return ResponseEntity.status(404).body("No politicians found");
+        } else {
+            return ResponseEntity.ok(politicians); // Politician 리스트 반환
+        }
+    }
 }
+
+
+
 
 

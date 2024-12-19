@@ -16,10 +16,10 @@ public class User {
     private int id; // 사용자 ID (Primary Key)
 
     private String name;
-    private LocalDateTime bday; // 생일
-    private String phone;
-    private LocalDateTime createdAt; // 가입일
+//    private LocalDateTime bday; // 생일
+//    private String phone;
+//    private LocalDateTime createdAt; // 가입일
     private int gender;
-    private String email;
+//    private String email;
     private int age;
 }

@@ -23,5 +23,11 @@ public class PoliticianService {
     public Optional<Politician> getPoliticianById(int id) {
         return repository.findById(id);
     }
+
+    // 정치인 이름 검색 시 정보 조회
+    public List<Politician> getPoliticiansByName(String name) {
+        return repository.findAllByName(name);
+    }
+
 }
 
