@@ -39,16 +39,58 @@ header a:visited {
     color: white; /* 방문한 링크 색상도 흰색으로 유지 */
 }
 
+/* 검색 입력 필드 스타일 */
+header form input[type="text"] {
+    width: 250px;               /* 입력 필드 너비 */
+    height: 40px;               /* 입력 필드 높이 */
+    padding: 0 15px;            /* 텍스트 여백 */
+    border: 2px solid white;    /* 테두리 흰색 */
+    border-radius: 20px;        /* 양쪽 둥근 테두리 */
+    background: #222;           /* header와 동일한 배경색 */
+    color: white;               /* 텍스트 흰색 */
+    font-size: 16px;            /* 텍스트 크기 */
+    outline: none;              /* 선택 시 기본 테두리 제거 */
+    transition: all 0.3s ease;  /* 부드러운 효과 */
+}
+
+header form input[type="text"]::placeholder {
+    color: white;               /* 플레이스홀더 텍스트 흰색 */
+    opacity: 0.7;               /* 투명도 조정 */
+}
+
+/* 검색 버튼 스타일 */
+header form button {
+    height: 40px;               /* 버튼 높이 */
+    padding: 0 20px;            /* 텍스트 여백 */
+    border: 2px solid white;    /* 테두리 흰색 */
+    border-radius: 20px;        /* 양쪽 둥근 테두리 */
+    background: #222;           /* header와 동일한 배경색 */
+    color: white;               /* 텍스트 흰색 */
+    font-size: 16px;            /* 텍스트 크기 */
+    font-weight: bold;          /* 텍스트 굵기 */
+    cursor: pointer;            /* 클릭 커서 */
+    transition: all 0.3s ease;  /* 부드러운 효과 */
+}
+
+header form button:hover {
+    background: white;          /* 호버 시 버튼 배경 흰색 */
+    color: #222;                /* 텍스트 색상 반전 */
+}
+
 nav ul {
+	display: flex; /* 가로 방향으로 정렬 */
+	justify-content: flex-end; /* 오른쪽 정렬 */
+	align-items: center; /* 세로 중앙 정렬 */
+	gap: 20px; /* 항목 사이 간격 */
 	list-style: none;
 	padding: 0;
 	margin: 0;
 }
 
 nav ul li {
-	display: inline;
-	margin: 0 10px;
+	margin: 0; /* 불필요한 여백 제거 */
 }
+
 
 nav ul li a {
 	color: #fff;
@@ -63,4 +105,29 @@ footer {
 	text-align: left;
 	border-top: 5px solid #333; /* 상단에 구분선 추가 */
 	margin-top: 0px;
+}
+
+@media (max-width: 900px) {
+    nav ul {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 15px; /* 요소 간 간격 */
+    }
+
+    /* 로고 항목은 유지 */
+    header h1 {
+        font-size: 1.5em;
+        margin: 0;
+    }
+
+    /* 로그인/로그아웃만 보이도록 설정 */
+    nav ul li:not(:first-child):not(:nth-child(2)) {
+        display: none; /* 숨기기 */
+    }
+
+    /* 검색창 숨기기 */
+    header form {
+        display: none; /* 검색 폼 숨기기 */
+    }
 }
