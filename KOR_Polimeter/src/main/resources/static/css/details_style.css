@@ -60,6 +60,10 @@
 	align-items: center;
 }
 
+.profile-image-container img {
+	object-fit: cover; /* 원본 비율 유지 */
+}
+
 .profile-image {
 	width: 200px;
 	height: 200px;
