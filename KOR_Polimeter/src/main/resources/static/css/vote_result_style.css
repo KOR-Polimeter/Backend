@@ -110,22 +110,31 @@ footer {
 	text-shadow: 4px 4px 4px rgba(0, 0, 0, 1);
 }
 
-.top30-container h3 {
+.top30-container h2 {
 	text-align: center;
-	margin: 50px 10vw;
+	margin-top: 50px;
 }
 
+.top30-container h3 {
+	text-align: center;
+	margin-bottom: 50px;
+}
+
+.my-result-container h2 {
+	text-align: center;
+	margin-top: 50px;
+}
 
 .my-result-container h3 {
 	text-align: center;
-	margin: 50px 10vw;
+	margin-bottom: 50px;
 }
 
 .top30-candidate-container {
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: center;
-	gap: 0px;
+	gap: 5px;
 	margin: 0px 10vw;
 }
 
@@ -146,11 +155,13 @@ footer {
     height: 200px;
     border-radius: 8px;
     object-fit: cover;
-    border: 5px solid transparent;  
+    border: 1px solid #ffff00;  
+/* 	border: 2px solid #000000; */
     background: linear-gradient(45deg, gold, orange);
+/*     background: #000000; */
     background-clip: padding-box;
-    padding: 5px;
-    box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);  
+    padding: 3px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.6);
 }
 
 /* 인기 TOP30 후보자 이름 */
@@ -182,6 +193,7 @@ footer {
 	width: 70px;
 	height: 100px;
 	border-radius: 8px;
+	border: 2px solid #000000;
 }
 
 .candidate p {
@@ -210,6 +222,5 @@ footer {
 .edit-button:hover {
     background-color: white; /* 배경 흰색 */
     color: black; /* 글씨 검은색 */
-    transform: scale(1.1); /* 약간 확대 */
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5); /* 그림자 추가 */
 }
