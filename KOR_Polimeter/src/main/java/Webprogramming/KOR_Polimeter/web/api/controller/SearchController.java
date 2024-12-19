@@ -25,11 +25,31 @@ public class SearchController {
     }
 
     @GetMapping("/details")
-    public String details(@RequestParam("id") int itemId, Model model) {
-        System.out.println("Received itemId: " + itemId);
+    public String details(
+            @RequestParam("id") int itemId,
+            @RequestParam("name") String name,
+            @RequestParam("party") String party,
+            @RequestParam("region") String region,
+            @RequestParam("bday") String bday,
+            @RequestParam("age") int age,
+            @RequestParam("description") String description,
+            @RequestParam("gender") String gender,
+            Model model) {
+
+        // 모델에 데이터 추가
         model.addAttribute("itemId", itemId);
+        model.addAttribute("name", name);
+        model.addAttribute("party", party);
+        model.addAttribute("region", region);
+        model.addAttribute("bday", bday);
+        model.addAttribute("age", age);
+        model.addAttribute("description", description);
+        model.addAttribute("gender", gender);
+
+        // details.html로 반환
         return "details";
     }
+
 
     @PostMapping("/searching")
     public String handleSearch(@RequestParam String query, Model model) {

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -27,26 +27,26 @@
 		<hr>
 	</div>
 	<div class="profile-container">
+		<!-- 프로필 이미지 -->
 		<div class="profile-image-container">
-			<img src="https://via.placeholder.com/200" alt="Profile Picture"
-				class="profile-image">
+			<img th:src="@{images/politicians/{party}/{name}.jpg(name=${name}, party=${party})}"
+				 alt="Profile Picture"
+				 class="profile-image">
 		</div>
+		<!-- 프로필 상세 정보 -->
 		<div class="profile-details">
-		    <p><span class="label">이름</span><span class="value">홍길동</span></p>
-			<p><span class="label">이름</span><span th:text="${itemId}"></p>
-		    <p><span class="label">소속정당</span><span class="value">포도당</span></p>
-		    <p><span class="label">지역선거구</span><span class="value">서울특별시</span></p>
-		    <p><span class="label">출생날짜</span><span class="value">1980-01-01</span></p>
-		    <p><span class="label">연령</span><span class="value">43세</span></p>
-		    <p><span class="label">성별</span><span class="value">남성</span></p>
+			<p><span class="label">이름:</span><span class="value" th:text="${name}">홍길동</span></p>
+			<p><span class="label">ID:</span><span class="value" th:text="${itemId}">1</span></p>
+			<p><span class="label">소속정당:</span><span class="value" th:text="${party}">포도당</span></p>
+			<p><span class="label">지역선거구:</span><span class="value" th:text="${region}">서울특별시</span></p>
+			<p><span class="label">출생날짜:</span><span class="value" th:text="${bday}">1980-01-01</span></p>
+			<p><span class="label">연령:</span><span class="value" th:text="${age} + '세'">43세</span></p>
+			<p><span class="label">성별:</span><span class="value" th:text="${gender}">남성</span></p>
 		</div>
+		<!-- 프로필 설명 -->
 		<div class="profile-description-container">
-			<h3 id="profile-description">대표발의 의안</h3>
-			<ul class="bill-list">
-				<li>국가공무원법 일부개정법률안</li>
-				<li>전교조 해직교원의 지위 원상회복에 관한 특별법안</li>
-				<li>국회법 일부개정법률안</li>
-			</ul>
+			<h3 id="profile-description">발의 의안 설명</h3>
+			<p th:text="${description}">해당 정치인이 발의했던 내용이 여기에 표시됩니다.</p>
 		</div>
 		<div class="back-container">
 			<a href="searching.html" class="back-link">인물 목록으로 돌아가기</a>

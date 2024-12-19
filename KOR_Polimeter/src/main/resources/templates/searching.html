@@ -107,6 +107,12 @@
 						rankings.push({
 							id: item.id,
 							name: item.name,
+							party: item.party,
+							region: item.region,
+							bday: item.bday,
+							age: item.age,
+							description: item.description,
+							gender: item.gender,
 							popularity: `${Math.floor(Math.random() * 100)}%`, // 인기도는 랜덤 값으로 설정
 							image: `images/politicians/${item.party}/${item.name}.jpg`, // 템플릿 리터럴 수정
 						});
@@ -118,7 +124,7 @@
 				}
 			}
 
-			// 데이터 로드 완료 후 페이지 렌더링
+			// 데이터 로드 완료 후 첫 페이지 렌더링
 			renderPage(currentPage);
 		}
 
@@ -150,10 +156,10 @@
 
 			// 항목 클릭 시 상세 페이지로 이동
 			const rankingItems = document.querySelectorAll('.ranking-item');
-			rankingItems.forEach(item => {
+			rankingItems.forEach((item, index) => {
 				item.addEventListener('click', () => {
-					const itemId = item.getAttribute('data-id');
-					window.location.href = `/details?id=${itemId}`;
+					const clickedItem = pageItems[index]; // 현재 페이지의 데이터에서 클릭된 항목 가져오기
+					window.location.href = `/details?id=${clickedItem.id}&name=${encodeURIComponent(clickedItem.name)}&party=${encodeURIComponent(clickedItem.party)}&region=${encodeURIComponent(clickedItem.region)}&bday=${encodeURIComponent(clickedItem.bday)}&age=${encodeURIComponent(clickedItem.age)}&description=${encodeURIComponent(clickedItem.description)}&gender=${encodeURIComponent(clickedItem.gender)}`;
 				});
 			});
 		}
@@ -186,6 +192,7 @@
 		});
 
 
+
 		document.addEventListener('DOMContentLoaded', () => {
 			const rankingList = document.getElementById('ranking-list');
 
@@ -207,8 +214,7 @@
 			const rankingItems = document.querySelectorAll('.ranking-item');
 			rankingItems.forEach(item => {
 				item.addEventListener('click', () => {
-					const itemId = item.getAttribute('data-id');
-					window.location.href = `/details?id=${itemId}`;
+					window.location.href = `/details?id=${item.id}&name=${item.name}&party=${item.party}&region=${item.region}&bday=${item.bday}&age=${item.age}&description=${item.description}&gender=${item.gender}`;
 				});
 			});
 		});
