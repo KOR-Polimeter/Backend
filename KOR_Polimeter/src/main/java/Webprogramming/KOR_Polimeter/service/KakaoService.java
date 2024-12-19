@@ -182,11 +182,11 @@ public class KakaoService {
             int age = 0;
 
             if (kakaoAccount != null) {
-                email = (String) kakaoAccount.get("email");
+               // email = (String) kakaoAccount.get("email");
                 name = (String) kakaoAccount.get("name");
                 gender_str = (String) kakaoAccount.get("gender");
-                phone_number = (String) kakaoAccount.get("phone_number");
-                bday = (String) kakaoAccount.get("birthday");
+                //phone_number = (String) kakaoAccount.get("phone_number");
+                //bday = (String) kakaoAccount.get("birthday");
                 byear = (String) kakaoAccount.get("birthyear");
             }
 
@@ -199,15 +199,15 @@ public class KakaoService {
             if (byear != null) {
                 age = 1 + 2024 - Integer.parseInt(byear);
             }
-
+            System.out.println("계정 id: " + id);
             System.out.println("name 이름: " + name);
-            System.out.println("birthday 생일: " + bday);
-            System.out.println("phone_number 전화번호: " + phone_number);
-            System.out.println("created_at 생성 날짜: " + created_at);
+            //System.out.println("birthday 생일: " + bday);
+            //System.out.println("phone_number 전화번호: " + phone_number);
+            //System.out.println("created_at 생성 날짜: " + created_at);
             System.out.println("gender 성별 (남자:1, 여자:2): " + gender_int);
-            System.out.println("email 이메일: " + email);
+            //System.out.println("email 이메일: " + email);
             System.out.println("나이 age: " + age);
-            System.out.println("byear: " + byear);
+            //System.out.println("byear: " + byear);
 
             // System.out.println("nickname 닉네임: " + nickname);
 
@@ -219,12 +219,13 @@ public class KakaoService {
             */
 
             User user = new User();
+            user.
             user.setName(name);
-            user.setBday(bday);
-            user.setPhone(phone_number);
-            user.setCreatedAt(created_at);
+            //user.setBday(bday);
+            //user.setPhone(phone_number);
+            //user.setCreatedAt(created_at);
             user.setGender(gender_int);
-            user.setEmail(email);
+            //user.setEmail(email);
             user.setAge(age);
             UserService k1 = new UserService(userRepository);
             if(k1.saveUser(user) == null) {
@@ -239,12 +240,12 @@ public class KakaoService {
             return KakaoDTO.builder()
                     .id(id)
                     .name(name)
-                    .phone(phone_number)
-                    .createdAt(created_at)
+                    //.phone(phone_number)
+                    //.createdAt(created_at)
                     .gender(gender_int)
-                    .email(email)
+                    //.email(email)
                     .age(age)
-                    .bday(bday)
+                    //.bday(bday)
                     .build();
 
         } catch (Exception e) {
