@@ -103,7 +103,7 @@
     color: #555;
 }
 
-/* 설명 및 돌아가기 버튼 */
+/* 발의 의안 컨테이너 */
 .profile-description-container {
 	flex: 1 1 100%;
 	background: #f9f9f9;
@@ -170,7 +170,6 @@
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	margin: 0px;
 	gap: 20px;
 }
 
