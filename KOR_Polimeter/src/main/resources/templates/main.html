@@ -3,6 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>KOR_Polimeter</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
 	<link th:href="@{/css/main_style.css}" rel="stylesheet">
 	<link th:href="@{/css/default_style.css}" rel="stylesheet">
 </head>
@@ -28,21 +29,31 @@
 <div class="main_page">
 	<p>국회의원 인기투표 사이트</p>
 	<h2>당신의 선택은</h2>
-	<div class="circle-image-container">
-		<!-- 이미지 경로를 Thymeleaf의 static 경로로 처리 -->
-		<img th:src="@{/images/politicians/더불어민주당/이재명.jpg}" alt="Image 1">
-		<img th:src="@{/images/politicians/국민의힘/추경호.jpg}" alt="Image 2">
-		<img th:src="@{/images/politicians/조국혁신당/박은정.jpg}" alt="Image 3">
-		<img th:src="@{/images/politicians/개혁신당/이준석.jpg}" alt="Image 4">
-	</div>
-	<div class="circle-buttons-container">
-		<!-- form 액션 경로를 Thymeleaf 방식으로 처리 -->
-		<form th:action="@{/searching}" method="get">
-			<button class="circle-button">인물 검색하기</button>
-		</form>
-		<form th:action="@{/vote}" method="get">
-			<button class="circle-button">투표하러 가기</button>
-		</form>
+	<div class="swiper-and-button-container">
+		<div>
+			<form th:action="@{/searching}" method="get">
+				<button class="circle-button">인물 검색하기</button>
+			</form>
+		</div>
+		<!-- Swiper -->
+		<div class="swiper-container">
+			<div class="swiper-wrapper">
+				<div class="swiper-slide"><img th:src="@{/images/politicians/더불어민주당/이재명.jpg}" alt="Image 1"></div>
+				<div class="swiper-slide"><img th:src="@{/images/politicians/국민의힘/추경호.jpg}" alt="Image 2"></div>
+				<div class="swiper-slide"><img th:src="@{/images/politicians/조국혁신당/박은정.jpg}" alt="Image 3"></div>
+				<div class="swiper-slide"><img th:src="@{/images/politicians/개혁신당/이준석.jpg}" alt="Image 4"></div>
+			</div>
+			<!-- Add Pagination -->
+			<div class="swiper-pagination"></div>
+			<!-- Navigation -->
+			<div class="swiper-button-next"></div>
+			<div class="swiper-button-prev"></div>
+		</div>
+		<div>
+			<form th:action="@{/vote}" method="get">
+				<button class="circle-button">투표하러 가기</button>
+			</form>
+		</div>
 	</div>
 </div>
 <footer>
@@ -50,5 +61,40 @@
 	<p>Github: https://github.com/KOR-Polimeter</p>
 	<p>Website created in 2024.</p>
 </footer>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
+<script>
+	const swiper = new Swiper('.swiper-container', {
+		loop: true, // 루프 설정 (마지막 슬라이드가 지나면 첫 슬라이드로 이동)
+		allowTouchMove: false, // 터치로 이동 비활성화
+		slidesPerView: 'auto',
+		centeredSlides: true,  // 슬라이드를 중앙에 배치
+
+		effect: 'coverflow',
+		coverflowEffect: {
+			rotate: 0,   // 비활성화 슬라이드 회전 정도
+			stretch: 30, // 슬라이드끼리 겹치는 정도
+			depth: 300,  // 3D 깊이감
+			modifier: 1,
+		},
+
+		// 이미지 페이지네이션
+		pagination: {
+			el: '.swiper-pagination',
+			clickable: true,
+		},
+
+		// 양쪽 화살표
+		navigation: {
+			nextEl: '.swiper-button-next',
+			prevEl: '.swiper-button-prev',
+		},
+
+		// 자동 회전
+		autoplay: {
+			delay: 3000, // 3초마다 자동 슬라이드
+		}
+	});
+</script>
 </body>
 </html>

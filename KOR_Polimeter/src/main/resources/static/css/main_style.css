@@ -44,61 +44,61 @@
 	z-index: 1;
 }
 
-.circle-image-container {
+.swiper-and-button-container {
+    display: flex;
+    align-items: center;
+    margin-top: 30px;
+    gap: 100px;
+    z-index: 1;
+}
+
+.swiper-container {
+    width: 312px;
+    height: 250px;
+    overflow: hidden; /* 자식 컨테이너의 넘친 부분 잘림 */
+    z-index: 1;
+}
+
+.swiper-slide {
     width: 150px;
-    height: 200px;
-    border-radius: 15px;  /* 둥근 모서리 네모로 설정 */
-    overflow: hidden;
-    position: relative;
-    border: 2px solid #fff;
-    margin-top: 50px;
-    z-index: 1;
 }
 
-.circle-image-container img {
-	position: absolute;
-	width: 100%; /* 이미지 크기를 키워 이동할 때 여유 공간을 확보 */
-	height: 100%;
-	transform: translate(0, 0); /* 초기 위치 */
-	opacity: 0; /* 초기 상태에서 이미지는 보이지 않음 */
-	animation: slide 16s infinite; /* 16초 동안 반복 */
+.swiper-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 5%;
 }
 
-.circle-image-container img:nth-child(1) {
-	animation-delay: 0s;
-	transform: translate(-50%, 0%); /* 첫 번째 이미지를 왼쪽 위로 이동 */
+/* 현재 슬라이드를 가리키는 활성화된 페이지네이션 점 스타일 */
+.swiper-pagination-bullet-active {
+    background-color: white;
 }
 
-.circle-image-container img:nth-child(2) {
-	animation-delay: 4s;
-	transform: translate(-50%, 0%); /* 두 번째 이미지를 왼쪽 중앙으로 이동 */
+/* 왼쪽 그림자 스타일 조정 */
+.swiper-slide-shadow-left {
+    background: rgba(0, 0, 0, 0.5); /* 그림자 색상 및 투명도 */
+    border-radius: 5%;
 }
 
-.circle-image-container img:nth-child(3) {
-	animation-delay: 8s;
-	transform: translate(-50%, 0%); /* 세 번째 이미지를 위쪽 중앙으로 이동 */
+/* 오른쪽 그림자 스타일 조정 */
+.swiper-slide-shadow-right {
+    background: rgba(0, 0, 0, 0.5); /* 그림자 색상 및 투명도 */
+    border-radius: 5%;
 }
 
-.circle-image-container img:nth-child(4) {
-	animation-delay: 12s;
-	transform: translate(-50%, 0%); /* 네 번째 이미지를 원래 위치로 이동 */
+/* 다음 화살표 스타일 조정 */
+.swiper-button-next {
+    color: white;
+    opacity: 0.2;
+    margin-right: -5px;
 }
 
-@keyframes slide {
-	0%, 36% {
-    	opacity: 0;  /* 0초와 16초에 이미지는 보이지 않음 */
-	}
-    12%, 24% {
-        opacity: 1;  /* 25%와 75%에서 이미지는 보이도록 설정 */
-    }
-}
-
-.circle-buttons-container {
-    display: flex; /* 가로 정렬 */
-    justify-content: center; /* 가운데 정렬 */
-    gap: 300px; /* 버튼 사이 간격 */
-    margin-top: -110px; /* 이미지 컨테이너와의 간격 */
-    z-index: 1;
+/* 이전 화살표 스타일 조정 */
+.swiper-button-prev {
+    color: white;
+    opacity: 0.2;
+    margin-left: -5px;
 }
 
 /* 공통 버튼 스타일 */
