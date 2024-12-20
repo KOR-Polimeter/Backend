@@ -74,13 +74,7 @@
 	  document.addEventListener('DOMContentLoaded', () => {
 	    const urlParams = new URLSearchParams(window.location.search);
 	    const id = urlParams.get('id'); // id 파라미터를 가져옴
-		const previousPage = urlParams.get('page'); // page 파라미터를 가져옴
 
-		// 페이지 정보를 sessionStorage에 저장
-		if (previousPage) {
-			sessionStorage.setItem('previousPage', previousPage);
-		}
-	
 	    // 이 부분에서 id를 기반으로 상세 정보를 로딩하거나 표시
 	    console.log(id); // 예시로 id를 콘솔에 출력
 	  });

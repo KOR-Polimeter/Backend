@@ -141,15 +141,18 @@
 
 			// 현재 페이지의 랭킹 항목 렌더링
 			rankingList.innerHTML = pageItems.map(item => `
-        <li class="ranking-item" data-id="${item.id}">
-            <span class="ranking-number">${item.id}</span>
-            <img src="${item.image}" alt="${item.name}">
-            <div class="ranking-details">
-                <span class="name">${item.name}</span>
-                <span class="popularity">${item.popularity}</span>
-            </div>
-        </li>
-    `).join('');
+				<li class="ranking-item" data-id="${item.id}">
+					<span class="ranking-number">${item.id}</span>
+					<img src="${item.image}" alt="${item.name}">
+					<div class="ranking-details">
+						<span class="name">${item.name}</span>
+						<span class="popularity">${item.popularity}</span>
+					</div>
+				</li>
+    		`).join('');
+
+			// URL을 업데이트 (pushState를 사용해 브라우저 히스토리에서 URL을 변경)
+			window.history.pushState(null, '', `?page=${page}`);
 
 			// 페이지네이션 렌더링
 			renderPagination();
@@ -159,7 +162,7 @@
 			rankingItems.forEach((item, index) => {
 				item.addEventListener('click', () => {
 					const clickedItem = pageItems[index]; // 현재 페이지의 데이터에서 클릭된 항목 가져오기
-					window.location.href = `/details?id=${clickedItem.id}&name=${encodeURIComponent(clickedItem.name)}&party=${encodeURIComponent(clickedItem.party)}&region=${encodeURIComponent(clickedItem.region)}&bday=${encodeURIComponent(clickedItem.bday)}&age=${encodeURIComponent(clickedItem.age)}&description=${encodeURIComponent(clickedItem.description)}&gender=${encodeURIComponent(clickedItem.gender)}&page=${currentPage}`;
+					window.location.href = `/details?id=${clickedItem.id}&name=${encodeURIComponent(clickedItem.name)}&party=${encodeURIComponent(clickedItem.party)}&region=${encodeURIComponent(clickedItem.region)}&bday=${encodeURIComponent(clickedItem.bday)}&age=${encodeURIComponent(clickedItem.age)}&description=${encodeURIComponent(clickedItem.description)}&gender=${encodeURIComponent(clickedItem.gender)}`;
 				});
 			});
 		}
@@ -186,8 +189,22 @@
 			}
 		}
 
+		// popstate 이벤트 핸들러: 뒤로가기로 검색 페이지로 돌아올 때 처리
+		window.addEventListener('popstate', (event) => {
+			const state = event.state;
+			if (state && state.page) {
+				currentPage = state.page;
+				renderPage(currentPage); // 저장된 페이지 번호로 다시 렌더링
+			}
+		});
+
 		// 초기 데이터 로드 및 렌더링
 		document.addEventListener('DOMContentLoaded', async () => {
+			// URL에서 쿼리 파라미터로 현재 페이지를 가져옴
+			const urlParams = new URLSearchParams(window.location.search);
+			const page = urlParams.get('page');
+			currentPage = page ? parseInt(page) : 1;
+
 			await fetchPoliticianData(); // 데이터 로드
 		});
 
@@ -217,17 +234,6 @@
 					window.location.href = `/details?id=${item.id}&name=${item.name}&party=${item.party}&region=${item.region}&bday=${item.bday}&age=${item.age}&description=${item.description}&gender=${item.gender}`;
 				});
 			});
-		});
-
-		document.addEventListener('DOMContentLoaded', () => {
-			// sessionStorage에서 이전 페이지 번호 가져오기
-			const savedPage = sessionStorage.getItem('previousPage');
-
-			// 이전 페이지 정보가 있다면 해당 페이지 렌더링
-			if (savedPage) {
-				currentPage = parseInt(savedPage, 10); // 숫자로 변환
-				renderPage(currentPage); // 페이지 복원
-			}
 		});
 	</script>
 </body>
