@@ -53,7 +53,6 @@ public class SearchController {
         return "details";
     }
 
-
     @PostMapping("/searching")
     public String handleSearch(@RequestParam String query, Model model) {
         // 검색 로직 처리
