@@ -1,4 +1,4 @@
-package Webprogramming.KOR_Polimeter.web.api.controller;
+package Webprogramming.KOR_Polimeter.controller;
 
 import Webprogramming.KOR_Polimeter.web.api.dto.KakaoDTO;
 import Webprogramming.KOR_Polimeter.web.api.service.KakaoService;
@@ -36,18 +36,19 @@ public class HomeController {
         return "main";
     }
 
-    @GetMapping("/login")
-    public String login(Model model) {
-        String kakaoUrl = "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=772c65da382eb8de1916b5771770e5e7&redirect_uri=http://localhost:8080/auth/kakao/callback";
-        model.addAttribute("kakaoUrl", kakaoUrl);
-
-        return "login";
-    }
+//    @GetMapping("/login")
+//    public String login(Model model) {
+//        String kakaoUrl = "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=772c65da382eb8de1916b5771770e5e7&redirect_uri=http://localhost:8080/auth/kakao/callback";
+//        model.addAttribute("kakaoUrl", kakaoUrl);
+//
+//        return "login";
+//    }
 
 
     @GetMapping("/auth/kakao/callback")
     public String kakaoCallback(@RequestParam String code, HttpSession session) throws Exception {
         try {
+
             // 카카오 API를 통해 사용자 정보 가져오기
             KakaoDTO kakaoDTO = kakaoService.getKakaoInfo(code);
 

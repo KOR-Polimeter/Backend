@@ -1,6 +1,7 @@
 package Webprogramming.KOR_Polimeter.web.api.service;
 
 import Webprogramming.KOR_Polimeter.web.api.dto.VoteRequest;
+import Webprogramming.KOR_Polimeter.web.api.dto.VoteResponse;
 import Webprogramming.KOR_Polimeter.web.api.model.Politician;
 import Webprogramming.KOR_Polimeter.web.api.model.User;
 import Webprogramming.KOR_Polimeter.web.api.model.UserVote;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -90,4 +92,37 @@ public class UserVoteService {
             politicianRepository.save(existingPolitician);
         }
     }
+
+    /**
+     * 사용자가 투표한 정치인 정보를 반환하는 메소드
+     */
+    @Transactional
+    public VoteResponse getVotesByUser(int userId) {
+        // 사용자가 투표한 기록을 조회
+        List<UserVote> userVotes = userVoteRepository.findByUserId(userId);
+
+        List<VoteResponse.Vote> voteList = new ArrayList<>();
+
+        // 사용자 투표 기록을 기반으로 정치인 정보 리스트 구성
+        for (UserVote userVote : userVotes) {
+            Politician politician = userVote.getPolitician();
+
+            // VoteResponse에 담을 데이터 설정
+            VoteResponse.Vote vote = new VoteResponse.Vote();
+            vote.setPolId(politician.getId());
+            vote.setName(politician.getName());
+            vote.setParty(politician.getParty());
+
+            // 리스트에 추가
+            voteList.add(vote);
+        }
+
+        // 응답 객체 생성
+        VoteResponse voteResponse = new VoteResponse();
+        voteResponse.setUserId(userId);
+        voteResponse.setVotes(voteList);
+
+        return voteResponse;
+    }
+
 }

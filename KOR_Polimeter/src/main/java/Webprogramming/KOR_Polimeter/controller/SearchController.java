@@ -1,7 +1,6 @@
-package Webprogramming.KOR_Polimeter.web.api.controller;
+package Webprogramming.KOR_Polimeter.controller;
 
 import Webprogramming.KOR_Polimeter.web.api.model.Politician;
-import Webprogramming.KOR_Polimeter.web.api.service.PoliticianService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
@@ -13,9 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import Webprogramming.KOR_Polimeter.web.api.service.SearchService;
 import org.springframework.web.client.RestTemplate;
+import jakarta.servlet.http.HttpSession;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Controller
@@ -30,12 +28,32 @@ public class SearchController {
     }
 
     @GetMapping("/searching")
-    public String showSearchingPage() {
+    public String showSearchingPage(HttpSession session, Model model) {
+        Object user = session.getAttribute("user"); // 세션에서 사용자 정보 가져오기
+
+        // 사용자 정보가 존재하면 모델에 추가
+        if (user != null) {
+            model.addAttribute("isLoggedIn", true); // 로그인 상태
+            model.addAttribute("user", user);      // 사용자 정보
+        } else {
+            model.addAttribute("isLoggedIn", false); // 비로그인 상태
+        }
         return "searching"; // searching.html로 연결
     }
 
     @GetMapping("/details")
-    public String details(@RequestParam("name") String name, Model model) {
+    public String details(@RequestParam("name") String name, HttpSession session, Model model) {
+
+        Object user = session.getAttribute("user"); // 세션에서 사용자 정보 가져오기
+
+        // 사용자 정보가 존재하면 모델에 추가
+        if (user != null) {
+            model.addAttribute("isLoggedIn", true); // 로그인 상태
+            model.addAttribute("user", user);      // 사용자 정보
+        } else {
+            model.addAttribute("isLoggedIn", false); // 비로그인 상태
+        }
+
         // RestTemplate 생성
         RestTemplate restTemplate = new RestTemplate();
 
