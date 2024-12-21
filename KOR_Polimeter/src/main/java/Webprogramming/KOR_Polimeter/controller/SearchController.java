@@ -51,7 +51,7 @@ public class SearchController {
         RestTemplate restTemplate = new RestTemplate();
 
         // /searching/name API 호출 URL
-        String url = "http://localhost:8080/api/politician/search/name?name=" + name;
+        String url = "http://kor-polimeter.info/api/politician/search/name?name=" + name;
 
         // API 호출 및 Politician 리스트 받아오기
         ResponseEntity<List<Politician>> response = restTemplate.exchange(
