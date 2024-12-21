@@ -48,7 +48,7 @@
     display: flex;
     align-items: center;
     margin-top: 30px;
-    gap: 100px;
+    gap: 140px;
     z-index: 1;
 }
 
@@ -103,22 +103,38 @@
 
 /* 공통 버튼 스타일 */
 .circle-button {
-    height: 40px;               /* 버튼 높이 */
-    padding: 0 20px;            /* 텍스트 여백 */
+    display: flex;
+    width: 185px;
+    aspect-ratio: 1 / 1;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
     border: 2px solid white;    /* 테두리 흰색 */
-    border-radius: 20px;        /* 양쪽 둥근 테두리 */
+    border-radius: 15px;        /* 양쪽 둥근 테두리 */
     background: #222;           /* header와 동일한 배경색 */
     color: white;               /* 텍스트 흰색 */
-    font-size: 16px;            /* 텍스트 크기 */
+    font-size: 18px;            /* 텍스트 크기 */
     font-weight: bold;          /* 텍스트 굵기 */
     cursor: pointer;            /* 클릭 커서 */
     transition: all 0.3s ease;  /* 부드러운 효과 */
+}
+
+.circle-button img {
+    display: block;
+    width: 100px;
+    height: 100px;
+    margin-bottom: 20px;
 }
 
 /* 버튼 호버 효과 */
 .circle-button:hover {
     background: white;          /* 호버 시 버튼 배경 흰색 */
     color: #222;                /* 텍스트 색상 반전 */
+}
+
+.circle-button:hover img {
+    filter: invert(1);          /* 이미지 색상 반전 */
 }
 
 .circle-button:active {
