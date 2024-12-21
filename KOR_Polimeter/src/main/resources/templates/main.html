@@ -13,10 +13,10 @@
 	<nav>
 		<ul>
 			<li>
-				<form class="input-container" th:action="@{/searching}" method="post">
+				<form class="input-container" th:action="@{/searching}" method="get">
 					<input type="text" name="query" placeholder="인물 검색하기" required>
 					<button id="search-button" type="submit">
-						<img src="/images/search_icon.png" alt="Search Icon">
+						<img src="/images/magnifying-glass.png" alt="Search Icon">
 					</button>
 				</form>
 			</li>

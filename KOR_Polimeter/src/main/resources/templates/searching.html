@@ -55,13 +55,7 @@
 			    </select>
 			    
 			    <!-- 검색 입력 -->
-			    <input type="text" placeholder="검색하기" id="search">
-			    
-			    <!-- 검색 버튼 -->
-			    <button id="search-btn">
-					<img src="/images/search_icon.png" alt="Search Icon">
-					검색
-				</button>
+			    <input type="text" placeholder="검색하기" id="search" style="width:45%" th:value="${mainquery}">
 
 				<span id="party-label">정당</span>
 			    <!-- Popularity 텍스트 -->
@@ -151,19 +145,22 @@
 
 		// 현재 페이지의 랭킹 항목 렌더링
 		rankingList.innerHTML = pageItems.map(item => `
-            <li class="ranking-item" data-id="${item.id}">
-                <span class="ranking-number">${item.id}</span>
-                <img src="${item.image}" alt="${item.name}">
-                <div class="ranking-details">
-                    <span class="name">${item.name}</span>
-                    <span class="party">${item.party}</span>
-                    <span class="popularity">${item.popularity}</span>
-                </div>
-            </li>
-        `).join('');
+        <li class="ranking-item" data-id="${item.id}">
+            <span class="ranking-number">${item.id}</span>
+            <img src="${item.image}" alt="${item.name}">
+            <div class="ranking-details">
+                <span class="name">${item.name}</span>
+                <span class="party">${item.party}</span>
+                <span class="popularity">${item.popularity}</span>
+            </div>
+        </li>
+    `).join('');
 
-		// URL을 업데이트 (pushState를 사용해 브라우저 히스토리에서 URL을 변경)
-		window.history.pushState(null, '', `?page=${page}`);
+		// URL 파라미터 업데이트 (기존 URL 파라미터 유지)
+		const urlParams = new URLSearchParams(window.location.search);
+		urlParams.set('page', page); // page 파라미터만 업데이트
+		const newUrl = `${window.location.pathname}?${urlParams.toString()}`;
+		window.history.pushState(null, '', newUrl); // URL 업데이트
 
 		// 페이지네이션 렌더링
 		renderPagination();
@@ -177,6 +174,7 @@
 			});
 		});
 	}
+
 
 	// 페이지네이션 버튼 렌더링 함수
 	function renderPagination() {
@@ -249,6 +247,9 @@
 	}
 
 	document.addEventListener('DOMContentLoaded', async () => {
+		const searchInput = document.getElementById('search');
+		const mainquery = searchInput.value;
+		console.log(mainquery+"값입니다.");
 		// URL에서 쿼리 파라미터로 현재 페이지를 가져옴
 		const urlParams = new URLSearchParams(window.location.search);
 		const page = urlParams.get('page');
@@ -264,26 +265,87 @@
 				applyFilter(filterValue); // 필터 적용
 			});
 		});
+		handleSearch(mainquery);
 	});
 
 	// 필터 적용 함수
 	function applyFilter(filterCriteria) {
 		// 필터 조건에 따라 rankings 배열 업데이트
 		rankings = originalRankings.filter(item => {
-			if (filterCriteria === 'men') return item.gender === 0;
-			if (filterCriteria === 'women') return item.gender === 1;
-			if (filterCriteria === '2030') return item.age >= 20 && item.age < 40;
-			if (filterCriteria === '4050') return item.age >= 40 && item.age < 60;
-			if (filterCriteria === '60') return item.age >= 60;
+			if (filterCriteria === 'men') {
+				return item.gender === 0;
+			} else if (filterCriteria === 'women') {
+				return item.gender === 1;
+			} else if (filterCriteria === '2030') {
+				return item.age >= 20 && item.age < 40;
+			} else if (filterCriteria === '4050') {
+				return item.age >= 40 && item.age < 60;
+			} else if (filterCriteria === '60') {
+				return item.age >= 60;
+			}
 			return true; // 기본: 필터 없이 전체 표시
 		});
 
-		// 필터를 적용한 후 첫 페이지로 이동
+		// 필터링 결과 디버깅
+		console.log('Filtered Rankings:', rankings);
+
+		// URL 파라미터 업데이트
+		const urlParams = new URLSearchParams(window.location.search);
+
+		// filterCriteria가 유효한 경우에만 URL에 반영
+		if (filterCriteria && filterCriteria !== '') {
+			urlParams.set('filter', filterCriteria); // filter 값을 설정
+		} else {
+			urlParams.delete('filter'); // 필터 조건이 없으면 filter 파라미터 제거
+		}
+
+		// 페이지를 항상 1로 초기화
+		urlParams.set('page', 1);
+
+		// 새로운 URL 생성
+		const newUrl = `${window.location.pathname}?${urlParams.toString()}`;
+		console.log('Updated URL:', newUrl); // 디버깅: 업데이트된 URL 확인
+
+		// URL 업데이트
+		if (window.history && window.history.pushState) {
+			window.history.pushState(null, '', newUrl);
+			console.log('URL successfully updated in browser');
+		} else {
+			console.error('pushState is not supported in this browser');
+		}
+
+		// 첫 페이지 렌더링
 		currentPage = 1;
 		renderPage(currentPage);
 		renderPagination();
 	}
 
+	function handleSearch(query) {
+		// 검색어 소문자로 변환
+		query = query.toLowerCase();
+
+		// URL에 검색어 반영 (pushState)
+		const url = new URL(window.location);
+		if (query) {
+			url.searchParams.set('query', query); // 'query' 파라미터 추가
+		} else {
+			url.searchParams.delete('query'); // 검색어가 없으면 파라미터 제거
+		}
+		window.history.pushState({}, '', url); // URL 변경
+
+		// 검색어에 따라 rankings 필터링
+		rankings = originalRankings.filter(item =>
+				item.name.toLowerCase().includes(query) ||
+				item.party.toLowerCase().includes(query)
+		);
+
+		currentPage = 1; // 검색 시 첫 페이지로 이동
+		renderPage(currentPage); // 필터링된 결과 렌더링
+	}
+
+	document.getElementById('search').addEventListener('input', (event) => {
+		handleSearch(event.target.value); // 검색 함수 호출
+	});
 
 </script>
 

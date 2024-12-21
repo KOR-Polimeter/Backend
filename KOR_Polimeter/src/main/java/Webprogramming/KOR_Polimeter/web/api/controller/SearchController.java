@@ -1,7 +1,9 @@
 package Webprogramming.KOR_Polimeter.web.api.controller;
 
+import Webprogramming.KOR_Polimeter.web.api.dto.KakaoDTO;
 import Webprogramming.KOR_Polimeter.web.api.model.Politician;
 import Webprogramming.KOR_Polimeter.web.api.service.PoliticianService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
@@ -30,12 +32,21 @@ public class SearchController {
     }
 
     @GetMapping("/searching")
-    public String showSearchingPage() {
+    public String showSearchingPage(@RequestParam(value = "query", required = false) String query, Model model) {
+        model.addAttribute("mainquery", query); // 검색어
         return "searching"; // searching.html로 연결
     }
 
     @GetMapping("/details")
-    public String details(@RequestParam("name") String name, Model model) {
+    public String details(@RequestParam("name") String name, HttpSession session, Model model) {
+        /*Object user = session.getAttribute("user"); // "user"는 세션에 저장된 사용자 정보 키
+        try {
+            KakaoDTO kakaoDTO = (KakaoDTO) user;
+            System.out.println(kakaoDTO.getName() + "님 안녕하세요! 여긴 Searching page입니다.");
+            model.addAttribute("isLoggedIn", true); // 로그인 상태
+        } catch (NullPointerException e) {
+            System.out.println("아직 로그인하지 않아서 kakaoDTO값이 null입니다. 여긴 Searching page입니다.");
+        }*/
         // RestTemplate 생성
         RestTemplate restTemplate = new RestTemplate();
 

@@ -24,6 +24,12 @@ public class HomeController {
         model.addAttribute("kakaoUrl", kakaoUrl);
 
         Object user = session.getAttribute("user"); // "user"는 세션에 저장된 사용자 정보 키
+        try {
+            KakaoDTO kakaoDTO = (KakaoDTO) user;
+            System.out.println(kakaoDTO.getName() + "님 안녕하세요!");
+        } catch (NullPointerException e) {
+            System.out.println("아직 로그인하지 않아서 kakaoDTO값이 null입니다.");
+        }
 
         // 사용자 정보가 존재하면 모델에 추가
         if (user != null) {
