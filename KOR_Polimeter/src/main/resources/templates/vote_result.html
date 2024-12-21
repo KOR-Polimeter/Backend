@@ -5,19 +5,27 @@
 <title>KOR_Polimeter</title>
 <link rel="stylesheet" href="/css/vote_result_style.css">
 <link rel="stylesheet" href="/css/default_style.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 	<header>
 		<h1>
-			<a th:href="@{/static}">KOR_Polimeter</a>
+			<a th:href="@{/}">KOR_Polimeter</a>
 		</h1>
 		<nav>
 			<ul>
+				<li><a th:href="@{/top10}">TOP10 실시간</a></li>
 				<li><a th:href="@{/searching}">인물검색</a></li>
-				<li><a th:href="@{/vote}">투표하기</a></li>
 				<div class="vertical-line"></div>
-				<li><a th:href="@{/login}">로그인</a></li>
-				<li><a th:href="@{/logout}">로그아웃</a></li>
+				<!-- 카카오 로그인 URL은 컨트롤러에서 model에 추가한 kakaoUrl 값을 사용 -->
+				<li>
+					<a th:if="${isLoggedIn == false}" th:href="@{'https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=772c65da382eb8de1916b5771770e5e7&redirect_uri=http://localhost:8080/auth/kakao/callback'}">카카오 로그인</a>
+				</li>
+				<li>
+					<a th:if="${isLoggedIn == true}" th:href="@{'https://kauth.kakao.com/oauth/logout?client_id=772c65da382eb8de1916b5771770e5e7&logout_redirect_uri=http://localhost:8080/logout'}">
+						로그아웃
+					</a>
+				</li>
 			</ul>
 		</nav>
 	</header>
@@ -54,205 +62,240 @@
 		<p>Github: https://github.com/KOR-Polimeter</p>
 		<p>Website created in 2024.</p>
 	</footer>
+
 	<script>
-	// 데이터베이스에서 가져온 선택된 후보들 표시
-const selectedCandidates = [
-  { id: "1001", name: "이재명", image: "이재명.jpg" },
-  { id: "2001", name: "추경호", image: "추경호.png" },
-  { id: "3001", name: "조국", image: "조국.png" },
-  { id: "4001", name: "이준석", image: "이준석.jpg" },
-  { id: "5001", name: "윤종오", image: "윤종오.png" },
-  { id: "6001", name: "한창민", image: "한창민.png" },
-  { id: "7001", name: "용혜인", image: "용혜인.png" },
-  { id: "8001", name: "김종민", image: "김종민.png" },
-  { id: "9001", name: "국회", image: "국회.jpg" },
-  { id: "0001", name: "국회2", image: "국회.jpg" }
-];
+		let chartData = {}; // 각 정치인의 인기도 데이터를 저장
+		const totalTimeSlots = 6; // x축 범위 (5분 = 10개 데이터 포인트)
+		let chartInstance = null; // 차트 인스턴스
+		let timeLabels = []; // x축에 사용할 시간 레이블 저장
+		let startTime = null; // 차트의 시작 시간을 동적으로 설정
 
-    // 선택된 후보들을 화면에 표시하는 함수
-    function displaySelectedCandidates() {
-      const container = document.getElementById('selected-candidates-list');
-      selectedCandidates.forEach(candidate => {
-        // 후보 요소 생성
-        const candidateElement = document.createElement('div');
-        candidateElement.classList.add('candidate');
+		let currentTotalVotes = 0; // 현재 총 투표수
 
-        // 이미지 및 이름 추가
-        candidateElement.innerHTML = `
-          <img src="${candidate.image}" alt="${candidate.name}">
-          <p>${candidate.name}</p>
-        `;
+		// 총 투표수를 애니메이션 효과로 업데이트하는 함수
+		function animateTotalVotes(newTotalVotes) {
+			const totalVotesElement = document.getElementById('total-votes');
+			const startValue = currentTotalVotes;
+			const endValue = newTotalVotes;
+			const duration = 1000; // 애니메이션 지속 시간 (ms)
+			const startTime = performance.now();
 
-        // 후보 요소를 리스트에 추가
-        container.appendChild(candidateElement);
-      });
-    }
+			function updateAnimation(currentTime) {
+				const elapsedTime = currentTime - startTime;
+				const progress = Math.min(elapsedTime / duration, 1); // 진행률 계산
+				const currentValue = Math.floor(startValue + (endValue - startValue) * progress);
+				totalVotesElement.textContent = currentValue.toLocaleString();
 
-    // 페이지 로드 시 후보들을 표시
-    displaySelectedCandidates();
-    
-    let chartData = {}; // 각 정치인의 인기도 데이터를 저장
-    const totalTimeSlots = 6; // x축 범위 (5분 = 10개 데이터 포인트)
-    let chartInstance = null; // 차트 인스턴스
-    let timeLabels = []; // x축에 사용할 시간 레이블 저장
-    let startTime = null; // 차트의 시작 시간을 동적으로 설정
+				if (progress < 1) {
+					requestAnimationFrame(updateAnimation);
+				} else {
+					currentTotalVotes = newTotalVotes; // 최종 값 저장
+				}
+			}
 
-    let currentTotalVotes = 0; // 현재 총 투표수
+			requestAnimationFrame(updateAnimation);
+		}
 
-    // 총 투표수를 애니메이션 효과로 업데이트하는 함수
-    function animateTotalVotes(newTotalVotes) {
-        const totalVotesElement = document.getElementById('total-votes');
-        const startValue = currentTotalVotes;
-        const endValue = newTotalVotes;
-        const duration = 1000; // 애니메이션 지속 시간 (ms)
-        const startTime = performance.now();
+		// 차트를 그리는 함수
+		function renderChart() {
+			if (timeLabels.length === 0) {
+				timeLabels = generateTimeLabels(); // 처음 차트 그릴 때, 시간 레이블 생성
+			}
 
-        function updateAnimation(currentTime) {
-            const elapsedTime = currentTime - startTime;
-            const progress = Math.min(elapsedTime / duration, 1); // 진행률 계산
-            const currentValue = Math.floor(startValue + (endValue - startValue) * progress);
-            totalVotesElement.textContent = currentValue.toLocaleString();
+			const datasets = Object.keys(chartData).map((politician, index) => ({
+				label: politician,
+				data: chartData[politician], // 정치인의 인기도 데이터
+				fill: false,
+				borderColor: getDistinctColor(index),
+				tension: 0.3,
+				pointRadius: 5,
+				borderWidth: 2,
+			}));
 
-            if (progress < 1) {
-                requestAnimationFrame(updateAnimation);
-            } else {
-                currentTotalVotes = newTotalVotes; // 최종 값 저장
-            }
-        }
+			if (chartInstance) {
+				chartInstance.data.labels = timeLabels;
+				chartInstance.data.datasets = datasets;
+				chartInstance.update();
+			} else {
+				chartInstance = new Chart(document.getElementById('chart'), {
+					type: 'line',
+					data: {
+						labels: timeLabels,
+						datasets: datasets
+					},
+					options: {
+						scales: {
+							x: {
+								title: {
+									display: true,
+									text: 'Time (seconds)'
+								},
+								grid: {
+									display: false
+								}
+							},
+							y: {
+								title: {
+									display: true,
+									text: 'Popularity (%)'
+								},
+								min: 0,
+								max: 100,
+								ticks: {
+									stepSize: 10
+								},
+								grid: {
+									display: false
+								}
+							}
+						}
+					}
+				});
+			}
+		}
 
-        requestAnimationFrame(updateAnimation);
-    }
+		// 고유한 색상을 생성하는 함수
+		function getDistinctColor(index) {
+			const colors = [
+				'#FF5733', '#33FF57', '#3357FF', '#FF33A6', '#A6FF33',
+				'#FF9633', '#33FFFF', '#9633FF', '#FF3333', '#FF33FF'
+			];
+			return colors[index % colors.length];
+		}
 
-    // 차트를 그리는 함수
-    function renderChart() {
-        if (timeLabels.length === 0) {
-            timeLabels = generateTimeLabels(); // 처음 차트 그릴 때, 시간 레이블 생성
-        }
+		function updateChartData(data) {
+			const newChartData = {};
+			const totalVotes = data.totalVotes;
 
-        const datasets = Object.keys(chartData).map((politician, index) => ({
-            label: politician,
-            data: chartData[politician], // 정치인의 인기도 데이터
-            fill: false,
-            borderColor: getDistinctColor(index),
-            tension: 0.3,
-            pointRadius: 5,
-            borderWidth: 2,
-        }));
+			animateTotalVotes(totalVotes); // 총 투표수 업데이트 애니메이션
 
-        if (chartInstance) {
-            chartInstance.data.labels = timeLabels;
-            chartInstance.data.datasets = datasets;
-            chartInstance.update();
-        } else {
-            chartInstance = new Chart(document.getElementById('chart'), {
-                type: 'line',
-                data: {
-                    labels: timeLabels,
-                    datasets: datasets
-                },
-                options: {
-                    scales: {
-                        x: {
-                            title: {
-                                display: true,
-                                text: 'Time (seconds)'
-                            },
-                            grid: {
-                                display: false
-                            }
-                        },
-                        y: {
-                            title: {
-                                display: true,
-                                text: 'Popularity (%)'
-                            },
-                            min: 0,
-                            max: 100,
-                            ticks: {
-                                stepSize: 10
-                            },
-                            grid: {
-                                display: false
-                            }
-                        }
-                    }
-                }
-            });
-        }
-    }
+			animateTotalVotes(totalVotes); // 총 투표수 업데이트에 애니메이션 효과 적용
 
-    // 고유한 색상을 생성하는 함수
-    function getDistinctColor(index) {
-        const colors = [
-            '#FF5733', '#33FF57', '#3357FF', '#FF33A6', '#A6FF33',
-            '#FF9633', '#33FFFF', '#9633FF', '#FF3333', '#FF33FF'
-        ];
-        return colors[index % colors.length];
-    }
+			data.top10Politicians.forEach(politician => {
+				const percentage = totalVotes > 0 ? (politician.count / totalVotes) * 100 : 0;
+				newChartData[politician.name] = percentage;
+			});
 
-    function updateChartData(data) {
-        const newChartData = {};
-        const totalVotes = data.totalVotes;
+			const currentTime = new Date();
+			const currentTimeLabel = currentTime.toLocaleTimeString([], {
+				hour: '2-digit',
+				minute: '2-digit',
+				second: '2-digit',
+				hour12: false
+			});
 
-        animateTotalVotes(totalVotes); // 총 투표수 업데이트 애니메이션
+			if (timeLabels[timeLabels.length - 1] !== currentTimeLabel) {
+				if (timeLabels.length >= totalTimeSlots) {
+					timeLabels.shift();
+				}
+				timeLabels.push(currentTimeLabel);
+			}
 
-        animateTotalVotes(totalVotes); // 총 투표수 업데이트에 애니메이션 효과 적용
+			Object.keys(newChartData).forEach(name => {
+				if (!chartData[name]) {
+					chartData[name] = Array(timeLabels.length - 1).fill(null);
+				}
+				chartData[name].push(newChartData[name]);
+				if (chartData[name].length > totalTimeSlots) {
+					chartData[name].shift();
+				}
+			});
 
-        data.top10Politicians.forEach(politician => {
-            const percentage = totalVotes > 0 ? (politician.count / totalVotes) * 100 : 0;
-            newChartData[politician.name] = percentage;
-        });
+			Object.keys(chartData).forEach(name => {
+				if (!newChartData[name]) {
+					chartData[name].push(null);
+					if (chartData[name].length > totalTimeSlots) {
+						chartData[name].shift();
+					}
+				}
+			});
 
-        const currentTime = new Date();
-        const currentTimeLabel = currentTime.toLocaleTimeString([], {
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit',
-            hour12: false
-        });
+			renderChart();
+		}
 
-        if (timeLabels[timeLabels.length - 1] !== currentTimeLabel) {
-            if (timeLabels.length >= totalTimeSlots) {
-                timeLabels.shift();
-            }
-            timeLabels.push(currentTimeLabel);
-        }
+		function fetchData() {
+			fetch('/api/politician/top10')
+					.then(response => response.json())
+					.then(data => {
+						updateChartData(data);
+					})
+					.catch(error => console.error('API 요청 오류:', error));
+		}
 
-        Object.keys(newChartData).forEach(name => {
-            if (!chartData[name]) {
-                chartData[name] = Array(timeLabels.length - 1).fill(null);
-            }
-            chartData[name].push(newChartData[name]);
-            if (chartData[name].length > totalTimeSlots) {
-                chartData[name].shift();
-            }
-        });
+		fetchData();
+		setInterval(() => {
+			fetchData();
+		}, 10000);
+	</script>
+	<script>
+		// 유저 ID를 받아오는 fetch 요청
+		fetch('/api/session')
+				.then(response => response.text())
+				.then(data => {
+					const regex = /id=(\d+)/;
+					const match = data.match(regex);
 
-        Object.keys(chartData).forEach(name => {
-            if (!newChartData[name]) {
-                chartData[name].push(null);
-                if (chartData[name].length > totalTimeSlots) {
-                    chartData[name].shift();
-                }
-            }
-        });
+					if (match) {
+						const userId = parseInt(match[1]) + 1;  // 유저 ID 추출
+						console.log('User ID:', userId);  // 확인용
 
-        renderChart();
-    }
+						// 유저 ID를 이용해 api/myVote에서 정치인 정보 가져오기
+						fetch('/api/myVote', {
+							method: 'POST',
+							headers: {
+								'Content-Type': 'application/json',
+							},
+							body: JSON.stringify({ userId: userId })
+						})
+								.then(response => response.json())
+								.then(data => {
+									// 받은 응답에서 정치인 리스트 추출
+									const selectedCandidates = data.votes.map(vote => {
+										const party = vote.party;  // 정당
+										const name = vote.name;    // 정치인 이름
+										const polId = vote.polId;  // 정치인 ID (필요 시 사용 가능)
 
-    function fetchData() {
-        fetch('/api/politician/top10')
-            .then(response => response.json())
-            .then(data => {
-                updateChartData(data);
-            })
-            .catch(error => console.error('API 요청 오류:', error));
-    }
+										// 이미지 경로 생성
+										const imagePath = `/images/politicians/${party}/${name}.jpg`; // 확장자 .jpg로 가정
+										console.log(imagePath)
+										return { id: polId, name: name, image: imagePath };
+									});
 
-    fetchData();
-    setInterval(() => {
-        fetchData();
-    }, 10000);
-  </script>
+									// 선택된 후보들을 화면에 표시하는 함수
+									displaySelectedCandidates(selectedCandidates);
+								})
+								.catch(error => {
+									console.error('Error fetching political candidates:', error);
+								});
+					} else {
+						console.log('User ID not found');
+					}
+				})
+				.catch(error => {
+					console.error('Error fetching session:', error);
+				});
+
+		// 선택된 후보들을 화면에 표시하는 함수
+		function displaySelectedCandidates(selectedCandidates) {
+			const container = document.getElementById('selected-candidates-list');
+			container.innerHTML = '';  // 기존 후보들 제거 (중복 방지)
+
+			selectedCandidates.forEach(candidate => {
+				// 후보 요소 생성
+				const candidateElement = document.createElement('div');
+				candidateElement.classList.add('candidate');
+
+				// 이미지 및 이름 추가
+				candidateElement.innerHTML = `
+		  <img src="${candidate.image}" alt="${candidate.name}">
+		  <p>${candidate.name}</p>
+		`;
+
+				// 후보 요소를 리스트에 추가
+				container.appendChild(candidateElement);
+			});
+		}
+
+	</script>
 </body>
 </html>

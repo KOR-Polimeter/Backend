@@ -11,15 +11,22 @@
 <body>
 	<header>
 		<h1>
-			<a th:href="@{/static}">KOR_Polimeter</a>
+			<a th:href="@{/}">KOR_Polimeter</a>
 		</h1>
 		<nav>
 			<ul>
+				<li><a th:href="@{/top10}">TOP10 실시간</a></li>
 				<li><a th:href="@{/searching}">인물검색</a></li>
-				<li><a th:href="@{/vote}">투표하기</a></li>
 				<div class="vertical-line"></div>
-				<li><a th:href="@{/login}">로그인</a></li>
-				<li><a th:href="@{/logout}">로그아웃</a></li>
+				<!-- 카카오 로그인 URL은 컨트롤러에서 model에 추가한 kakaoUrl 값을 사용 -->
+				<li>
+					<a th:if="${isLoggedIn == false}" th:href="@{'https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=772c65da382eb8de1916b5771770e5e7&redirect_uri=http://localhost:8080/auth/kakao/callback'}">카카오 로그인</a>
+				</li>
+				<li>
+					<a th:if="${isLoggedIn == true}" th:href="@{'https://kauth.kakao.com/oauth/logout?client_id=772c65da382eb8de1916b5771770e5e7&logout_redirect_uri=http://localhost:8080/logout'}">
+						로그아웃
+					</a>
+				</li>
 			</ul>
 		</nav>
 	</header>
@@ -41,10 +48,7 @@
 		</div>
 	</div>
     <div class="go-to-main-container">
-		<div class="button-container">
-			<a th:href="@{/vote}" class="go-to-main-button">투표하러 가기</a>
-			<a th:href="@{/static}" class="go-to-main-button">메인 화면으로</a>
-		</div>
+		<a href="@{/static}" class="go-to-main-button">메인화면으로 이동</a>
 	</div>
 	<footer>
 		<p>Contact us at: sdg0896@gmail.com</p>

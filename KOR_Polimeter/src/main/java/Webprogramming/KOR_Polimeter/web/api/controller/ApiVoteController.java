@@ -1,6 +1,7 @@
 package Webprogramming.KOR_Polimeter.web.api.controller;
 
 import Webprogramming.KOR_Polimeter.web.api.dto.VoteRequest;
+import Webprogramming.KOR_Polimeter.web.api.dto.VoteResponse;
 import Webprogramming.KOR_Polimeter.web.api.repository.UserRepository;
 import Webprogramming.KOR_Polimeter.web.api.service.UserVoteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,39 +36,13 @@ public class ApiVoteController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error processing votes: " + e.getMessage());
         }
     }
+
+
+        @PostMapping("/myVote")
+        public VoteResponse getMyVotes(@RequestBody VoteRequest voteRequest) {
+            int userId = voteRequest.getUserId(); // 요청 본문에서 userId 추출
+            return userVoteService.getVotesByUser(userId); // 투표한 정치인 정보 반환
+        }
+
 }
 
-
-//package Webprogramming.KOR_Polimeter.web.api.controller;
-//
-//import Webprogramming.KOR_Polimeter.web.api.dto.VoteRequest;
-//import Webprogramming.KOR_Polimeter.web.api.model.User;
-//import Webprogramming.KOR_Polimeter.web.api.model.Politician;
-//import Webprogramming.KOR_Polimeter.web.api.service.UserVoteService;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.web.bind.annotation.*;
-//
-//@RestController
-//@RequestMapping("/api/vote")
-//public class ApiVoteController {
-//
-//    @Autowired
-//    private UserVoteService userVoteService;
-//
-//    @PostMapping
-//    public String vote(@RequestBody VoteRequest voteRequest) {
-//        // 클라이언트로부터 받은 데이터 (userId, polId)
-//        User user = new User();
-//        user.setId(voteRequest.getUserId());
-//        Politician politician = new Politician();
-//        politician.setId(voteRequest.getPolId());
-//
-//        // 사용자 투표 가능 여부 확인
-//        if (userVoteService.canUserVote(user)) {
-//            userVoteService.voteForPolitician(user, politician); // 투표 처리
-//            return "Vote successful!";
-//        } else {
-//            return "You cannot vote again within one month!";
-//        }
-//    }
-//}
