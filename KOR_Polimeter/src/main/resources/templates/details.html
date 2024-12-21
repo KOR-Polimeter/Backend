@@ -43,11 +43,11 @@
 						<p><span class="label">지역선거구</span><span class="value" th:text="${region}">서울특별시</span></p>
 						<p><span class="label">출생날짜</span><span class="value" th:text="${bday}">1980-01-01</span></p>
 						<p><span class="label">연령</span><span class="value" th:text="${age} + '세'">43세</span></p>
-						<p><span class="label">성별</span><span class="value" th:text="${gender == '0' ? '남' : '여'}">남성</span></p>
+						<p><span class="label">성별</span><span class="value" th:text="${gender == 0 ? '남' : '여'}">남성</span></p>
 					</div>
 				</div>
 				<!-- 프로필 설명 -->
-				<div class="profile-description-container">
+				<div class="profile-description-container" th:data-description="${description}">
 					<h3 id="profile-description">대표발의 의안</h3>
 					<ul id="description-list"></ul>
 				</div>
@@ -59,7 +59,7 @@
 						 alt="Popularity Change Graph">
 				</div>
 				<div class="back-container">
-					<a href="searching.html" class="back-link">인물 목록으로 돌아가기</a>
+					<a href="#" class="back-link" id="back-link">인물 목록으로 돌아가기</a>
 				</div>
 			</div>
 		</div>
@@ -79,9 +79,13 @@
 
 	<script>
 	  document.addEventListener('DOMContentLoaded', () => {
-	    const urlParams = new URLSearchParams(window.location.search);
-	    const id = urlParams.get('id'); // id 파라미터를 가져옴
-		const description = urlParams.get('description');
+		  const dataContainer = document.querySelector(".profile-description-container");
+		  const description = dataContainer.dataset.description; // description 값 읽기
+		  if (!description) {
+			  console.error("description 값이 비어 있습니다.");
+			  return;
+		  }
+		  //console.log(description)
 
 		// description을 콤마로 나누어 배열로 변환
 		const descriptionList = description.split(",");
@@ -96,6 +100,14 @@
 
 	    // 이 부분에서 id를 기반으로 상세 정보를 로딩하거나 표시
 	    console.log(id); // 예시로 id를 콘솔에 출력
+	  });
+
+	  document.addEventListener('DOMContentLoaded', () => {
+		  const backLink = document.getElementById('back-link');
+		  backLink.addEventListener('click', (event) => {
+			  event.preventDefault(); // 기본 동작(페이지 이동) 막기
+			  history.back(); // 이전 페이지로 이동
+		  });
 	  });
 	</script>
 

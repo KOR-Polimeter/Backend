@@ -1,15 +1,22 @@
 package Webprogramming.KOR_Polimeter.web.api.controller;
 
+import Webprogramming.KOR_Polimeter.web.api.model.Politician;
+import Webprogramming.KOR_Polimeter.web.api.service.PoliticianService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import Webprogramming.KOR_Polimeter.web.api.service.SearchService;
+import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Controller
 public class SearchController {
@@ -28,26 +35,42 @@ public class SearchController {
     }
 
     @GetMapping("/details")
-    public String details(
-            @RequestParam("id") int itemId,
-            @RequestParam("name") String name,
-            @RequestParam("party") String party,
-            @RequestParam("region") String region,
-            @RequestParam("bday") String bday,
-            @RequestParam("age") int age,
-            @RequestParam("description") String description,
-            @RequestParam("gender") String gender,
-            Model model) {
+    public String details(@RequestParam("name") String name, Model model) {
+        // RestTemplate 생성
+        RestTemplate restTemplate = new RestTemplate();
 
-        // 모델에 데이터 추가
-        model.addAttribute("itemId", itemId);
-        model.addAttribute("name", name);
-        model.addAttribute("party", party);
-        model.addAttribute("region", region);
-        model.addAttribute("bday", bday);
-        model.addAttribute("age", age);
-        model.addAttribute("description", description);
-        model.addAttribute("gender", gender);
+        // /searching/name API 호출 URL
+        String url = "http://localhost:8080/api/politician/search/name?name=" + name;
+
+        // API 호출 및 Politician 리스트 받아오기
+        ResponseEntity<List<Politician>> response = restTemplate.exchange(
+                url,
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<Politician>>() {}
+        );
+
+        // Politician 리스트 가져오기
+        List<Politician> politicians = response.getBody();
+
+        if (politicians == null || politicians.isEmpty()) {
+            // 검색 결과가 없을 경우 처리
+            model.addAttribute("message", "검색 결과가 없습니다.");
+            return "error"; // 에러 페이지로 이동
+        }
+
+        // 유일한 정치인 데이터 가져오기 (첫 번째 정치인)
+        Politician politician = politicians.get(0);
+        System.out.println(politician.getDescription() + " 데이터를 가져왔어요"); // 로그 확인용
+        // 모델에 정치인 데이터 추가
+        model.addAttribute("itemId", politician.getId());
+        model.addAttribute("name", politician.getName());
+        model.addAttribute("party", politician.getParty());
+        model.addAttribute("region", politician.getRegion());
+        model.addAttribute("bday", politician.getBday());
+        model.addAttribute("age", politician.getAge());
+        model.addAttribute("description", politician.getDescription());
+        model.addAttribute("gender", politician.getGender());
 
         // details.html로 반환
         return "details";
