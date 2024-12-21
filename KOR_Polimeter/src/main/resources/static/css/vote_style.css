@@ -112,7 +112,7 @@ footer {
 
 .vote-section {
 	margin: 20px 10vw;
-	padding: 0px;
+	padding: 0;
 }
 
 .vote-group {
@@ -127,7 +127,7 @@ footer {
 .vote-buttons {
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
-	gap: 0px;
+	gap: 0;
 }
 
 .vote-buttons button {

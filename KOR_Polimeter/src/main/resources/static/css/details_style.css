@@ -132,6 +132,7 @@ body {
 .profile-details .value {
     flex: 2;
 	margin-left: 20px;
+	padding-left: 10px;
 	padding-bottom: 10px;
 	border-bottom: 1px solid darkgray;
     color: #555;
