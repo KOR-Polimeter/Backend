@@ -20,6 +20,6 @@ public class User {
     //@Column(name = "created_at")
         //private String createdAt; // 생성일시 (datetime 컬럼, kakao api에서 connected_at로부터 값을 받음)
         private Integer gender; // 성별 (int 컬럼)
-        private Long UserId;
+        private Long userId;
         //private String email;
 }
