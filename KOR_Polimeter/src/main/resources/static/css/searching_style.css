@@ -1,3 +1,16 @@
+html, body {
+	margin: 0;
+	padding: 0;
+	height: 100%; /* html과 body를 화면 전체 높이로 고정 */
+}
+
+footer {
+	height: 100px; /* 푸터 높이 지정 */
+	background-color: #f1f1f1;
+	text-align: center;
+	padding: 20px 0;
+	border-top: 1px solid #ccc;
+}
 /* TNB 스타일 통일 */
 .TNB {
     position: relative;
@@ -52,6 +65,8 @@
 	max-width: 1200px;
 	margin: 20px auto;
 	gap: 20px;
+	min-height: calc(100% - 100px); /* 푸터 높이를 제외한 영역을 채움 */
+	box-sizing: border-box; /* 패딩과 보더 포함 */
 }
 
 /* 필터 스타일 */
