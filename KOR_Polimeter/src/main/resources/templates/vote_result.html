@@ -31,7 +31,16 @@
 		<div id="selected-candidates-list" class="candidate-container">
 			<!-- 선택된 후보들의 이미지와 이름이 여기에 표시됨 -->
 		</div>
-
+	</div>
+	<div id="total-votes-container">
+		<h2>
+			총 투표수: <span id="total-votes">0</span>표
+		</h2>
+	</div>
+	<div id="chart-container">
+		<canvas id="chart"></canvas>
+	</div>
+	<div class="go-to-main-container">
 		<a href="@{/static}" class="edit-button">메인으로 이동</a>
 	</div>
 	<footer>
@@ -75,6 +84,169 @@ const selectedCandidates = [
 
     // 페이지 로드 시 후보들을 표시
     displaySelectedCandidates();
+    
+    let chartData = {}; // 각 정치인의 인기도 데이터를 저장
+    const totalTimeSlots = 6; // x축 범위 (5분 = 10개 데이터 포인트)
+    let chartInstance = null; // 차트 인스턴스
+    let timeLabels = []; // x축에 사용할 시간 레이블 저장
+    let startTime = null; // 차트의 시작 시간을 동적으로 설정
+
+    let currentTotalVotes = 0; // 현재 총 투표수
+
+    // 총 투표수를 애니메이션 효과로 업데이트하는 함수
+    function animateTotalVotes(newTotalVotes) {
+        const totalVotesElement = document.getElementById('total-votes');
+        const startValue = currentTotalVotes;
+        const endValue = newTotalVotes;
+        const duration = 1000; // 애니메이션 지속 시간 (ms)
+        const startTime = performance.now();
+
+        function updateAnimation(currentTime) {
+            const elapsedTime = currentTime - startTime;
+            const progress = Math.min(elapsedTime / duration, 1); // 진행률 계산
+            const currentValue = Math.floor(startValue + (endValue - startValue) * progress);
+            totalVotesElement.textContent = currentValue.toLocaleString();
+
+            if (progress < 1) {
+                requestAnimationFrame(updateAnimation);
+            } else {
+                currentTotalVotes = newTotalVotes; // 최종 값 저장
+            }
+        }
+
+        requestAnimationFrame(updateAnimation);
+    }
+
+    // 차트를 그리는 함수
+    function renderChart() {
+        if (timeLabels.length === 0) {
+            timeLabels = generateTimeLabels(); // 처음 차트 그릴 때, 시간 레이블 생성
+        }
+
+        const datasets = Object.keys(chartData).map((politician, index) => ({
+            label: politician,
+            data: chartData[politician], // 정치인의 인기도 데이터
+            fill: false,
+            borderColor: getDistinctColor(index),
+            tension: 0.3,
+            pointRadius: 5,
+            borderWidth: 2,
+        }));
+
+        if (chartInstance) {
+            chartInstance.data.labels = timeLabels;
+            chartInstance.data.datasets = datasets;
+            chartInstance.update();
+        } else {
+            chartInstance = new Chart(document.getElementById('chart'), {
+                type: 'line',
+                data: {
+                    labels: timeLabels,
+                    datasets: datasets
+                },
+                options: {
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Time (seconds)'
+                            },
+                            grid: {
+                                display: false
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Popularity (%)'
+                            },
+                            min: 0,
+                            max: 100,
+                            ticks: {
+                                stepSize: 10
+                            },
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    }
+
+    // 고유한 색상을 생성하는 함수
+    function getDistinctColor(index) {
+        const colors = [
+            '#FF5733', '#33FF57', '#3357FF', '#FF33A6', '#A6FF33',
+            '#FF9633', '#33FFFF', '#9633FF', '#FF3333', '#FF33FF'
+        ];
+        return colors[index % colors.length];
+    }
+
+    function updateChartData(data) {
+        const newChartData = {};
+        const totalVotes = data.totalVotes;
+
+        animateTotalVotes(totalVotes); // 총 투표수 업데이트 애니메이션
+
+        animateTotalVotes(totalVotes); // 총 투표수 업데이트에 애니메이션 효과 적용
+
+        data.top10Politicians.forEach(politician => {
+            const percentage = totalVotes > 0 ? (politician.count / totalVotes) * 100 : 0;
+            newChartData[politician.name] = percentage;
+        });
+
+        const currentTime = new Date();
+        const currentTimeLabel = currentTime.toLocaleTimeString([], {
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: false
+        });
+
+        if (timeLabels[timeLabels.length - 1] !== currentTimeLabel) {
+            if (timeLabels.length >= totalTimeSlots) {
+                timeLabels.shift();
+            }
+            timeLabels.push(currentTimeLabel);
+        }
+
+        Object.keys(newChartData).forEach(name => {
+            if (!chartData[name]) {
+                chartData[name] = Array(timeLabels.length - 1).fill(null);
+            }
+            chartData[name].push(newChartData[name]);
+            if (chartData[name].length > totalTimeSlots) {
+                chartData[name].shift();
+            }
+        });
+
+        Object.keys(chartData).forEach(name => {
+            if (!newChartData[name]) {
+                chartData[name].push(null);
+                if (chartData[name].length > totalTimeSlots) {
+                    chartData[name].shift();
+                }
+            }
+        });
+
+        renderChart();
+    }
+
+    function fetchData() {
+        fetch('/api/politician/top10')
+            .then(response => response.json())
+            .then(data => {
+                updateChartData(data);
+            })
+            .catch(error => console.error('API 요청 오류:', error));
+    }
+
+    fetchData();
+    setInterval(() => {
+        fetchData();
+    }, 10000);
   </script>
 </body>
 </html>
