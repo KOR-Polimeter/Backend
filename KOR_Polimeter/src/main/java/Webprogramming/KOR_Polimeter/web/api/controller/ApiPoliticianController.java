@@ -63,6 +63,19 @@ public class ApiPoliticianController {
             return ResponseEntity.ok(response);
         }
     }
+
+    // 전체 정치인 득표수 조회(내림차순)
+    @GetMapping("/top300")
+    public ResponseEntity<?> findTop300PoliticiansByCount() {
+        Map<String, Object> response = service.getRankPoliticians();
+
+        // totalVotes와 topPoliticians가 포함된 응답을 처리
+        if (response == null || response.isEmpty()) {
+            return ResponseEntity.status(404).body("No politicians found");
+        } else {
+            return ResponseEntity.ok(response);
+        }
+    }
 }
 
 

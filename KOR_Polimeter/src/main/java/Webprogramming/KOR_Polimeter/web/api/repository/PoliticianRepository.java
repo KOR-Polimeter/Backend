@@ -16,4 +16,6 @@ public interface PoliticianRepository extends JpaRepository<Politician, Integer>
     List<Object[]> findTop10PoliticiansByCount();
     @Query("SELECT SUM(p.count) FROM Politician p")
     int sumCount();
+    @Query(value = "SELECT p.id, p.name, p.count FROM politicians p ORDER BY p.count DESC", nativeQuery = true)
+    List<Object[]> findTop300PoliticiansByCount();
 }
