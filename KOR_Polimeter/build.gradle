@@ -35,6 +35,7 @@ dependencies {
 	implementation 'com.googlecode.json-simple:json-simple:1.1.1'
 	implementation 'com.mysql:mysql-connector-j'
 
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-websocket'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	compileOnly 'javax.servlet:javax.servlet-api:4.0.1' // Servlet API 의존성 추가
 }

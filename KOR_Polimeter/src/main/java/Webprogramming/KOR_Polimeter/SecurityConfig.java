@@ -32,6 +32,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/**").permitAll()
                         .requestMatchers("/default", "/main", "/searching", "/vote", "/vote_result", "/details").permitAll()
                         .requestMatchers("/details/**").permitAll()
+                        .requestMatchers("/**").permitAll()
                         .anyRequest().authenticated() // 나머지 요청은 인증 필요
                 )
                 .oauth2Login(oauth2 -> oauth2
