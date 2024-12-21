@@ -1,45 +1,47 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Politician Popularity Chart</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f4f4f9;
-        }
-        h1 {
-            text-align: center;
-        }
-        #chart-container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-        canvas {
-            width: 100% !important;
-            height: 400px !important;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Politician Popularity Chart</title>
+<link rel="stylesheet" href="/css/toppol_style.css">
+<link rel="stylesheet" href="/css/default_style.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-
-<h1>정치인 인기도 TOP 10</h1>
-<div id="total-votes-container" style="text-align: center; margin-top: 20px;">
-    <h2>Total Votes: <span id="total-votes">0</span></h2>
-</div>
-<div id="chart-container">
-    <canvas id="chart"></canvas>
-</div>
-
-<script>
+	<header>
+		<h1>
+			<a th:href="@{/static}">KOR_Polimeter</a>
+		</h1>
+		<nav>
+			<ul>
+				<li><a th:href="@{/login}">로그인</a></li>
+				<li><a th:href="@{/logout}">로그아웃</a></li>
+				<li><a th:href="@{/searching}">인물검색</a></li>
+                <li><a th:href="@{/vote}">투표하기</a></li>
+			</ul>
+		</nav>
+	</header>
+	<div class="TNB">
+		<hr>
+		<h2>인기도 TOP 10</h2>
+		<hr>
+	</div>
+	<div id="total-votes-container"
+		style="text-align: center; margin-top: 20px;">
+		<h2>
+			총 투표수: <span id="total-votes">0</span>표
+		</h2>
+	</div>
+	<div id="chart-container">
+		<canvas id="chart"></canvas>
+	</div>
+	<footer>
+		<p>Contact us at: sdg0896@gmail.com</p>
+		<p>Github: https://github.com/KOR-Polimeter</p>
+		<p>Website created in 2024.</p>
+	</footer>
+	<script>
     let chartData = {}; // 각 정치인의 인기도 데이터를 저장
     const totalTimeSlots = 6; // x축 범위 (5분 = 10개 데이터 포인트)
     let chartInstance = null; // 차트 인스턴스
