@@ -201,9 +201,9 @@ footer {
 }
 
 #chart-container {
-	max-width: 800px;
+	max-width: 1200px;
 	margin: 0 auto;
-	margin-bottom: 50px;
+	margin-bottom: 30px;
 	padding: 20px;
 	background-color: white;
 	border-radius: 10px;
@@ -211,8 +211,9 @@ footer {
 }
 
 canvas {
-	width: 100% !important;
-	height: 400px !important;
+	width: 100%; /* 부모 컨테이너의 너비에 맞춤 */
+	aspect-ratio: 16 / 9; /* 16:9 비율 유지 */
+	display: block; /* inline-block 여백 제거 */
 }
 
 .go-to-main-container {
