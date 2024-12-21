@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"> <!--아직 지우지 마시오-->
 <head>
     <meta charset="UTF-8">
     <title>검색 결과</title>
@@ -9,7 +9,7 @@
 <body>
 <header>
     <h1>
-        <a th:href="@{/}">KOR_Polimeter</a>
+        <a th:href="@{/static}">KOR_Polimeter</a>
     </h1>
     <nav>
         <ul>
@@ -27,7 +27,7 @@
             <!-- 검색 결과를 반복하여 출력 -->
             <li th:each="result : ${results}" th:text="${result}"></li>
         </ul>
-        <a th:href="@{/}" class="home-link">홈으로 돌아가기</a>
+        <a th:href="@{/static}" class="home-link">홈으로 돌아가기</a>
     </div>
 </main>
 <footer>

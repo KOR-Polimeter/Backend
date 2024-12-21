@@ -9,7 +9,7 @@
 <body>
 	<header>
 		<h1>
-			<a th:href="@{/}">KOR_Polimeter</a>
+			<a th:href="@{/static}">KOR_Polimeter</a>
 		</h1>
 		<nav>
 			<ul>
@@ -41,8 +41,8 @@
 		</div>
 
 		<!-- 투표 수정하기 버튼 -->
-		<form id="edit-form" action="vote.html" method="POST"
-			style="display: none;">
+		<form id="edit-form" action="../../templates/vote.html" method="POST"
+			  style="display: none;">
 			<input type="hidden" name="selectedCandidates"
 				id="selectedCandidatesInput">
 		</form>
