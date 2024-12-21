@@ -1,3 +1,7 @@
+body {
+	background-color: #eeeeee !important;
+}
+
 /* 배너 스타일 */
 .TNB {
 	position: relative;
@@ -42,13 +46,22 @@
 	text-shadow: 4px 4px 4px rgba(0, 0, 0, 1);
 }
 
+.contents-container {
+	width: 85%;
+	margin: 60px auto;
+	border: 1px solid #ccc;
+	background: #f9f9f9;
+	border-radius: 15px;
+	box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
 /* 프로필 컨테이너 */
 .profile-container {
 	display: flex;
 	flex-wrap: wrap;
-	gap: 20px;
+	gap: 40px;
 	padding: 20px;
-	width: 80%;
+	width: 95%;
 	margin: 0 auto;
 }
 
@@ -91,7 +104,7 @@
     display: flex;
 	justify-content: center;
     flex-direction: column;
-    gap: 5px;
+    gap: 10px;
 }
 
 .profile-details h2 {
@@ -110,11 +123,15 @@
 .profile-details .label {
     flex: 1;
     font-weight: bold;
+	padding-bottom: 10px;
     color: #333;
 }
 
 .profile-details .value {
-    flex: 1;
+    flex: 2;
+	margin-left: 20px;
+	padding-bottom: 10px;
+	border-bottom: 1px solid darkgray;
     color: #555;
 }
 
@@ -122,7 +139,10 @@
 .profile-description-container {
 	flex: 1;
 	background: #f9f9f9;
-	padding: 15px;
+	padding-left: 15px;
+	padding-right: 15px;
+	padding-bottom: 10px;
+	margin-left: 15px;
 	margin-top: 10px;
 	border: 1px solid #ccc;
 	border-radius: 8px;
@@ -149,12 +169,20 @@
     margin-bottom: 5px;    /* 항목 간 간격 */
 }
 
+.graph-and-back-container {
+	flex: 1;
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+}
+
 /* 돌아가기 링크 컨테이너 */
 .back-container {
     display: flex;
-    width: 100%;         /* 부모 컨테이너의 전체 너비 확보 */
     justify-content: flex-end;  /* 오른쪽 정렬 */
+	margin-right: 20px;
     margin-top: 20px;
+	margin-bottom: 20px;
 }
 
 /* 돌아가기 링크 버튼 */
@@ -180,23 +208,27 @@
     color: #222;
 }
 
+hr {
+	width: 90%;
+}
+
 .graph-container {
 	flex: 1;
 	display: flex;
-	justify-content: center;
 	align-items: center;
 	flex-direction: column;
-	border: 1px solid #ccc;
-	border-radius: 8px;
-	margin-top: 20px;
-	background-color: #f9f9f9;
-	box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+	margin-right: -20px;
+}
+
+.graph-container img {
+	padding: -50px;
+	width: 100%;
 }
 
 .cloud-container {
 	border: 1px solid #ccc;
 	border-radius: 8px;
-	margin: 20px;
+	margin: 45px;
 	background-color: #f9f9f9;
 	box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
 	width: 60%;
@@ -211,7 +243,7 @@
 	gap: 20px;
 }
 
-.graph-container img, .cloud-container img {
+.cloud-container img {
 	display: block;
 	margin: 30px auto;
 	max-width: 90%;
