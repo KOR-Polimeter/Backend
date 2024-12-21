@@ -84,211 +84,208 @@
 
 	<!-- JavaScript for dynamic content -->
 	<
-	<script>
-		// 300개의 pol_id를 미리 생성
-		const polIds = Array.from({ length: 300 }, (_, index) => index + 1); // [1, 2, 3, ..., 300]
+<script>
+	// 300개의 pol_id를 미리 생성
+	const polIds = Array.from({ length: 300 }, (_, index) => index + 1); // [1, 2, 3, ..., 300]
 
-		// rankings 배열 초기화
-		const rankings = [];
+	// rankings 배열 초기화
+	let rankings = [];
+	let originalRankings = []; // 필터링되지 않은 원본 데이터 저장
 
-		// 비동기로 데이터를 가져오고 rankings 배열에 저장
-		async function fetchPoliticianData() {
-			for (const polId of polIds) {
-				try {
-					// API 요청
-					const response = await fetch('http://localhost:8080/api/politician', {
-						method: 'POST',
-						headers: {
-							'Content-Type': 'application/json',
-						},
-						body: JSON.stringify({ pol_id: polId }),
-					});
+	// 비동기로 데이터를 가져오고 rankings 배열에 저장
+	async function fetchPoliticianData() {
+		rankings = [];
+		originalRankings = [];
+		for (const polId of polIds) {
+			try {
+				const response = await fetch('http://localhost:8080/api/politician', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify({ pol_id: polId }),
+				});
 
-					// 응답 데이터 처리
-					if (response.ok) {
-						const item = await response.json();
+				if (response.ok) {
+					const item = await response.json();
 
-						// rankings 배열에 데이터 추가
-						rankings.push({
-							id: item.id,
-							name: item.name,
-							party: item.party,
-							region: item.region,
-							bday: item.bday,
-							age: item.age,
-							description: item.description,
-							gender: item.gender,
-							popularity: `${Math.floor(Math.random() * 100)}%`, // 인기도는 랜덤 값으로 설정
-							image: `images/politicians/${item.party}/${item.name}.jpg`, // 템플릿 리터럴 수정
-						});
-					} else {
-						console.error(`Failed to fetch data for pol_id: ${polId}`);
-					}
-				} catch (error) {
-					console.error(`Error fetching data for pol_id: ${polId}`, error);
+					const politician = {
+						id: item.id,
+						name: item.name,
+						party: item.party,
+						region: item.region,
+						bday: item.bday,
+						age: item.age,
+						description: item.description,
+						gender: item.gender,
+						popularity: `${Math.floor(Math.random() * 100)}%`,
+						image: `images/politicians/${item.party}/${item.name}.jpg`,
+					};
+
+					rankings.push(politician);
+				} else {
+					console.error(`Failed to fetch data for pol_id: ${polId}`);
 				}
-			}
-
-			// 데이터 로드 완료 후 첫 페이지 렌더링
-			renderPage(currentPage);
-		}
-
-		// 한 페이지에 표시할 항목 수
-		const itemsPerPage = 5;
-		let currentPage = 1;
-
-		// 현재 페이지 데이터를 렌더링하는 함수
-		function renderPage(page) {
-			const rankingList = document.getElementById('ranking-list');
-			const startIndex = (page - 1) * itemsPerPage;
-			const endIndex = startIndex + itemsPerPage;
-			const pageItems = rankings.slice(startIndex, endIndex);
-
-			// 현재 페이지의 랭킹 항목 렌더링
-			rankingList.innerHTML = pageItems.map(item => `
-				<li class="ranking-item" data-id="${item.id}">
-					<span class="ranking-number">${item.id}</span>
-					<img src="${item.image}" alt="${item.name}">
-					<div class="ranking-details">
-						<span class="name">${item.name}</span>
-						<span class="party">${item.party}</span>
-						<span class="popularity">${item.popularity}</span>
-					</div>
-				</li>
-    		`).join('');
-
-			// URL을 업데이트 (pushState를 사용해 브라우저 히스토리에서 URL을 변경)
-			window.history.pushState(null, '', `?page=${page}`);
-
-			// 페이지네이션 렌더링
-			renderPagination();
-
-			// 항목 클릭 시 상세 페이지로 이동
-			const rankingItems = document.querySelectorAll('.ranking-item');
-			rankingItems.forEach((item, index) => {
-				item.addEventListener('click', () => {
-					const clickedItem = pageItems[index]; // 현재 페이지의 데이터에서 클릭된 항목 가져오기
-					window.location.href = `/details?name=${encodeURIComponent(clickedItem.name)}`;
-				});
-			});
-		}
-
-		// 페이지네이션 버튼 렌더링 함수
-		function renderPagination() {
-			const pagination = document.getElementById('pagination');
-			const totalPages = Math.ceil(rankings.length / itemsPerPage);
-			const maxVisiblePages = 10;  // 한 번에 보일 페이지네이션 버튼 수
-			const startPage = Math.floor((currentPage - 1) / maxVisiblePages) * maxVisiblePages + 1;
-			const endPage = Math.min(startPage + maxVisiblePages - 1, totalPages);
-
-			pagination.innerHTML = ''; // 기존 버튼 초기화
-
-			// 첫 페이지로 이동 버튼
-			if (currentPage > 1) {
-				const firstPageButton = document.createElement('button');
-				firstPageButton.textContent = '<<';
-				firstPageButton.addEventListener('click', () => {
-					currentPage = 1;
-					renderPage(currentPage);
-				});
-				pagination.appendChild(firstPageButton);
-			}
-
-			// 이전 페이지 묶음으로 이동 버튼 (첫 번째 묶음이 아니면 표시)
-			if (startPage > 1) {
-				const prevButton = document.createElement('button');
-				prevButton.textContent = '<';
-				prevButton.addEventListener('click', () => {
-					currentPage = startPage - 1;
-					renderPage(currentPage);
-				});
-				pagination.appendChild(prevButton);
-			}
-
-			// 현재 페이지 범위의 페이지네이션 버튼 생성
-			for (let i = startPage; i <= endPage; i++) {
-				const button = document.createElement('button');
-				button.textContent = i;
-				button.classList.add('page-btn');
-				if (i === currentPage) {
-					button.classList.add('active'); // 현재 페이지 표시
-				}
-				button.addEventListener('click', () => {
-					currentPage = i;
-					renderPage(currentPage);
-				});
-				pagination.appendChild(button);
-			}
-
-			// 다음 페이지 묶음으로 이동 버튼 (마지막 묶음이 아니면 표시)
-			if (endPage < totalPages) {
-				const nextButton = document.createElement('button');
-				nextButton.textContent = '>';
-				nextButton.addEventListener('click', () => {
-					currentPage = endPage + 1;
-					renderPage(currentPage);
-				});
-				pagination.appendChild(nextButton);
-			}
-
-			// 끝 페이지로 이동 버튼
-			if (currentPage < totalPages) {
-				const lastPageButton = document.createElement('button');
-				lastPageButton.textContent = '>>';
-				lastPageButton.addEventListener('click', () => {
-					currentPage = totalPages;
-					renderPage(currentPage);
-				});
-				pagination.appendChild(lastPageButton);
+			} catch (error) {
+				console.error(`Error fetching data for pol_id: ${polId}`, error);
 			}
 		}
 
-		// popstate 이벤트 핸들러: 뒤로가기로 검색 페이지로 돌아올 때 처리
-		window.addEventListener('popstate', (event) => {
-			const state = event.state;
-			if (state && state.page) {
-				currentPage = state.page;
-				renderPage(currentPage); // 저장된 페이지 번호로 다시 렌더링
-			}
-		});
+		// 원본 데이터를 저장
+		originalRankings = [...rankings];
 
-		// 초기 데이터 로드 및 렌더링
-		document.addEventListener('DOMContentLoaded', async () => {
-			// URL에서 쿼리 파라미터로 현재 페이지를 가져옴
-			const urlParams = new URLSearchParams(window.location.search);
-			const page = urlParams.get('page');
-			currentPage = page ? parseInt(page) : 1;
+		// 데이터 로드 완료 후 첫 페이지 렌더링
+		renderPage(currentPage);
+	}
 
-			await fetchPoliticianData(); // 데이터 로드
-		});
+	// 한 페이지에 표시할 항목 수
+	const itemsPerPage = 5;
+	let currentPage = 1;
 
+	// 현재 페이지 데이터를 렌더링하는 함수
+	function renderPage(page) {
+		const rankingList = document.getElementById('ranking-list');
+		const startIndex = (page - 1) * itemsPerPage;
+		const endIndex = startIndex + itemsPerPage;
+		const pageItems = rankings.slice(startIndex, endIndex);
 
+		// 현재 페이지의 랭킹 항목 렌더링
+		rankingList.innerHTML = pageItems.map(item => `
+            <li class="ranking-item" data-id="${item.id}">
+                <span class="ranking-number">${item.id}</span>
+                <img src="${item.image}" alt="${item.name}">
+                <div class="ranking-details">
+                    <span class="name">${item.name}</span>
+                    <span class="party">${item.party}</span>
+                    <span class="popularity">${item.popularity}</span>
+                </div>
+            </li>
+        `).join('');
 
-		document.addEventListener('DOMContentLoaded', () => {
-			const rankingList = document.getElementById('ranking-list');
+		// URL을 업데이트 (pushState를 사용해 브라우저 히스토리에서 URL을 변경)
+		window.history.pushState(null, '', `?page=${page}`);
 
-			// 상위 20개 항목만 표시
-			const top20 = rankings.slice(0, 5);
+		// 페이지네이션 렌더링
+		renderPagination();
 
-			rankingList.innerHTML = top20.map(item => `
-				<li class="ranking-item" data-id="${item.id}">
-					<span class="ranking-number">${item.id}</span>
-					<img src="${item.image}" alt="${item.name}">
-					<div class="ranking-details">
-						<span class="name">${item.name}</span>
-						<span class="popularity">${item.popularity}</span>
-					</div>
-				</li>
-			`).join('');
-
-			// 항목 클릭 시 상세 페이지로 이동
-			const rankingItems = document.querySelectorAll('.ranking-item');
-			rankingItems.forEach(item => {
-				item.addEventListener('click', () => {
-					window.location.href = `/details?&name=${item.name}`;
-				});
+		// 항목 클릭 시 상세 페이지로 이동
+		const rankingItems = document.querySelectorAll('.ranking-item');
+		rankingItems.forEach((item, index) => {
+			item.addEventListener('click', () => {
+				const clickedItem = pageItems[index]; // 현재 페이지의 데이터에서 클릭된 항목 가져오기
+				window.location.href = `/details?name=${encodeURIComponent(clickedItem.name)}`;
 			});
 		});
-	</script>
+	}
+
+	// 페이지네이션 버튼 렌더링 함수
+	function renderPagination() {
+		const pagination = document.getElementById('pagination');
+		const totalPages = Math.ceil(rankings.length / itemsPerPage);
+		const maxVisiblePages = 10;  // 한 번에 보일 페이지네이션 버튼 수
+		const startPage = Math.floor((currentPage - 1) / maxVisiblePages) * maxVisiblePages + 1;
+		const endPage = Math.min(startPage + maxVisiblePages - 1, totalPages);
+
+		pagination.innerHTML = ''; // 기존 버튼 초기화
+
+		// 첫 페이지로 이동 버튼
+		if (currentPage > 1) {
+			const firstPageButton = document.createElement('button');
+			firstPageButton.textContent = '<<';
+			firstPageButton.addEventListener('click', () => {
+				currentPage = 1;
+				renderPage(currentPage);
+			});
+			pagination.appendChild(firstPageButton);
+		}
+
+		// 이전 페이지 묶음으로 이동 버튼 (첫 번째 묶음이 아니면 표시)
+		if (startPage > 1) {
+			const prevButton = document.createElement('button');
+			prevButton.textContent = '<';
+			prevButton.addEventListener('click', () => {
+				currentPage = startPage - 1;
+				renderPage(currentPage);
+			});
+			pagination.appendChild(prevButton);
+		}
+
+		// 현재 페이지 범위의 페이지네이션 버튼 생성
+		for (let i = startPage; i <= endPage; i++) {
+			const button = document.createElement('button');
+			button.textContent = i;
+			button.classList.add('page-btn');
+			if (i === currentPage) {
+				button.classList.add('active'); // 현재 페이지 표시
+			}
+			button.addEventListener('click', () => {
+				currentPage = i;
+				renderPage(currentPage);
+			});
+			pagination.appendChild(button);
+		}
+
+		// 다음 페이지 묶음으로 이동 버튼 (마지막 묶음이 아니면 표시)
+		if (endPage < totalPages) {
+			const nextButton = document.createElement('button');
+			nextButton.textContent = '>';
+			nextButton.addEventListener('click', () => {
+				currentPage = endPage + 1;
+				renderPage(currentPage);
+			});
+			pagination.appendChild(nextButton);
+		}
+
+		// 끝 페이지로 이동 버튼
+		if (currentPage < totalPages) {
+			const lastPageButton = document.createElement('button');
+			lastPageButton.textContent = '>>';
+			lastPageButton.addEventListener('click', () => {
+				currentPage = totalPages;
+				renderPage(currentPage);
+			});
+			pagination.appendChild(lastPageButton);
+		}
+	}
+
+	document.addEventListener('DOMContentLoaded', async () => {
+		// URL에서 쿼리 파라미터로 현재 페이지를 가져옴
+		const urlParams = new URLSearchParams(window.location.search);
+		const page = urlParams.get('page');
+		currentPage = page ? parseInt(page) : 1;
+
+		await fetchPoliticianData(); // 데이터 로드
+
+		// 필터 라디오 버튼 이벤트 리스너 추가
+		const filterRadios = document.querySelectorAll('.filters input[name="filter"]');
+		filterRadios.forEach(radio => {
+			radio.addEventListener('change', (event) => {
+				const filterValue = event.target.value; // 선택된 필터 값
+				applyFilter(filterValue); // 필터 적용
+			});
+		});
+	});
+
+	// 필터 적용 함수
+	function applyFilter(filterCriteria) {
+		// 필터 조건에 따라 rankings 배열 업데이트
+		rankings = originalRankings.filter(item => {
+			if (filterCriteria === 'men') return item.gender === 0;
+			if (filterCriteria === 'women') return item.gender === 1;
+			if (filterCriteria === '2030') return item.age >= 20 && item.age < 40;
+			if (filterCriteria === '4050') return item.age >= 40 && item.age < 60;
+			if (filterCriteria === '60') return item.age >= 60;
+			return true; // 기본: 필터 없이 전체 표시
+		});
+
+		// 필터를 적용한 후 첫 페이지로 이동
+		currentPage = 1;
+		renderPage(currentPage);
+		renderPagination();
+	}
+
+
+</script>
+
 </body>
 </html>
