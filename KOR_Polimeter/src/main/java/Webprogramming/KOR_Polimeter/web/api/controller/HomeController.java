@@ -39,7 +39,7 @@ public class HomeController {
         try {
             KakaoDTO kakaoDTO = kakaoService.getKakaoInfo(code);
             model.addAttribute("kakaoInfo", kakaoDTO.toString());
-            return "main"; // index.html로 이동
+            return "main"; // main.html로 이동
         } catch (Exception e) {
             e.printStackTrace();
             model.addAttribute("error", "An error occurred");

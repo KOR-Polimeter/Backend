@@ -16,4 +16,8 @@ public class UserService {
         System.out.println(user.getName() + " 사용자의 정보가 DB에 저장되었습니다.");
         return userRepository.save(user);
     }
+    @Transactional(readOnly = true) // 읽기 전용 트랜잭션
+    public boolean userExists(Long UserId) {
+        return userRepository.existsByUserId(UserId);
+    }
 }
