@@ -50,8 +50,20 @@ public class ApiPoliticianController {
             return ResponseEntity.ok(politicians); // Politician 리스트 반환
         }
     }
-}
 
+    // 득표수 상위 10명의 정치인 조회
+    @GetMapping("/top10")
+    public ResponseEntity<?> getTop10Politicians() {
+        Map<String, Object> response = service.getTop10Politicians();
+
+        // totalVotes와 topPoliticians가 포함된 응답을 처리
+        if (response == null || response.isEmpty()) {
+            return ResponseEntity.status(404).body("No politicians found");
+        } else {
+            return ResponseEntity.ok(response);
+        }
+    }
+}
 
 
 

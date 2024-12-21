@@ -62,6 +62,15 @@ public class UserVoteService {
             // 정치인 ID로 정치인 조회
             Politician politician = politicianRepository.findById(vote.getPolId()).orElseThrow(() -> new RuntimeException("Politician not found"));
 
+            // 사용자가 이미 해당 정치인에게 투표했는지 확인
+            Optional<UserVote> existingVote = userVoteRepository.findByUserAndPolitician(user, politician);
+
+            // 이미 투표한 경우, 중복 투표 처리 방지
+            if (existingVote.isPresent()) {
+                System.out.println("사용자가 이미 정치인 " + politician.getName() + "에게 투표한 기록이 있습니다.");
+                continue;  // 중복 투표는 처리하지 않고 넘어갑니다.
+            }
+
             // 새 투표 기록 생성
             UserVote userVote = new UserVote();
             userVote.setUser(user);
