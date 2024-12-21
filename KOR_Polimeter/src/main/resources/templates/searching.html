@@ -57,7 +57,8 @@
 			    
 			    <!-- 검색 버튼 -->
 			    <button id="search-btn">검색</button>
-			    
+
+				<span id="party-label">정당</span>
 			    <!-- Popularity 텍스트 -->
 			    <span id="popularity-label">인기도</span>
 			</div>
@@ -145,6 +146,7 @@
 					<img src="${item.image}" alt="${item.name}">
 					<div class="ranking-details">
 						<span class="name">${item.name}</span>
+						<span class="party">${item.party}</span>
 						<span class="popularity">${item.popularity}</span>
 					</div>
 				</li>
@@ -170,10 +172,36 @@
 		function renderPagination() {
 			const pagination = document.getElementById('pagination');
 			const totalPages = Math.ceil(rankings.length / itemsPerPage);
+			const maxVisiblePages = 10;  // 한 번에 보일 페이지네이션 버튼 수
+			const startPage = Math.floor((currentPage - 1) / maxVisiblePages) * maxVisiblePages + 1;
+			const endPage = Math.min(startPage + maxVisiblePages - 1, totalPages);
 
 			pagination.innerHTML = ''; // 기존 버튼 초기화
 
-			for (let i = 1; i <= totalPages; i++) {
+			// 첫 페이지로 이동 버튼
+			if (currentPage > 1) {
+				const firstPageButton = document.createElement('button');
+				firstPageButton.textContent = '<<';
+				firstPageButton.addEventListener('click', () => {
+					currentPage = 1;
+					renderPage(currentPage);
+				});
+				pagination.appendChild(firstPageButton);
+			}
+
+			// 이전 페이지 묶음으로 이동 버튼 (첫 번째 묶음이 아니면 표시)
+			if (startPage > 1) {
+				const prevButton = document.createElement('button');
+				prevButton.textContent = '<';
+				prevButton.addEventListener('click', () => {
+					currentPage = startPage - 1;
+					renderPage(currentPage);
+				});
+				pagination.appendChild(prevButton);
+			}
+
+			// 현재 페이지 범위의 페이지네이션 버튼 생성
+			for (let i = startPage; i <= endPage; i++) {
 				const button = document.createElement('button');
 				button.textContent = i;
 				button.classList.add('page-btn');
@@ -185,6 +213,28 @@
 					renderPage(currentPage);
 				});
 				pagination.appendChild(button);
+			}
+
+			// 다음 페이지 묶음으로 이동 버튼 (마지막 묶음이 아니면 표시)
+			if (endPage < totalPages) {
+				const nextButton = document.createElement('button');
+				nextButton.textContent = '>';
+				nextButton.addEventListener('click', () => {
+					currentPage = endPage + 1;
+					renderPage(currentPage);
+				});
+				pagination.appendChild(nextButton);
+			}
+
+			// 끝 페이지로 이동 버튼
+			if (currentPage < totalPages) {
+				const lastPageButton = document.createElement('button');
+				lastPageButton.textContent = '>>';
+				lastPageButton.addEventListener('click', () => {
+					currentPage = totalPages;
+					renderPage(currentPage);
+				});
+				pagination.appendChild(lastPageButton);
 			}
 		}
 

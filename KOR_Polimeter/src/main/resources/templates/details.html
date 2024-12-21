@@ -38,12 +38,11 @@
 				<!-- 프로필 상세 정보 -->
 				<div class="profile-details">
 					<p><span class="label">이름:</span><span class="value" th:text="${name}">홍길동</span></p>
-					<p><span class="label">ID:</span><span class="value" th:text="${itemId}">1</span></p>
 					<p><span class="label">소속정당:</span><span class="value" th:text="${party}">포도당</span></p>
 					<p><span class="label">지역선거구:</span><span class="value" th:text="${region}">서울특별시</span></p>
 					<p><span class="label">출생날짜:</span><span class="value" th:text="${bday}">1980-01-01</span></p>
 					<p><span class="label">연령:</span><span class="value" th:text="${age} + '세'">43세</span></p>
-					<p><span class="label">성별:</span><span class="value" th:text="${gender}">남성</span></p>
+					<p><span class="label">성별:</span><span class="value" th:text="${gender == '0' ? '남' : '여'}">남성</span></p>
 				</div>
 			</div>
 			<!-- 프로필 설명 -->
