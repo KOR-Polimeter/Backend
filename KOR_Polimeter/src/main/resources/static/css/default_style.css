@@ -2,6 +2,13 @@
 	box-sizing: border-box; /* 모든 요소의 크기 계산에 padding과 border를 포함시킴 */
 }
 
+.vertical-line {
+	width: 1px;              /* 선의 두께 */
+	height: 30px;           /* 선의 높이 */
+	background-color: #bbbbbb; /* 선의 색상 */
+	margin: 0 5px;          /* 주변 간격 */
+}
+
 html, body {
 	overflow-x: hidden; /* 수평 스크롤을 숨김 */
 }
