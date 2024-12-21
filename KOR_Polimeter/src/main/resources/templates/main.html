@@ -19,6 +19,8 @@
 					로그아웃
 				</a>
 			</li>
+			<li><a th:href="@{/searching}">인물검색</a></li>
+			<div class="vertical-line"></div>
 			<li><form th:action="@{/searching}" method="post">
 				<input type="text" name="query" placeholder="인물 검색하기" required>
 				<button class="search-button" type="submit">

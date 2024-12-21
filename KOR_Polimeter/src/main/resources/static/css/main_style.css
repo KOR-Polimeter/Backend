@@ -1,3 +1,9 @@
+.vertical-line {
+    width: 1px;              /* 선의 두께 */
+    height: 30px;           /* 선의 높이 */
+    background-color: #bbbbbb; /* 선의 색상 */
+    margin: 0 5px;          /* 주변 간격 */
+}
 
 .main_page {
 	position: relative;
