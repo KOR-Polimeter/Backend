@@ -20,7 +20,7 @@
 				</a>
 			</li>
 			<li><form th:action="@{/searching}" method="post">
-				<input type="text" name="query" placeholder="검색어를 입력하세요" required>
+				<input type="text" name="query" placeholder="인물 검색하기" required>
 				<button type="submit">검색</button>
 			</form></li>
 		</ul>
@@ -48,9 +48,6 @@
 			</div>
 			<!-- Add Pagination -->
 			<div class="swiper-pagination"></div>
-			<!-- Navigation -->
-			<div class="swiper-button-next"></div>
-			<div class="swiper-button-prev"></div>
 		</div>
 		<div>
 			<form th:action="@{/vote}" method="get">
@@ -75,10 +72,11 @@
 <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
 <script>
 	const swiper = new Swiper('.swiper-container', {
-		loop: true, // 루프 설정 (마지막 슬라이드가 지나면 첫 슬라이드로 이동)
-		allowTouchMove: false, // 터치로 이동 비활성화
+		loop: true, 			// 루프 설정 (마지막 슬라이드가 지나면 첫 슬라이드로 이동)
+		allowTouchMove: false, 	// 터치로 이동 비활성화
 		slidesPerView: 'auto',
-		centeredSlides: true,  // 슬라이드를 중앙에 배치
+		centeredSlides: true,  	// 슬라이드를 중앙에 배치
+		mousewheel: true,   	// 마우스 휠 사용 가능
 
 		effect: 'coverflow',
 		coverflowEffect: {
@@ -87,19 +85,11 @@
 			depth: 300,  // 3D 깊이감
 			modifier: 1,
 		},
-
 		// 이미지 페이지네이션
 		pagination: {
 			el: '.swiper-pagination',
 			clickable: true,
 		},
-
-		// 양쪽 화살표
-		navigation: {
-			nextEl: '.swiper-button-next',
-			prevEl: '.swiper-button-prev',
-		},
-
 		// 자동 회전
 		autoplay: {
 			delay: 3000, // 3초마다 자동 슬라이드

@@ -87,20 +87,6 @@
     border-radius: 5%;
 }
 
-/* 다음 화살표 스타일 조정 */
-.swiper-button-next {
-    color: white;
-    opacity: 0.2;
-    margin-right: -5px;
-}
-
-/* 이전 화살표 스타일 조정 */
-.swiper-button-prev {
-    color: white;
-    opacity: 0.2;
-    margin-left: -5px;
-}
-
 /* 공통 버튼 스타일 */
 .circle-button {
     display: flex;
