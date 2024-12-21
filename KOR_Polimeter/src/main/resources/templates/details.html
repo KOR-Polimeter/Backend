@@ -26,45 +26,49 @@
 		<h2>상세정보</h2>
 		<hr>
 	</div>
-	<div class="profile-container">
-		<!-- 프로필 이미지 -->
-		<div class="profile-image-container">
-			<img th:src="@{images/politicians/{party}/{name}.jpg(name=${name}, party=${party})}"
-				 alt="Profile Picture"
-				 class="profile-image">
+	<div class="contents-container">
+		<div class="profile-container">
+			<div class="img-details-description-container">
+				<div class="img-details-container">
+					<!-- 프로필 이미지 -->
+					<div class="profile-image-container">
+						<img th:src="@{images/politicians/{party}/{name}.jpg(name=${name}, party=${party})}"
+							 alt="Profile Picture"
+							 class="profile-image">
+					</div>
+					<!-- 프로필 상세 정보 -->
+					<div class="profile-details">
+						<p><span class="label">이름</span><span class="value" th:text="${name}">홍길동</span></p>
+						<p><span class="label">소속정당</span><span class="value" th:text="${party}">포도당</span></p>
+						<p><span class="label">지역선거구</span><span class="value" th:text="${region}">서울특별시</span></p>
+						<p><span class="label">출생날짜</span><span class="value" th:text="${bday}">1980-01-01</span></p>
+						<p><span class="label">연령</span><span class="value" th:text="${age} + '세'">43세</span></p>
+						<p><span class="label">성별</span><span class="value" th:text="${gender == '0' ? '남' : '여'}">남성</span></p>
+					</div>
+				</div>
+				<!-- 프로필 설명 -->
+				<div class="profile-description-container">
+					<h3 id="profile-description">대표발의 의안</h3>
+					<ul id="description-list"></ul>
+				</div>
+			</div>
+			<div class="graph-and-back-container">
+				<div class="graph-container">
+					<h3 class="img-title">인기도 변화</h3>
+					<img src="/images/예제_chart.png"
+						 alt="Popularity Change Graph">
+				</div>
+				<div class="back-container">
+					<a href="searching.html" class="back-link">인물 목록으로 돌아가기</a>
+				</div>
+			</div>
 		</div>
-		<!-- 프로필 상세 정보 -->
-		<div class="profile-details">
-			<p><span class="label">이름:</span><span class="value" th:text="${name}">홍길동</span></p>
-			<p><span class="label">소속정당:</span><span class="value" th:text="${party}">00당</span></p>
-			<p><span class="label">지역선거구:</span><span class="value" th:text="${region}">00시</span></p>
-			<p><span class="label">출생날짜:</span><span class="value" th:text="${#strings.substring(bday, 0, 10)}">0000-01-01</span></p>
-			<p><span class="label">연령:</span><span class="value" th:text="${age} + '세'">00세</span></p>
-			<p><span class="label">성별:</span><span class="value" th:text="${gender == '0' ? '남자' : '여자'}">없음</span></p>
-		</div>
-		<!-- 프로필 설명 -->
-		<div class="profile-description-container">
-			<h3 id="profile-description">&nbsp;발의 의안 설명</h3>
-			<ul>
-				<li th:each="sentence : ${description.split(',')}">
-					<span th:text="${sentence.trim()}"></span>
-				</li>
-			</ul>
-		</div>
-		<div class="back-container">
-			<a href="#" class="back-link" onclick="history.back(); return false;">인물 목록으로 돌아가기</a>
-		</div>
-	</div>
-	<hr>
-	<div class="img-container">
-		<div class="graph-container">
-			<h3 class="img-title">인기도 변화</h3>
-			<img src="https://via.placeholder.com/400x300"
-				alt="Popularity Change Graph">
-		</div>
-		<div class="cloud-container">
-			<h3 class="img-title">워드 클라우드</h3>
-			<img src="https://via.placeholder.com/400x300" alt="Word Cloud">
+		<hr>
+		<div class="img-container">
+			<div class="cloud-container">
+				<h3 class="img-title">워드 클라우드</h3>
+				<img src="/images/예제_cloud.png" alt="Word Cloud">
+			</div>
 		</div>
 	</div>
 	<footer>
@@ -72,13 +76,28 @@
 		<p>Github: https://github.com/KOR-Polimeter</p>
 		<p>Website created in 2024.</p>
 	</footer>
+
 	<script>
 	  document.addEventListener('DOMContentLoaded', () => {
 	    const urlParams = new URLSearchParams(window.location.search);
 	    const id = urlParams.get('id'); // id 파라미터를 가져옴
+		const description = urlParams.get('description');
+
+		// description을 콤마로 나누어 배열로 변환
+		const descriptionList = description.split(",");
+
+		// 리스트를 HTML로 렌더링
+		const descriptionUl = document.getElementById("description-list");
+		descriptionList.forEach(item => {
+			const li = document.createElement("li");
+			li.textContent = item.trim(); // 앞뒤 공백 제거
+			descriptionUl.appendChild(li);
+		});
+
 	    // 이 부분에서 id를 기반으로 상세 정보를 로딩하거나 표시
 	    console.log(id); // 예시로 id를 콘솔에 출력
 	  });
 	</script>
+
 </body>
 </html>
