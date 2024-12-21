@@ -64,6 +64,7 @@
 			    <!-- 검색 입력 -->
 			    <input type="text" placeholder="검색하기" id="search" style="width:45%" th:value="${mainquery}">
 
+				<span id="ranking">인기도 TOP5</span>
 				<span id="party-label">정당</span>
 			    <!-- Popularity 텍스트 -->
 			    <span id="popularity-label">인기도</span>
@@ -97,6 +98,9 @@
 	async function fetchPoliticianData() {
 		rankings = [];
 		originalRankings = [];
+		let totalCount = 0; // 모든 정치인의 count 값을 합산
+
+		// 1. 모든 정치인의 데이터를 가져오고 totalCount 계산
 		for (const polId of polIds) {
 			try {
 				const response = await fetch('http://localhost:8080/api/politician', {
@@ -110,6 +114,10 @@
 				if (response.ok) {
 					const item = await response.json();
 
+					// count 값을 합산
+					totalCount += item.count;
+
+					// 정치인 데이터를 rankings에 추가
 					const politician = {
 						id: item.id,
 						name: item.name,
@@ -119,7 +127,7 @@
 						age: item.age,
 						description: item.description,
 						gender: item.gender,
-						popularity: `${Math.floor(Math.random() * 100)}%`,
+						popularity: item.count, // 임시로 count 저장
 						image: `images/politicians/${item.party}/${item.name}.jpg`,
 					};
 
@@ -132,10 +140,19 @@
 			}
 		}
 
-		// 원본 데이터를 저장
+		// 2. 각 정치인의 popul 값을 계산하여 업데이트
+		rankings = rankings.map((politician) => {
+			const popul = (politician.popularity / totalCount) * 100; // popul 계산
+			return { ...politician, popul }; // popul 값을 추가한 새로운 객체 반환
+		});
+
+		// 3. popul 값을 기준으로 내림차순 정렬
+		rankings.sort((a, b) => b.popul - a.popul);
+
+		// 4. 원본 데이터를 저장
 		originalRankings = [...rankings];
 
-		// 데이터 로드 완료 후 첫 페이지 렌더링
+		// 5. 데이터 로드 완료 후 첫 페이지 렌더링
 		renderPage(currentPage);
 	}
 
@@ -151,17 +168,39 @@
 		const pageItems = rankings.slice(startIndex, endIndex);
 
 		// 현재 페이지의 랭킹 항목 렌더링
-		rankingList.innerHTML = pageItems.map(item => `
-        <li class="ranking-item" data-id="${item.id}">
-            <span class="ranking-number">${item.id}</span>
-            <img src="${item.image}" alt="${item.name}">
-            <div class="ranking-details">
-                <span class="name">${item.name}</span>
-                <span class="party">${item.party}</span>
-                <span class="popularity">${item.popularity}</span>
-            </div>
-        </li>
-    `).join('');
+		rankingList.innerHTML = pageItems.map((item, index) => {
+			// 전체 rankings 배열에서의 순위 계산
+			const globalIndex = startIndex + index;
+
+			// 순위에 따른 뱃지 이미지 설정
+			let badge = '';
+			if (globalIndex === 0) {
+				badge = `<img src="images/first.png" alt="1st Place Badge" class="badge">`; // 1등
+			} else if (globalIndex === 1) {
+				badge = `<img src="images/second.png" alt="2nd Place Badge" class="badge">`; // 2등
+			} else if (globalIndex === 2) {
+				badge = `<img src="images/third.png" alt="3rd Place Badge" class="badge">`; // 3등
+			} else if (globalIndex === 3) {
+				badge = `<img src="images/fourth.png" alt="4th Place Badge" class="badge">`; // 4등
+			} else if (globalIndex === 4) {
+				badge = `<img src="images/fifth.png" alt="5th Place Badge" class="badge">`; // 5등
+			}
+
+			return `
+            <li class="ranking-item" data-id="${item.id}">
+                <span class="ranking-number">${item.id}</span>
+                <div class="ranking-image-container">
+                    <img src="${item.image}" alt="${item.name}" width="100%">
+                </div>
+                <div class="ranking-details">
+                    <span class="name">${item.name}</span>
+					<span class="ranking-image">${badge}</span>
+                    <span class="party">${item.party}</span>
+                    <span class="popularity">${item.popul.toFixed(2)}%</span>
+                </div>
+            </li>
+        `;
+		}).join('');
 
 		// URL 파라미터 업데이트 (기존 URL 파라미터 유지)
 		const urlParams = new URLSearchParams(window.location.search);
@@ -181,6 +220,7 @@
 			});
 		});
 	}
+
 
 
 	// 페이지네이션 버튼 렌더링 함수

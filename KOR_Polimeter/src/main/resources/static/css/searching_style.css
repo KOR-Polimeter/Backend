@@ -155,7 +155,7 @@ footer {
 	filter: invert(1);          /* 이미지 색상 반전 */
 }
 
-#party-label, #popularity-label {
+#party-label, #ranking ,#popularity-label {
     margin-left: auto;
     margin-top: 4px;
     font-size: 16px;
@@ -172,7 +172,7 @@ footer {
 
 .ranking-item {
 	display: flex;
-	align-items: center;
+	align-items: center; /* 이미지와 텍스트 수평 정렬 */
 	justify-content: space-between;
 	margin-bottom: 10px;
 	padding: 15px;
@@ -184,7 +184,7 @@ footer {
 	cursor: pointer;
 }
 
-.ranking-item img {
+.ranking-image-container img {
 	width: 45px;
 	aspect-ratio: 5 / 7;
 	margin-right: 20px;
@@ -193,28 +193,31 @@ footer {
 	object-fit: cover;
 }
 
-.ranking-item .ranking-number {
-	font-size: 18px;
-	font-weight: bold;
-	margin-right: 15px;
-}
-
-.ranking-item .ranking-details {
+.ranking-item > .ranking-details {
 	display: flex;
+	align-items: center; /* 텍스트 수평 정렬 */
 	justify-content: space-between;
 	width: 100%;
 }
 
+.ranking-item .ranking-number {
+	font-size: 18px;
+	font-weight: bold;
+	margin-right: 15px; /* 번호와 이미지 간격 */
+}
+
 .ranking-item .ranking-details .name {
 	font-weight: bold;
+	font-size: 16px;
+	margin-right: auto; /* 이름이 왼쪽 정렬되도록 설정 */
 }
 
 .ranking-item .ranking-details .party {
 	font-size: 15px;
 	font-weight: bold;
-	margin-right: -246px;
 	color: black;
 	text-align: right;
+	margin-left: 10px; /* 간격 조정 */
 }
 
 .ranking-item .ranking-details .popularity {
@@ -222,6 +225,19 @@ footer {
 	font-weight: bold;
 	color: black;
 	text-align: right;
+	margin-left: 10px; /* 간격 조정 */
+}
+.ranking-details .ranking-image {
+	display: flex;
+	align-items: center; /* 이미지와 텍스트를 세로로 정렬 */
+	margin-right: 45px; /* 이미지와 텍스트 간 여백 추가 */
+}
+
+.ranking-details .ranking-image img {
+	width: 45px; /* 이미지 크기 */
+	height: 45px; /* 이미지 높이 */
+	border-radius: 50%; /* 둥근 이미지 */
+	object-fit: cover; /* 이미지 비율 유지 */
 }
 .pagination {
 	margin-top: 20px;
