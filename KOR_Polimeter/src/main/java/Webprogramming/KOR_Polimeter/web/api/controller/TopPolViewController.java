@@ -1,4 +1,4 @@
-package Webprogramming.KOR_Polimeter.controller;
+package Webprogramming.KOR_Polimeter.web.api.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.stereotype.Controller;
