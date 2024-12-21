@@ -51,6 +51,8 @@ public class KakaoService {
     private final static String KAKAO_LOGOUT_URL = "https://kapi.kakao.com/v1/user/logout";
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private UserService userService;
 
     public String getKakaoLogin() {
         return KAKAO_AUTH_URI + "/oauth/authorize"
@@ -227,9 +229,10 @@ public class KakaoService {
             //user.setEmail(email);
             user.setAge(age);
             UserService k1 = new UserService(userRepository);
-            if(k1.saveUser(user) == null) {
-                return null;
+            if (!userService.userExists(id)) {
+                k1.saveUser(user);
             }
+
 
 
             HttpServletRequest request1 = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();

@@ -10,7 +10,7 @@
 <body>
 <header>
 	<h1>
-		<a th:href="@{/static}">KOR_Polimeter</a>
+		<a th:href="@{/}">KOR_Polimeter</a>
 	</h1>
 	<nav>
 		<ul>
@@ -166,7 +166,7 @@
 			rankingItems.forEach((item, index) => {
 				item.addEventListener('click', () => {
 					const clickedItem = pageItems[index]; // 현재 페이지의 데이터에서 클릭된 항목 가져오기
-					window.location.href = `/details?id=${clickedItem.id}&name=${encodeURIComponent(clickedItem.name)}&party=${encodeURIComponent(clickedItem.party)}&region=${encodeURIComponent(clickedItem.region)}&bday=${encodeURIComponent(clickedItem.bday)}&age=${encodeURIComponent(clickedItem.age)}&description=${encodeURIComponent(clickedItem.description)}&gender=${encodeURIComponent(clickedItem.gender)}`;
+					window.location.href = `/details?name=${encodeURIComponent(clickedItem.name)}`;
 				});
 			});
 		}
@@ -283,7 +283,7 @@
 			const rankingItems = document.querySelectorAll('.ranking-item');
 			rankingItems.forEach(item => {
 				item.addEventListener('click', () => {
-					window.location.href = `/details?id=${item.id}&name=${item.name}&party=${item.party}&region=${item.region}&bday=${item.bday}&age=${item.age}&description=${item.description}&gender=${item.gender}`;
+					window.location.href = `/details?&name=${item.name}`;
 				});
 			});
 		});
