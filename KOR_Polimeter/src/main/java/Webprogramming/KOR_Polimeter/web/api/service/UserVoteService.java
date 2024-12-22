@@ -8,9 +8,11 @@ import Webprogramming.KOR_Polimeter.web.api.model.UserVote;
 import Webprogramming.KOR_Polimeter.web.api.repository.UserRepository;
 import Webprogramming.KOR_Polimeter.web.api.repository.UserVoteRepository;
 import Webprogramming.KOR_Polimeter.web.api.repository.PoliticianRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,9 +33,13 @@ public class UserVoteService {
     /**
      * 사용자가 한 달 이내에 투표했는지 확인
      */
-    public boolean canUserVote(int userId) {
+    public boolean canUserVote(long userId) {
+        // userId로 User 객체 조회
+        User user = userRepository.findByUserId(userId);
+        int userIdFromDb = user.getId(); // userId로 User 객체의 id를 가져옵니다.
+
         // user_votes 테이블에서 해당 사용자의 마지막 투표 기록 조회
-        Optional<UserVote> lastVote = userVoteRepository.findLastVoteByUser(userId);
+        Optional<UserVote> lastVote = userVoteRepository.findLastVoteByUser(userIdFromDb);
 
         if (lastVote.isPresent()) {
             // 마지막 투표 날짜 가져오기
@@ -41,28 +47,32 @@ public class UserVoteService {
 
             // 현재 날짜 기준으로 1개월 경과 여부 확인
             LocalDateTime oneMonthAgo = LocalDateTime.now().minusMonths(1);
-            System.out.println("1개월"+oneMonthAgo.toString());
+            System.out.println("1개월 전 날짜: " + oneMonthAgo.toString());
 
+            // 1개월 이내에 투표한 경우, 재투표 불가
             if (lastVoteDate.isAfter(oneMonthAgo)) {
                 return false; // 1개월이 지나지 않았다면 재투표 불가
             }
         }
 
-        return true; // 투표 가능
+        return true; // 1개월이 지나면 투표 가능
     }
 
     /**
      * 여러 정치인에게 투표 처리
      */
     @Transactional
-    public void voteForPoliticians(int userId, List<VoteRequest.Vote> votes) {
+    public void voteForPoliticians(Long userId, List<VoteRequest.Vote> votes) {
         // User 객체를 userId로 조회
-        System.out.println("user아이디"+userId);
-        User user = userRepository.findById((long) userId).orElseThrow(() -> new RuntimeException("User not found"));
+        System.out.println("user 아이디: " + userId);
+        User user = userRepository.findById((long) userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
+        // 각 투표 요청에 대해 처리
         for (VoteRequest.Vote vote : votes) {
-            // 정치인 ID로 정치인 조회
-            Politician politician = politicianRepository.findById(vote.getPolId()).orElseThrow(() -> new RuntimeException("Politician not found"));
+            // 정치인ID로 정치인 조회
+            Politician politician = politicianRepository.findById(vote.getPolId())
+                    .orElseThrow(() -> new RuntimeException("Politician not found"));
 
             // 사용자가 이미 해당 정치인에게 투표했는지 확인
             Optional<UserVote> existingVote = userVoteRepository.findByUserAndPolitician(user, politician);
@@ -70,7 +80,7 @@ public class UserVoteService {
             // 이미 투표한 경우, 중복 투표 처리 방지
             if (existingVote.isPresent()) {
                 System.out.println("사용자가 이미 정치인 " + politician.getName() + "에게 투표한 기록이 있습니다.");
-                continue;  // 중복 투표는 처리하지 않고 넘어갑니다.
+                continue; // 중복 투표는 처리하지 않고 넘어갑니다.
             }
 
             // 새 투표 기록 생성
@@ -82,14 +92,9 @@ public class UserVoteService {
             // 투표 기록 저장
             userVoteRepository.save(userVote);
 
-            // 정치인 ID를 통해 다시 조회
-            Politician existingPolitician = politicianRepository.findById(politician.getId()).orElseThrow(() -> new RuntimeException("Politician not found"));
-
             // 정치인의 투표 수 증가
-            existingPolitician.setCount(existingPolitician.getCount() + 1);
-
-            // 정치인 객체 저장
-            politicianRepository.save(existingPolitician);
+            politician.setCount(politician.getCount() + 1);
+            politicianRepository.save(politician); // 정치인 객체 저장
         }
     }
 
@@ -97,10 +102,9 @@ public class UserVoteService {
      * 사용자가 투표한 정치인 정보를 반환하는 메소드
      */
     @Transactional
-    public VoteResponse getVotesByUser(int userId) {
+    public VoteResponse getVotesByUser(long userId) {
         // 사용자가 투표한 기록을 조회
         List<UserVote> userVotes = userVoteRepository.findByUserId(userId);
-
         List<VoteResponse.Vote> voteList = new ArrayList<>();
 
         // 사용자 투표 기록을 기반으로 정치인 정보 리스트 구성
@@ -124,5 +128,4 @@ public class UserVoteService {
 
         return voteResponse;
     }
-
 }
