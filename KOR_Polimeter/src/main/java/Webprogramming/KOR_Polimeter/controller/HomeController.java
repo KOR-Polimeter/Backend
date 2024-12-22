@@ -52,6 +52,9 @@ public class HomeController {
             // 카카오 API를 통해 사용자 정보 가져오기
             KakaoDTO kakaoDTO = kakaoService.getKakaoInfo(code);
 
+            // 세션에 사용자 정보 저장
+            session.setAttribute("user", kakaoDTO);
+
             // 메인 페이지로 리다이렉트
             return "redirect:/";
         } catch (Exception e) {
