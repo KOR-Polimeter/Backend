@@ -15,8 +15,8 @@
 		</h1>
 		<nav>
 			<ul>
-				<li><a th:href="@{/top10}">TOP10 실시간</a></li>
 				<li><a th:href="@{/searching}">인물검색</a></li>
+				<li><a th:href="@{/vote}">투표하기</a></li>
 				<div class="vertical-line"></div>
 				<!-- 카카오 로그인 URL은 컨트롤러에서 model에 추가한 kakaoUrl 값을 사용 -->
 				<li>
@@ -48,7 +48,10 @@
 		</div>
 	</div>
     <div class="go-to-main-container">
-		<a href="@{/static}" class="go-to-main-button">메인화면으로 이동</a>
+		<div class="button-container">
+			<a th:href="@{/vote}" class="go-to-main-button">투표하러 가기</a>
+			<a th:href="@{/}" class="go-to-main-button">메인 화면으로</a>
+		</div>
 	</div>
 	<footer>
 		<p>Contact us at: sdg0896@gmail.com</p>

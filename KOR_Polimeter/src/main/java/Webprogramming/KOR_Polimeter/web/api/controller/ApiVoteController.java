@@ -38,11 +38,12 @@ public class ApiVoteController {
     }
 
 
-        @PostMapping("/myVote")
-        public VoteResponse getMyVotes(@RequestBody VoteRequest voteRequest) {
-            int userId = voteRequest.getUserId(); // 요청 본문에서 userId 추출
-            return userVoteService.getVotesByUser(userId); // 투표한 정치인 정보 반환
-        }
+    @PostMapping("/myVote")
+    public VoteResponse getMyVotes(@RequestBody VoteRequest voteRequest) {
+        long userId = voteRequest.getUserId(); // 요청 본문에서 userId 추출
+        return userVoteService.getVotesByUser(userId); // 투표한 정치인 정보 반환
+    }
+
 
 }
 

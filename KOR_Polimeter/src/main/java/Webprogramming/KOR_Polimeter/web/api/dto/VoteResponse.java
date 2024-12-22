@@ -11,6 +11,9 @@ public class VoteResponse {
     private int userId;
     private List<Vote> votes;
 
+    public void setUserId(long userId) {
+    }
+
     @Getter
     @Setter
     public static class Vote {
