@@ -8,7 +8,7 @@ import java.util.List;
 @Setter
 public class VoteRequest {
 
-    private int userId;
+    private Long userId;
     private List<Vote> votes;
 
     @Getter
