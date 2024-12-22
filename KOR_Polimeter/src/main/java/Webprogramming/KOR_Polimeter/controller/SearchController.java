@@ -28,8 +28,11 @@ public class SearchController {
     }
 
     @GetMapping("/searching")
-    public String showSearchingPage(HttpSession session, Model model) {
-        Object user = session.getAttribute("user"); // 세션에서 사용자 정보 가져오기
+    public String showSearchingPage(HttpSession session,
+                                    @RequestParam(value = "query", required = false) String query,
+                                    Model model) {
+        // 세션에서 사용자 정보 가져오기
+        Object user = session.getAttribute("user");
 
         // 사용자 정보가 존재하면 모델에 추가
         if (user != null) {
@@ -38,8 +41,13 @@ public class SearchController {
         } else {
             model.addAttribute("isLoggedIn", false); // 비로그인 상태
         }
+
+        // 검색어를 모델에 추가
+        model.addAttribute("mainquery", query); // 검색어
+
         return "searching"; // searching.html로 연결
     }
+
 
     @GetMapping("/details")
     public String details(@RequestParam("name") String name, HttpSession session, Model model) {
