@@ -49,7 +49,7 @@
 						<p><span class="label">이름</span><span class="value" th:text="${name}">홍길동</span></p>
 						<p><span class="label">소속정당</span><span class="value" th:text="${party}">포도당</span></p>
 						<p><span class="label">지역선거구</span><span class="value" th:text="${region}">서울특별시</span></p>
-						<p><span class="label">출생날짜</span><span class="value" th:text="${bday}">1980-01-01</span></p>
+						<p><span class="label">출생날짜</span><span class="value" id="birth-date" th:text="${bday}">1980-01-01</span></p>
 						<p><span class="label">연령</span><span class="value" th:text="${age} + '세'">43세</span></p>
 						<p><span class="label">성별</span><span class="value" th:text="${gender == 0 ? '남' : '여'}">남성</span></p>
 					</div>
@@ -78,6 +78,13 @@
 	</footer>
 
 	<script>
+		document.addEventListener('DOMContentLoaded', () => {
+			const birthDateElement = document.getElementById("birth-date");
+
+			// 'T' 이전의 날짜 부분만 가져옴
+			birthDateElement.textContent = birthDateElement.textContent.split('T')[0];
+		});
+
 	  document.addEventListener('DOMContentLoaded', () => {
 		  const dataContainer = document.querySelector(".profile-description-container");
 		  const description = dataContainer.dataset.description; // description 값 읽기

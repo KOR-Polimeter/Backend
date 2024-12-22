@@ -49,13 +49,13 @@
 		<!-- Swiper -->
 		<div class="swiper-container">
 			<div class="swiper-wrapper">
-				<div class="swiper-slide"><img th:src="@{/images/politicians/국민의힘/권성동.jpg}" alt="Image 1"></div>
-				<div class="swiper-slide"><img th:src="@{/images/politicians/더불어민주당/박찬대.jpg}" alt="Image 2"></div>
-				<div class="swiper-slide"><img th:src="@{/images/politicians/조국혁신당/황운하.jpg}" alt="Image 3"></div>
-				<div class="swiper-slide"><img th:src="@{/images/politicians/개혁신당/천하람.jpg}" alt="Image 4"></div>
-				<div class="swiper-slide"><img th:src="@{/images/politicians/진보당/윤종오.jpg}" alt="Image 4"></div>
-				<div class="swiper-slide"><img th:src="@{/images/politicians/기본소득당/용혜인.jpg}" alt="Image 4"></div>
-				<div class="swiper-slide"><img th:src="@{/images/politicians/사회민주당/한창민.jpg}" alt="Image 4"></div>
+				<div class="swiper-slide" data-name="권성동"><img th:src="@{/images/politicians/국민의힘/권성동.jpg}" alt="Image 1"></div>
+				<div class="swiper-slide" data-name="박찬대"><img th:src="@{/images/politicians/더불어민주당/박찬대.jpg}" alt="Image 2"></div>
+				<div class="swiper-slide" data-name="황운하"><img th:src="@{/images/politicians/조국혁신당/황운하.jpg}" alt="Image 3"></div>
+				<div class="swiper-slide" data-name="천하람"><img th:src="@{/images/politicians/개혁신당/천하람.jpg}" alt="Image 4"></div>
+				<div class="swiper-slide" data-name="윤종오"><img th:src="@{/images/politicians/진보당/윤종오.jpg}" alt="Image 4"></div>
+				<div class="swiper-slide" data-name="용혜인"><img th:src="@{/images/politicians/기본소득당/용혜인.jpg}" alt="Image 4"></div>
+				<div class="swiper-slide" data-name="한창민"><img th:src="@{/images/politicians/사회민주당/한창민.jpg}" alt="Image 4"></div>
 			</div>
 			<!-- Add Pagination -->
 			<div class="swiper-pagination"></div>
@@ -106,6 +106,31 @@
 		autoplay: {
 			delay: 3000, // 3초마다 자동 슬라이드
 		}
+	});
+
+	// Autoplay 제어 및 커서 설정
+	document.querySelectorAll('.swiper-slide').forEach(slide => {
+		slide.addEventListener('mouseenter', () => {
+			// Focus된 슬라이드에만 autoplay 멈춤
+			if (slide.classList.contains('swiper-slide-active')) {
+				swiper.autoplay.stop(); // 마우스 올릴 때 자동 슬라이드 멈춤
+			}
+		});
+
+		slide.addEventListener('mouseleave', () => {
+
+			swiper.autoplay.start(); // 마우스 나갈 때 자동 슬라이드 다시 시작
+		});
+
+		// Focus된 슬라이드에서만 클릭으로 상세 페이지 이동 가능
+		slide.addEventListener('click', () => {
+			if (slide.classList.contains('swiper-slide-active')) {
+				const politicianName = slide.getAttribute('data-name');
+				if (politicianName) {
+					window.location.href = `/details?name=${encodeURIComponent(politicianName)}`;
+				}
+			}
+		});
 	});
 </script>
 </body>
