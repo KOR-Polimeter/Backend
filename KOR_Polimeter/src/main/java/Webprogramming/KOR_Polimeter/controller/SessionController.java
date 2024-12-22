@@ -1,5 +1,6 @@
 package Webprogramming.KOR_Polimeter.controller;
 
+import Webprogramming.KOR_Polimeter.web.api.dto.KakaoDTO;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

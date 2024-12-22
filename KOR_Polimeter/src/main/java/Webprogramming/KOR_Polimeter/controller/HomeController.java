@@ -51,6 +51,7 @@ public class HomeController {
 
             // 카카오 API를 통해 사용자 정보 가져오기
             KakaoDTO kakaoDTO = kakaoService.getKakaoInfo(code);
+            System.out.println(kakaoDTO);
 
             // 세션에 사용자 정보 저장
             session.setAttribute("user", kakaoDTO);
