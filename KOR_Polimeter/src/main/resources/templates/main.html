@@ -13,7 +13,9 @@
 	<nav>
 		<ul>
 			<li>
-				<form class="input-container" th:action="@{/searching}" method="post">
+				<form class="input-container" th:action="@{/searching}" method="get">
+					<!-- hidden input 필드로 page 값 전달 -->
+					<input type="hidden" name="page" value="1">
 					<input type="text" name="query" placeholder="인물 검색하기" required>
 					<button id="search-button" type="submit">
 						<img src="/images/search_icon.png" alt="Search Icon">
@@ -25,7 +27,7 @@
 			<!-- 카카오 로그인 URL은 컨트롤러에서 model에 추가한 kakaoUrl 값을 사용 -->
 			<li><a th:if="${isLoggedIn == false}" th:href="${kakaoUrl}">카카오 로그인</a></li>
 			<li>
-				<a th:if="${isLoggedIn == true}" th:href="@{'https://kauth.kakao.com/oauth/logout?client_id=772c65da382eb8de1916b5771770e5e7&logout_redirect_uri=http://localhost:8080/logout'}">
+				<a th:if="${isLoggedIn == true}" th:href="@{'https://kauth.kakao.com/oauth/logout?client_id=772c65da382eb8de1916b5771770e5e7&logout_redirect_uri=http://kor-polimeter.info/logout'}">
 					로그아웃
 				</a>
 			</li>

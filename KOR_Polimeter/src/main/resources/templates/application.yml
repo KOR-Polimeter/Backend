@@ -7,10 +7,14 @@ spring:
             client-id: 772c65da382eb8de1916b5771770e5e7
             client-secret: BEOsi3RTFa8gXahOgwLuVAJH6Dwx3SQ0
             authorization-grant-type: authorization_code
-            redirect-uri: http://localhost:8080/auth/kakao/callback
+            redirect-uri: http://kor-polimeter.info/auth/kakao/callback
             scope: name, gender, birthday, phone_number, account_email, birthyear
         provider:
           kakao:
             authorization-uri: https://kauth.kakao.com/oauth/authorize
             token-uri: https://kauth.kakao.com/oauth/token
             user-info-uri: https://kapi.kakao.com/v2/user/me
+
+server:
+  address: 0.0.0.0
+  port: 8080
