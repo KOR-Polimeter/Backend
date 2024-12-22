@@ -199,6 +199,7 @@ footer {
 	border-radius: 45%;
 	border: 1px solid #dddddd;
 	object-fit: cover;
+	margin-left: 20px;
 }
 
 .ranking-item > .ranking-details {
@@ -225,7 +226,7 @@ footer {
 .ranking-item .ranking-details .badge {
 	position: absolute;
 	top: 50%;
-	left: 51%;
+	left: 54%;
 	transform: translate(-50%, -50%); /* 중앙에 맞게 보정 */
 }
 
@@ -235,7 +236,7 @@ footer {
 	color: black;
 	position: absolute;
 	top: 50%;
-	left: 75%;
+	left: 77%;
 	transform: translate(-50%, -50%); /* 중앙에 맞게 보정 */
 }
 
