@@ -52,6 +52,16 @@ public class HomeController {
             // 카카오 API를 통해 사용자 정보 가져오기
             KakaoDTO kakaoDTO = kakaoService.getKakaoInfo(code);
 
+<<<<<<< Updated upstream
+=======
+            // DB에서 userid를 기준으로 id(기본키) 조회
+            int dbId = kakaoService.findIdByUserId(kakaoDTO.getUserid());
+            System.out.println("디비 기본키인 id값 = " + dbId);
+
+                // 조회된 id를 kakaoDTO에 설정
+            kakaoDTO.setId(dbId);
+            System.out.println("DB에서 조회된 ID: " + dbId);
+>>>>>>> Stashed changes
             // 세션에 사용자 정보 저장
             session.setAttribute("user", kakaoDTO);
 
