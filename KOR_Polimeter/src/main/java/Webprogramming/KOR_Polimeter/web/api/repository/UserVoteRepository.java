@@ -13,8 +13,8 @@ import java.util.Optional;
 
 @Repository
 public interface UserVoteRepository extends JpaRepository<UserVote, Integer> {
-    @Query("SELECT uv FROM UserVote uv WHERE uv.user = :userId ORDER BY uv.voteDate DESC limit 1")
+    @Query("SELECT uv FROM UserVote uv WHERE uv.user.id = :userId ORDER BY uv.voteDate DESC limit 1")
     Optional<UserVote> findLastVoteByUser(@Param("userId") long userId);
     Optional<UserVote> findByUserAndPolitician(User user, Politician politician);
-    List<UserVote> findByUserId(int userId);
+    List<UserVote> findByUserId(long userId);
 }
