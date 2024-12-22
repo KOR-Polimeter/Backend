@@ -63,7 +63,7 @@
 			<div class="cloud-and-back-container">
 				<div class="cloud-container">
 					<h3 class="img-title">워드 클라우드</h3>
-					<img src="/images/예제_cloud.png" alt="Word Cloud">
+					<img th:src="@{/images/word_cloud/{name}_cloud.jpg(name=${name})}" alt="Word Cloud">
 				</div>
 				<div class="back-container">
 					<a href="#" class="back-link" id="back-link">인물 목록으로 돌아가기</a>
