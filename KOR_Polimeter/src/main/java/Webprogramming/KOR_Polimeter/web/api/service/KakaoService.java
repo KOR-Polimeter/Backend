@@ -279,5 +279,7 @@ public class KakaoService {
         Long id = jsonNode.get("id").asLong();
         System.out.println("반환된 id: "+id);
     }
-
+    public int findIdByUserId(long userid) {
+        return userRepository.findIdByUserId(userid);
+    }
 }
