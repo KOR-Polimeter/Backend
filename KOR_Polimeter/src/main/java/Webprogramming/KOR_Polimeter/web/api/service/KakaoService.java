@@ -280,4 +280,8 @@ public class KakaoService {
         System.out.println("반환된 id: "+id);
     }
 
+    public int findIdByUserId(long userid) {
+        return userRepository.findIdByUserId(userid);
+    }
+
 }
