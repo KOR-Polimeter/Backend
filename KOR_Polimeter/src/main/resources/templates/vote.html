@@ -517,7 +517,7 @@ async function submitVote() {
 			.then(response => response.text())  // 서버에서 받은 텍스트 응답
 			.then(data => {
 				// 'data'는 응답된 문자열입니다. 예: "User is: KakaoDTO(id=0, name=김민희, age=23, gender=2, userid=3844274633)"
-				const regex = /id=(\d+)/;  // 'id=' 뒤에 숫자만 추출하는 정규식
+				const regex = /userid=(\d+)/;  // 'id=' 뒤에 숫자만 추출하는 정규식
 				const match = data.match(regex);  // 정규식에 맞는 부분을 찾기
 
 				if (match) {
