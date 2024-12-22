@@ -19,10 +19,10 @@
 			<div class="vertical-line"></div>
 			<!-- 카카오 로그인 URL은 컨트롤러에서 model에 추가한 kakaoUrl 값을 사용 -->
 			<li>
-				<a th:if="${isLoggedIn == false}" th:href="@{'https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=772c65da382eb8de1916b5771770e5e7&redirect_uri=http://kor-polimeter.info/auth/kakao/callback'}">카카오 로그인</a>
+				<a th:if="${isLoggedIn == false}" th:href="@{'https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=772c65da382eb8de1916b5771770e5e7&redirect_uri=http://localhost:8080/auth/kakao/callback'}">카카오 로그인</a>
 			</li>
 			<li>
-				<a th:if="${isLoggedIn == true}" th:href="@{'https://kauth.kakao.com/oauth/logout?client_id=772c65da382eb8de1916b5771770e5e7&logout_redirect_uri=http://kor-polimeter.info/logout'}">
+				<a th:if="${isLoggedIn == true}" th:href="@{'https://kauth.kakao.com/oauth/logout?client_id=772c65da382eb8de1916b5771770e5e7&logout_redirect_uri=http://localhost:8080/logout'}">
 					로그아웃
 				</a>
 			</li>
@@ -188,7 +188,6 @@
 
 			return `
             <li class="ranking-item" data-id="${item.id}">
-                <span class="ranking-number">${item.id}</span>
                 <div class="ranking-image-container">
                     <img src="${item.image}" alt="${item.name}" width="100%">
                 </div>

@@ -1,98 +1,98 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Digital Services Ranking</title>
-<link rel="stylesheet" href="/css/details_style.css">
-<link rel="stylesheet" href="/css/default_style.css">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Digital Services Ranking</title>
+	<link rel="stylesheet" href="/css/details_style.css">
+	<link rel="stylesheet" href="/css/default_style.css">
 </head>
 <body>
-	<header>
-		<h1>
-			<a th:href="@{/}">KOR_Polimeter</a>
-		</h1>
-		<nav>
-			<ul>
-				<li><a th:href="@{/top10}">TOP10 실시간</a></li>
-				<li><a th:href="@{/searching}">인물검색</a></li>
-				<div class="vertical-line"></div>
-				<!-- 카카오 로그인 URL은 컨트롤러에서 model에 추가한 kakaoUrl 값을 사용 -->
-				<li>
-					<a th:if="${isLoggedIn == false}" th:href="@{'https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=772c65da382eb8de1916b5771770e5e7&redirect_uri=http://kor-polimeter.info/auth/kakao/callback'}">카카오 로그인</a>
-				</li>
-				<li>
-					<a th:if="${isLoggedIn == true}" th:href="@{'https://kauth.kakao.com/oauth/logout?client_id=772c65da382eb8de1916b5771770e5e7&logout_redirect_uri=http://kor-polimeter.info/logout'}">
-						로그아웃
-					</a>
-				</li>
-			</ul>
-		</nav>
-	</header>
-	<div class="TNB">
-		<hr>
-		<h2>상세정보</h2>
-		<hr>
-	</div>
-	<div class="contents-container">
-		<div class="profile-container">
-			<div class="img-details-description-container">
-				<div class="img-details-container">
-					<!-- 프로필 이미지 -->
-					<div class="profile-image-container">
-						<img th:src="@{images/politicians/{party}/{name}.jpg(name=${name}, party=${party})}"
-							 alt="Profile Picture"
-							 class="profile-image">
-					</div>
-					<!-- 프로필 상세 정보 -->
-					<div class="profile-details">
-						<p><span class="label">이름</span><span class="value" th:text="${name}">홍길동</span></p>
-						<p><span class="label">소속정당</span><span class="value" th:text="${party}">포도당</span></p>
-						<p><span class="label">지역선거구</span><span class="value" th:text="${region}">서울특별시</span></p>
-						<p><span class="label">출생날짜</span><span class="value" id="birth-date" th:text="${bday}">1980-01-01</span></p>
-						<p><span class="label">연령</span><span class="value" th:text="${age} + '세'">43세</span></p>
-						<p><span class="label">성별</span><span class="value" th:text="${gender == 0 ? '남' : '여'}">남성</span></p>
-					</div>
+<header>
+	<h1>
+		<a th:href="@{/}">KOR_Polimeter</a>
+	</h1>
+	<nav>
+		<ul>
+			<li><a th:href="@{/top10}">TOP10 실시간</a></li>
+			<li><a th:href="@{/searching}">인물검색</a></li>
+			<div class="vertical-line"></div>
+			<!-- 카카오 로그인 URL은 컨트롤러에서 model에 추가한 kakaoUrl 값을 사용 -->
+			<li>
+				<a th:if="${isLoggedIn == false}" th:href="@{'https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=772c65da382eb8de1916b5771770e5e7&redirect_uri=http://localhost:8080/auth/kakao/callback'}">카카오 로그인</a>
+			</li>
+			<li>
+				<a th:if="${isLoggedIn == true}" th:href="@{'https://kauth.kakao.com/oauth/logout?client_id=772c65da382eb8de1916b5771770e5e7&logout_redirect_uri=http://localhost:8080/logout'}">
+					로그아웃
+				</a>
+			</li>
+		</ul>
+	</nav>
+</header>
+<div class="TNB">
+	<hr>
+	<h2>상세정보</h2>
+	<hr>
+</div>
+<div class="contents-container">
+	<div class="profile-container">
+		<div class="img-details-description-container">
+			<div class="img-details-container">
+				<!-- 프로필 이미지 -->
+				<div class="profile-image-container">
+					<img th:src="@{images/politicians/{party}/{name}.jpg(name=${name}, party=${party})}"
+						 alt="Profile Picture"
+						 class="profile-image">
 				</div>
-				<!-- 프로필 설명 -->
-				<div class="profile-description-container" th:data-description="${description}">
-					<h3 id="profile-description">대표발의 의안</h3>
-					<ul id="description-list"></ul>
+				<!-- 프로필 상세 정보 -->
+				<div class="profile-details">
+					<p><span class="label">이름</span><span class="value" th:text="${name}">홍길동</span></p>
+					<p><span class="label">소속정당</span><span class="value" th:text="${party}">포도당</span></p>
+					<p><span class="label">지역선거구</span><span class="value" th:text="${region}">서울특별시</span></p>
+					<p><span class="label">출생날짜</span><span class="value" id="birth-date" th:text="${bday}">1980-01-01</span></p>
+					<p><span class="label">연령</span><span class="value" th:text="${age} + '세'">43세</span></p>
+					<p><span class="label">성별</span><span class="value" th:text="${gender == 0 ? '남' : '여'}">남성</span></p>
 				</div>
 			</div>
-			<div class="cloud-and-back-container">
-				<div class="cloud-container">
-					<h3 class="img-title">워드 클라우드</h3>
-					<img th:src="@{/images/word_cloud/{name}_cloud.jpg(name=${name})}" alt="Word Cloud">
-				</div>
-				<div class="back-container">
-					<a href="#" class="back-link" id="back-link">인물 목록으로 돌아가기</a>
-				</div>
+			<!-- 프로필 설명 -->
+			<div class="profile-description-container" th:data-description="${description}">
+				<h3 id="profile-description">대표발의 의안</h3>
+				<ul id="description-list"></ul>
+			</div>
+		</div>
+		<div class="cloud-and-back-container">
+			<div class="cloud-container">
+				<h3 class="img-title">워드 클라우드</h3>
+				<img th:src="@{/images/word_cloud/{name}_cloud.jpg(name=${name})}" alt="Word Cloud">
+			</div>
+			<div class="back-container">
+				<a href="#" class="back-link" id="back-link">인물 목록으로 돌아가기</a>
 			</div>
 		</div>
 	</div>
-	<footer>
-		<p>Contact us at: sdg0896@gmail.com</p>
-		<p>Github: https://github.com/KOR-Polimeter</p>
-		<p>Website created in 2024.</p>
-	</footer>
+</div>
+<footer>
+	<p>Contact us at: sdg0896@gmail.com</p>
+	<p>Github: https://github.com/KOR-Polimeter</p>
+	<p>Website created in 2024.</p>
+</footer>
 
-	<script>
-		document.addEventListener('DOMContentLoaded', () => {
-			const birthDateElement = document.getElementById("birth-date");
+<script>
+	document.addEventListener('DOMContentLoaded', () => {
+		const birthDateElement = document.getElementById("birth-date");
 
-			// 'T' 이전의 날짜 부분만 가져옴
-			birthDateElement.textContent = birthDateElement.textContent.split('T')[0];
-		});
+		// 'T' 이전의 날짜 부분만 가져옴
+		birthDateElement.textContent = birthDateElement.textContent.split('T')[0];
+	});
 
-	  document.addEventListener('DOMContentLoaded', () => {
-		  const dataContainer = document.querySelector(".profile-description-container");
-		  const description = dataContainer.dataset.description; // description 값 읽기
-		  if (!description) {
-			  console.error("description 값이 비어 있습니다.");
-			  return;
-		  }
-		  //console.log(description)
+	document.addEventListener('DOMContentLoaded', () => {
+		const dataContainer = document.querySelector(".profile-description-container");
+		const description = dataContainer.dataset.description; // description 값 읽기
+		if (!description) {
+			console.error("description 값이 비어 있습니다.");
+			return;
+		}
+		//console.log(description)
 
 		// description을 콤마로 나누어 배열로 변환
 		const descriptionList = description.split(",");
@@ -105,18 +105,18 @@
 			descriptionUl.appendChild(li);
 		});
 
-	    // 이 부분에서 id를 기반으로 상세 정보를 로딩하거나 표시
-	    console.log(id); // 예시로 id를 콘솔에 출력
-	  });
+		// 이 부분에서 id를 기반으로 상세 정보를 로딩하거나 표시
+		console.log(id); // 예시로 id를 콘솔에 출력
+	});
 
-	  document.addEventListener('DOMContentLoaded', () => {
-		  const backLink = document.getElementById('back-link');
-		  backLink.addEventListener('click', (event) => {
-			  event.preventDefault(); // 기본 동작(페이지 이동) 막기
-			  history.back(); // 이전 페이지로 이동
-		  });
-	  });
-	</script>
+	document.addEventListener('DOMContentLoaded', () => {
+		const backLink = document.getElementById('back-link');
+		backLink.addEventListener('click', (event) => {
+			event.preventDefault(); // 기본 동작(페이지 이동) 막기
+			history.back(); // 이전 페이지로 이동
+		});
+	});
+</script>
 
 </body>
 </html>
