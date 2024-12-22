@@ -1,3 +1,16 @@
+html, body {
+	margin: 0;
+	padding: 0;
+	height: 100%; /* html과 body를 화면 전체 높이로 고정 */
+}
+
+footer {
+	height: 100px; /* 푸터 높이 지정 */
+	background-color: #f1f1f1;
+	text-align: center;
+	padding: 20px 0;
+	border-top: 1px solid #ccc;
+}
 /* TNB 스타일 통일 */
 .TNB {
     position: relative;
@@ -52,6 +65,8 @@
 	max-width: 1200px;
 	margin: 20px auto;
 	gap: 20px;
+	min-height: calc(100% - 100px); /* 푸터 높이를 제외한 영역을 채움 */
+	box-sizing: border-box; /* 패딩과 보더 포함 */
 }
 
 /* 필터 스타일 */
@@ -140,7 +155,7 @@
 	filter: invert(1);          /* 이미지 색상 반전 */
 }
 
-#party-label, #popularity-label {
+#party-label, #ranking ,#popularity-label {
     margin-left: auto;
     margin-top: 4px;
     font-size: 16px;
@@ -157,7 +172,7 @@
 
 .ranking-item {
 	display: flex;
-	align-items: center;
+	align-items: center; /* 이미지와 텍스트 수평 정렬 */
 	justify-content: space-between;
 	margin-bottom: 10px;
 	padding: 15px;
@@ -169,7 +184,7 @@
 	cursor: pointer;
 }
 
-.ranking-item img {
+.ranking-image-container img {
 	width: 45px;
 	aspect-ratio: 5 / 7;
 	margin-right: 20px;
@@ -178,28 +193,31 @@
 	object-fit: cover;
 }
 
-.ranking-item .ranking-number {
-	font-size: 18px;
-	font-weight: bold;
-	margin-right: 15px;
-}
-
-.ranking-item .ranking-details {
+.ranking-item > .ranking-details {
 	display: flex;
+	align-items: center; /* 텍스트 수평 정렬 */
 	justify-content: space-between;
 	width: 100%;
 }
 
+.ranking-item .ranking-number {
+	font-size: 18px;
+	font-weight: bold;
+	margin-right: 15px; /* 번호와 이미지 간격 */
+}
+
 .ranking-item .ranking-details .name {
 	font-weight: bold;
+	font-size: 16px;
+	margin-right: auto; /* 이름이 왼쪽 정렬되도록 설정 */
 }
 
 .ranking-item .ranking-details .party {
 	font-size: 15px;
 	font-weight: bold;
-	margin-right: -250px;
 	color: black;
 	text-align: right;
+	margin-left: 10px; /* 간격 조정 */
 }
 
 .ranking-item .ranking-details .popularity {
@@ -207,6 +225,19 @@
 	font-weight: bold;
 	color: black;
 	text-align: right;
+	margin-left: 10px; /* 간격 조정 */
+}
+.ranking-details .ranking-image {
+	display: flex;
+	align-items: center; /* 이미지와 텍스트를 세로로 정렬 */
+	margin-right: 45px; /* 이미지와 텍스트 간 여백 추가 */
+}
+
+.ranking-details .ranking-image img {
+	width: 45px; /* 이미지 크기 */
+	height: 45px; /* 이미지 높이 */
+	border-radius: 50%; /* 둥근 이미지 */
+	object-fit: cover; /* 이미지 비율 유지 */
 }
 .pagination {
 	margin-top: 20px;

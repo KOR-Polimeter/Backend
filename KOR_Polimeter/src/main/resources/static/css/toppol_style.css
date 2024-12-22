@@ -158,10 +158,14 @@ canvas {
 
 .go-to-main-container {
 	display: flex; /* 플렉스 박스를 사용 */
-	justify-content: center; /* 가로 중앙 정렬 */
-	align-items: center; /* 세로 중앙 정렬 */
-	margin-top: -40px;
-	margin-bottom: 50px;
+	justify-content: center; /* 세로 중앙 정렬 */
+	margin-bottom: 40px;
+}
+
+.button-container {
+	display: flex;
+	justify-content: center;
+	width: 25%;
 }
 
 /* "투표 수정하기" 버튼 스타일 ---> 확인 버튼으로 바뀜 */
@@ -179,6 +183,9 @@ canvas {
     text-decoration: none; /* 밑줄 제거 */
     transition: all 0.3s ease; /* 애니메이션 효과 */
 }
+
+
+
 
 /* 버튼 호버 시 효과 */
 .go-to-main-button:hover {
