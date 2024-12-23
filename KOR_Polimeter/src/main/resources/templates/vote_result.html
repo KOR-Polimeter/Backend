@@ -236,7 +236,7 @@
 					const match = data.match(regex);
 
 					if (match) {
-						const userId = parseInt(match[1]) + 1;  // 유저 ID 추출
+						const userId = parseInt(match[1]);  // 유저 ID 추출
 						console.log('User ID:', userId);  // 확인용
 
 						// 유저 ID를 이용해 api/myVote에서 정치인 정보 가져오기
