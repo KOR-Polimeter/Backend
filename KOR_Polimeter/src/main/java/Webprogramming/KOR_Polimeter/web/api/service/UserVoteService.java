@@ -58,7 +58,7 @@ public class UserVoteService {
     public void voteForPoliticians(int userId, List<VoteRequest.Vote> votes) {
         // User 객체를 userId로 조회
         System.out.println("user아이디 : "+(userId));
-        User user = userRepository.findById((long) userId-1).orElseThrow(() -> new RuntimeException("User not found"));
+        User user = userRepository.findById((long) userId).orElseThrow(() -> new RuntimeException("User not found"));
 
         for (VoteRequest.Vote vote : votes) {
             // 정치인 ID로 정치인 조회
