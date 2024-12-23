@@ -539,7 +539,7 @@ async function submitVote() {
 
 	// 투표 데이터 구성
 	const voteData = {
-		userId: parseInt(userId) + 1, // userId를 숫자로 변환
+		userId: parseInt(userId), // userId를 숫자로 변환
 		votes: selectedCandidates.map(candidate => ({
 			polId: candidate.id // 후보자의 id를 사용
 		}))
